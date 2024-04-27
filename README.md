@@ -20,14 +20,14 @@ Runs the app in the development mode. Open [http://localhost:3000](http://localh
 Builds the app for production to the `dist` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
 #### `npm run test`
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ## Setting Up and Running Locally
 To set up and run Kickflip locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/kickflip.git
+   git clone https://github.com/makarovaiuliia/kickflip.git
    cd kickflip
 2. **Install dependencies:**
    ```bash
