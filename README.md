@@ -38,9 +38,9 @@ To set up and run Kickflip locally, follow these steps:
 
 ## Contributors
 
-| Name            | Role           | Contact Info                 |
+| Name            | Role           | GitHub                |
 | --------------  | -------------- | ---------------------------- |
-| Iuliia Makarova | Team Lead      | iuliia.makarova.au@gmail.com |
-| Pavel Kuvshinov | Frontend       | ?              |
-| Svetlana Ilina  | Frontend       | ?           |
+| Iuliia Makarova | Team Lead      | [makarovaiuliia](https://github.com/makarovaiuliia) |
+| Pavel Kuvshinov | Frontend       | [Pavel-Kuvshinov](https://github.com/Pavel-Kuvshinov) |
+| Svetlana Ilina  | Frontend       | [SvetaIlina](https://github.com/SvetaIlina) |
 
