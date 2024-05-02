@@ -8,8 +8,9 @@
         "build": "tsc && vite build",
         "preview": "vite preview",
         "lint": "eslint ./src --ext ts,tsx,js,jsx --report-unused-disable-directives",
-        "format:ci": "prettier --check ./src",
-        "format": "prettier --write ./src"
+        "ci:format": "prettier --check ./src",
+        "format": "prettier --write ./src",
+        "prepare": "cd .. && husky kickFlip-project/.husky"
     },
     "dependencies": {
         "eslint-config-airbnb-typescript": "^18.0.0",
@@ -31,6 +32,7 @@
         "eslint-plugin-react": "^7.28.0",
         "eslint-plugin-react-hooks": "^4.3.0",
         "eslint-plugin-react-refresh": "^0.4.6",
+        "husky": "^9.0.11",
         "prettier": "^3.2.5",
         "typescript": "^5.2.2",
         "vite": "^5.2.0"
