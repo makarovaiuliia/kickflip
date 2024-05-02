@@ -37,7 +37,7 @@ module.exports = {
             },
         },
     },
-    ignorePackages: ['*.config.cjs'],
+    ignorePatterns: ['*.config.cjs'],
     rules: {
         'react/react-in-jsx-scope': 0,
         '@typescript-eslint/no-explicit-any': 2,
