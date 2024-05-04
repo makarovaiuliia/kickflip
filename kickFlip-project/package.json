@@ -8,10 +8,18 @@
         "build": "tsc && vite build",
         "preview": "vite preview",
         "lint": "eslint ./src --ext ts,tsx,js,jsx --report-unused-disable-directives",
+        "lint:fix": "npm run lint -- --fix",
         "ci:format": "prettier --check ./src",
         "format": "prettier --write ./src",
+        "check": "npm run lint:fix && npm run format",
+        "commit": "cz",
         "prepare": "cd .. && husky kickFlip-project/.husky",
         "test": "jest"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./kickFlip-project/node_modules/cz-conventional-changelog"
+        }
     },
     "dependencies": {
         "eslint-config-airbnb-typescript": "^18.0.0",
@@ -28,6 +36,8 @@
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
         "@vitejs/plugin-react": "^4.2.1",
+        "commitizen": "^4.3.0",
+        "cz-conventional-changelog": "^3.3.0",
         "eslint": "^8.2.0",
         "eslint-config-airbnb": "^19.0.4",
         "eslint-config-prettier": "^9.1.0",
