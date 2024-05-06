@@ -1,5 +1,7 @@
+import MyForm from './components/form/form';
+
 function App() {
-    return <div />;
+    return <MyForm />;
 }
 
 export default App;
