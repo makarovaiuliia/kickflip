@@ -1,0 +1,73 @@
+.login-form {
+    width: 500px;
+    padding: 40px;
+    border: 2px solid var(--deep-blue);
+    background: var(--smoke-grey);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 38px;
+}
+
+.form-title {
+    font-family: var(--font-family);
+    font-size: 3.6rem;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-input {
+    border: 1px solid var(--border-gray);
+    height: 36px;
+    font-family: var(--third-family);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 150%;
+
+    padding: 1.3rem 1.6rem;
+}
+
+.form-input::placeholder {
+    color: var(--beige);
+}
+
+.form-input:focus {
+    outline: none;
+}
+
+.form-label {
+    position: relative;
+    font-family: var(--third-family);
+    font-weight: 500;
+    font-size: 2rem;
+    color: var(--deep-blue);
+}
+
+.fas {
+    position: absolute;
+    top: 44px;
+    right: 10px;
+    color: var(--beige);
+    cursor: pointer;
+}
+
+.form-input:focus.fas {
+    color: var(--deep-blue);
+}
+
+.submit-btn {
+    background: var(--electric-orange);
+    padding: 10px;
+    width: 35%;
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 1.8rem;
+    color: var(--white);
+}
