@@ -11,6 +11,7 @@ function MyForm(): JSX.Element {
         name: '',
         email: '',
     });
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,6 +28,10 @@ function MyForm(): JSX.Element {
             name: '',
             email: '',
         });
+    };
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
     };
 
     return (
@@ -49,10 +54,18 @@ function MyForm(): JSX.Element {
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="password-input">
                     Password:
+                    <i
+                        className={`fas ${passwordVisible ? 'fa-eye' : 'fa-eye-slash'}`}
+                        onClick={togglePasswordVisibility}
+                        onKeyDown={togglePasswordVisibility}
+                        role="button"
+                        tabIndex={0}
+                        aria-label="toggle"
+                    />
                 </label>
                 <input
                     className="form-input"
-                    type="password"
+                    type={passwordVisible ? 'text' : 'password'}
                     name="email"
                     placeholder="Type your password"
                     value={formData.email}
