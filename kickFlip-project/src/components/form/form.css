@@ -77,3 +77,8 @@
 .submit-btn:hover {
     background: var(--deep-blue);
 }
+
+.submit-btn.disable {
+    pointer-events: none;
+    background: var(--border-gray);
+}

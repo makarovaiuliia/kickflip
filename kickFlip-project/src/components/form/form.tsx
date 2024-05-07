@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './form.css';
 
 interface FormState {
@@ -16,6 +16,15 @@ function MyForm(): JSX.Element {
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [formValid, setFormValid] = useState(false);
+
+    useEffect(() => {
+        if (passwordValid && emailValid) {
+            setFormValid(true);
+        } else {
+            setFormValid(false);
+        }
+    }, [passwordValid, emailValid]);
 
     const checkEmailValidaty = (value: string) => {
         const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
@@ -35,16 +44,19 @@ function MyForm(): JSX.Element {
         let errorMessage: string = '';
         if (value.length < 8) {
             errorMessage = 'Password must be at least 8 characters long';
+            setPasswordValid(false);
         } else if (!PASSWORD_REGEX.test(value)) {
             errorMessage =
                 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character. Please use only Latin characters';
+            setPasswordValid(false);
         } else if (value.trim() !== value) {
             errorMessage = 'Password must not contain leading or trailing whitespace';
+            setPasswordValid(false);
         } else {
+            errorMessage = '';
             setPasswordValid(true);
-            setPasswordError('');
         }
-        setPasswordValid(false);
+
         setPasswordError(errorMessage);
     };
 
@@ -68,6 +80,9 @@ function MyForm(): JSX.Element {
             email: '',
             password: '',
         });
+        setEmailValid(false);
+        setPasswordValid(false);
+        setPasswordVisible(false);
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -136,7 +151,7 @@ function MyForm(): JSX.Element {
                 />
                 {!passwordValid && <span className="error-message">{passwordError}</span>}
             </div>
-            <button className="submit-btn" type="submit">
+            <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
             </button>
         </form>
