@@ -1,5 +1,6 @@
 .login-form {
     width: 500px;
+    height: 500px;
     padding: 40px;
     border: 2px solid var(--deep-blue);
     background: var(--smoke-grey);
@@ -50,16 +51,16 @@
     color: var(--deep-blue);
 }
 
+.error-message {
+    color: var(--electric-orange);
+}
+
 .fas {
     position: absolute;
     top: 44px;
     right: 10px;
     color: var(--beige);
     cursor: pointer;
-}
-
-.form-input:focus.fas {
-    color: var(--deep-blue);
 }
 
 .submit-btn {
@@ -70,4 +71,9 @@
     font-weight: 500;
     font-size: 1.8rem;
     color: var(--white);
+    transition: all 0.5s;
+}
+
+.submit-btn:hover {
+    background: var(--deep-blue);
 }
