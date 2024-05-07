@@ -2,16 +2,33 @@ import React, { useState } from 'react';
 import './form.css';
 
 interface FormState {
-    name: string;
     email: string;
+    password: string;
 }
 
 function MyForm(): JSX.Element {
     const [formData, setFormData] = useState<FormState>({
-        name: '',
         email: '',
+        password: '',
     });
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [emailValid, setEmailValid] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const checkEmailValidaty = (value: string) => {
+        const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
+        const errorMessage: string = 'Please enter valid e-mail address';
+
+        if (!EMAIL_REGEXP.test(value)) {
+            setEmailValid(false);
+            setEmailError(errorMessage);
+        } else {
+            setEmailValid(true);
+            setEmailError('');
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -19,15 +36,35 @@ function MyForm(): JSX.Element {
             ...prevState,
             [name]: value,
         }));
+        if (name === 'email') {
+            checkEmailValidaty(value);
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
         setFormData({
-            name: '',
             email: '',
+            password: '',
         });
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const currentInput = e.target;
+        const errorMessage: string = 'Required field';
+        if (!currentInput.value) {
+            switch (currentInput.name) {
+                case 'email':
+                    setEmailError(errorMessage);
+                    break;
+                case 'password':
+                    setPasswordError(errorMessage);
+                    break;
+                default:
+                    setPasswordError('');
+                    setEmailError('');
+            }
+        }
     };
 
     const togglePasswordVisibility = () => {
@@ -35,7 +72,7 @@ function MyForm(): JSX.Element {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" noValidate>
             <h1 className="form-title">Login</h1>
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="email-input">
@@ -43,13 +80,16 @@ function MyForm(): JSX.Element {
                 </label>
                 <input
                     className="form-input"
-                    type="email"
-                    name="name"
+                    type="text"
+                    name="email"
                     placeholder="Type your e-mail"
-                    value={formData.name}
+                    spellCheck="false"
+                    value={formData.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     id="email-input"
                 />
+                {!emailValid && <span className="error-message">{emailError}</span>}
             </div>
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="password-input">
@@ -66,12 +106,14 @@ function MyForm(): JSX.Element {
                 <input
                     className="form-input"
                     type={passwordVisible ? 'text' : 'password'}
-                    name="email"
+                    name="password"
                     placeholder="Type your password"
-                    value={formData.email}
+                    value={formData.password}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     id="password-input"
                 />
+                {!passwordValid && <span className="error-message">{passwordError}</span>}
             </div>
             <button className="submit-btn" type="submit">
                 Log In
