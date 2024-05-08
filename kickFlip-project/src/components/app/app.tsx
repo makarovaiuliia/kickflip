@@ -1,7 +1,7 @@
-import MyForm from './components/form/form';
+import LoginForm from '../form/LoginForm/form';
 
 function App() {
-    return <MyForm />;
+    return <LoginForm />;
 }
 
 export default App;

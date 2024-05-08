@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './form.css';
+import '../form.css';
 
 interface FormState {
     email: string;
     password: string;
 }
 
-function MyForm(): JSX.Element {
+function LoginForm(): JSX.Element {
     const [formData, setFormData] = useState<FormState>({
         email: '',
         password: '',
@@ -158,4 +158,4 @@ function MyForm(): JSX.Element {
     );
 }
 
-export default MyForm;
+export default LoginForm;
