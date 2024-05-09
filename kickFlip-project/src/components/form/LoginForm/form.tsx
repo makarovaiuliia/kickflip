@@ -125,7 +125,7 @@ function LoginForm(): JSX.Element {
                     onBlur={handleBlur}
                     id="email-input"
                 />
-                {!emailValid && <span className="error-message">{emailError}</span>}
+                <span className="error-message">{emailValid ? '' : emailError}</span>
             </div>
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="password-input">
@@ -149,7 +149,7 @@ function LoginForm(): JSX.Element {
                     onBlur={handleBlur}
                     id="password-input"
                 />
-                {!passwordValid && <span className="error-message">{passwordError}</span>}
+                <span className="error-message">{passwordValid ? '' : passwordError}</span>
             </div>
             <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
