@@ -3,12 +3,11 @@
     height: 500px;
     padding: 40px;
     border: 2px solid var(--deep-blue);
-    background: var(--smoke-grey);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 38px;
+    gap: 20px;
 }
 
 .form-title {
@@ -18,7 +17,7 @@
 }
 
 .input-wrapper {
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -26,7 +25,7 @@
 
 .form-input {
     border: 1px solid var(--border-gray);
-    height: 36px;
+    height: 56px;
     font-family: var(--third-family);
     font-weight: 500;
     font-size: 2rem;
@@ -53,11 +52,13 @@
 
 .error-message {
     color: var(--electric-orange);
+    min-height: 20px;
+    font-size: 1.5rem;
 }
 
 .fas {
     position: absolute;
-    top: 44px;
+    top: 52px;
     right: 10px;
     color: var(--beige);
     cursor: pointer;
@@ -66,7 +67,7 @@
 .submit-btn {
     background: var(--electric-orange);
     padding: 10px;
-    width: 35%;
+    width: 100%;
     font-family: var(--font-family);
     font-weight: 500;
     font-size: 1.8rem;
@@ -81,4 +82,14 @@
 .submit-btn.disable {
     pointer-events: none;
     background: var(--border-gray);
+}
+
+@media (max-width: 560px) {
+    .login-form {
+        width: 80svw;
+        padding: 20px;
+    }
+    .form-input {
+        font-size: 1.5rem;
+    }
 }
