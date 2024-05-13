@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, Country } from '../../../types/type';
 import '../form.css';
 
-type CustomerAdress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
+type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
 
 interface RegistrationFormState {
     email: string;
@@ -10,7 +10,7 @@ interface RegistrationFormState {
     lastName: string;
     firstName: string;
     dateOfBirth: Date;
-    addres: CustomerAdress;
+    address: CustomerAddress;
 }
 
 export default function RegistrationForm() {
@@ -22,9 +22,7 @@ export default function RegistrationForm() {
         formState: { errors, isValid },
     } = useForm<RegistrationFormState>({ mode: 'all' });
 
-    const submit: SubmitHandler<RegistrationFormState> = (data) => {
-        console.log(data);
-
+    const submit: SubmitHandler<RegistrationFormState> = () => {
         reset();
     };
 
@@ -45,7 +43,7 @@ export default function RegistrationForm() {
     };
 
     const matchCountry = (postalCode: string) => {
-        const country = watch('addres.country');
+        const country = watch('address.country');
         if ((country === Country.AUSTRIA || country === Country.GEORGIA) && !AU_GE_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
@@ -145,20 +143,20 @@ export default function RegistrationForm() {
                     className="form-input"
                     placeholder="First line of address"
                     id="adress-input"
-                    {...register('addres.streetName', {
+                    {...register('address.streetName', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
                     })}
                 />
                 <span className="error-message">
-                    {!errors.addres ? '' : errors.addres.streetName ? errors.addres.streetName.message : ''}
+                    {!errors.address ? '' : errors.address.streetName ? errors.address.streetName.message : ''}
                 </span>
             </div>
             <div className="input-wrapper stretched">
                 <input
                     className="form-input"
                     placeholder="Second line of address"
-                    {...register('addres.streetNumber')}
+                    {...register('address.streetNumber')}
                 />
             </div>
             <div className="input-wrapper">
@@ -169,21 +167,21 @@ export default function RegistrationForm() {
                     className="form-input"
                     placeholder="Your city"
                     id="city-input"
-                    {...register('addres.city', {
+                    {...register('address.city', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
                         minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
                     })}
                 />
                 <span className="error-message">
-                    {!errors.addres ? '' : errors.addres.city ? errors.addres.city.message : ''}
+                    {!errors.address ? '' : errors.address.city ? errors.address.city.message : ''}
                 </span>
             </div>
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="country-input">
                     Country
                 </label>
-                <select id="country-input" className="form-input" {...register('addres.country', { required: true })}>
+                <select id="country-input" className="form-input" {...register('address.country', { required: true })}>
                     <option value="" hidden>
                         Select your country...
                     </option>
@@ -193,7 +191,7 @@ export default function RegistrationForm() {
                     <option value="RU">Russia</option>
                 </select>
                 <span className="error-message">
-                    {!errors.addres ? '' : errors.addres.country ? errors.addres.country.message : ''}
+                    {!errors.address ? '' : errors.address.country ? errors.address.country.message : ''}
                 </span>
             </div>
             <div className="input-wrapper stretched">
@@ -204,13 +202,13 @@ export default function RegistrationForm() {
                     className="form-input"
                     placeholder="Enter postal code"
                     id="zip-input"
-                    {...register('addres.postalCode', {
+                    {...register('address.postalCode', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         validate: (value) => matchCountry(value),
                     })}
                 />
                 <span className="error-message">
-                    {!errors.addres ? '' : errors.addres.postalCode ? errors.addres.postalCode.message : ''}
+                    {!errors.address ? '' : errors.address.postalCode ? errors.address.postalCode.message : ''}
                 </span>
             </div>
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
