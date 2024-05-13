@@ -9,11 +9,20 @@
     justify-content: center;
     gap: 20px;
 }
+.reg-form {
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(7, auto);
+    row-gap: 20px;
+    column-gap: 16px;
+}
 
 .form-title {
     font-family: var(--font-family);
     font-size: 3.6rem;
     font-weight: 600;
+    margin-bottom: 24px;
 }
 
 .input-wrapper {
@@ -84,10 +93,20 @@
     background: var(--border-gray);
 }
 
+.stretched {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
 @media (max-width: 560px) {
-    .login-form {
+    .login-form,
+    .reg-form {
         width: 80svw;
         padding: 20px;
+    }
+    .reg-form {
+        display: flex;
+        flex-direction: column;
     }
     .form-input {
         font-size: 1.5rem;
