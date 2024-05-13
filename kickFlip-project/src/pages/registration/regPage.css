@@ -1,11 +1,11 @@
-.regPage-wrapper {
+.reg-page-wrapper {
     display: flex;
     flex-direction: column;
     padding: 40px;
 }
 
 @media (max-width: 560px) {
-    .regPage-wrapper {
+    .reg-page-wrapper {
         padding: 20px;
     }
 }

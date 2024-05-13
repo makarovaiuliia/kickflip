@@ -3,7 +3,7 @@ import './regPage.css';
 
 export default function RegistrationPage() {
     return (
-        <div className="regPage-wrapper">
+        <div className="reg-page-wrapper ">
             <h1 className="form-title">Registration</h1>
             <RegistrationForm />
         </div>
