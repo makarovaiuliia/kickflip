@@ -40,14 +40,14 @@ function LoginForm(): JSX.Element {
     };
 
     const checkPasswordValidaty = (value: string) => {
-        const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])/;
+        const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
             errorMessage = 'Password must be at least 8 characters long';
             setPasswordValid(false);
         } else if (!PASSWORD_REGEX.test(value)) {
             errorMessage =
-                'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character. Please use only Latin characters';
+                'Password must contain at least one uppercase letter, one lowercase letter, and one digit. Please use only Latin characters';
             setPasswordValid(false);
         } else if (value.trim() !== value) {
             errorMessage = 'Password must not contain leading or trailing whitespace';

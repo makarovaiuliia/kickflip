@@ -22,12 +22,7 @@ describe('LoginForm component', () => {
 
         fireEvent.change(passwordInput, { target: { value: 'short' } });
 
-        expect(
-            getByText(
-                'Password must be at least 8 characters long' ||
-                    'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character. Please use only Latin characters'
-            )
-        ).toBeInTheDocument();
+        expect(getByText('Password must be at least 8 characters long')).toBeInTheDocument();
     });
 
     it('displays error message when entering incorrect password', () => {
@@ -37,12 +32,11 @@ describe('LoginForm component', () => {
         fireEvent.change(passwordInput, { target: { value: 'notshort' } });
         fireEvent.change(passwordInput, { target: { value: 'withoutuppercase' } });
         fireEvent.change(passwordInput, { target: { value: 'withOutnumber' } });
-        fireEvent.change(passwordInput, { target: { value: 'withOut4specialcharacter' } });
         fireEvent.change(passwordInput, { target: { value: '4444444!' } });
 
         expect(
             getByText(
-                'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character. Please use only Latin characters'
+                'Password must contain at least one uppercase letter, one lowercase letter, and one digit. Please use only Latin characters'
             )
         ).toBeInTheDocument();
     });
