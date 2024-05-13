@@ -9,6 +9,7 @@
     justify-content: center;
     gap: 20px;
 }
+
 .reg-form {
     width: 500px;
     display: grid;
@@ -40,7 +41,6 @@
     font-weight: 500;
     font-size: 2rem;
     line-height: 150%;
-
     padding: 1.3rem 1.6rem;
 }
 
@@ -104,10 +104,12 @@
         width: 80svw;
         padding: 20px;
     }
+
     .reg-form {
         display: flex;
         flex-direction: column;
     }
+
     .form-input {
         font-size: 1.5rem;
     }
