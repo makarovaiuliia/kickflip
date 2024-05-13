@@ -41,7 +41,7 @@ function LoginForm(): JSX.Element {
     };
 
     const checkPasswordValidaty = (value: string) => {
-        const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])/;
+        const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
             errorMessage = ErrorMessage.PASSWORD_ERROR_LENGTH;

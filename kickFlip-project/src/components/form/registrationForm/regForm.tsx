@@ -29,7 +29,7 @@ export default function RegistrationForm() {
     };
 
     const EMAIL_REGEXP: RegExp = /^\S+@\S+\.\S+$/;
-    const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])/;
+    const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
     const ONLY_LETTER_REGEX: RegExp = /[A-Za-z]+$/;
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
@@ -49,7 +49,7 @@ export default function RegistrationForm() {
         if ((country === Country.AUSTRIA || country === Country.GEORGIA) && !AU_GE_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
-        if (country === Country.RUSSIA || (country === Country.BELARUS && !BU_RU_ZIP_REGEX.test(postalCode))) {
+        if ((country === Country.RUSSIA || country === Country.BELARUS) && !BU_RU_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
         return true;
