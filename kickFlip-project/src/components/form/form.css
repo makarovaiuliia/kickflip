@@ -25,6 +25,7 @@
 
 .form-input {
     border: 1px solid var(--border-gray);
+    color: var(--deep-blue);
     height: 56px;
     font-family: var(--third-family);
     font-weight: 500;
