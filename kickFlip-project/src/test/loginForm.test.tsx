@@ -2,7 +2,6 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginForm from '../components/form/LoginForm/loginForm';
 
-
 describe('LoginForm component', () => {
     it('displays error message when entering incorrect email', () => {
         const { getByLabelText, getByText } = render(<LoginForm />);
