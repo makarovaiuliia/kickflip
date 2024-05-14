@@ -1,4 +1,3 @@
-
 import RegistrationPage from '../../pages/registration/registrationPage';
 
 function App() {
