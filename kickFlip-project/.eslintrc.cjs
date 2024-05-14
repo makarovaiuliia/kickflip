@@ -55,7 +55,6 @@ module.exports = {
 
         'no-nested-ternary': 0,
         'react/jsx-props-no-spreading': 0,
-
         'jsx-a11y/label-has-associated-control': [
             'error',
             {
