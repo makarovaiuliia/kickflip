@@ -33,12 +33,21 @@ module.exports = {
     settings: {
         'import/resolver': {
             node: {
-                extensions: ['.ts', '.js'],
+                path: ['src'],
+                extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
+            },
+            typescript: {
+                project: './tsconfig.json',
+            },
+            alias: {
+                map: [['@', './src']],
+                extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
             },
         },
     },
     ignorePatterns: ['*.config.cjs'],
     rules: {
+        'no-shadow': 'off',
         'react/react-in-jsx-scope': 0,
         '@typescript-eslint/no-explicit-any': 2,
         'import/extensions': [
@@ -51,6 +60,8 @@ module.exports = {
                 tsx: 'never',
             },
         ],
+        'no-nested-ternary': 0,
+        'react/jsx-props-no-spreading': 0,
         'jsx-a11y/label-has-associated-control': [
             'error',
             {
