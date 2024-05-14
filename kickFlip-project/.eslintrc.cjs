@@ -33,7 +33,15 @@ module.exports = {
     settings: {
         'import/resolver': {
             node: {
-                extensions: ['.ts', '.js'],
+                path: ['src'],
+                extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
+            },
+            typescript: {
+                project: './tsconfig.json',
+            },
+            alias: {
+                map: [['@', './src']],
+                extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
             },
         },
     },
