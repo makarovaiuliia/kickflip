@@ -60,6 +60,16 @@ function LoginForm(): JSX.Element {
         setPasswordError(errorMessage);
     };
 
+    const resetForm = () => {
+        setFormData({
+            email: '',
+            password: '',
+        });
+        setEmailValid(false);
+        setPasswordValid(false);
+        setPasswordVisible(false);
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -76,13 +86,7 @@ function LoginForm(): JSX.Element {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setFormData({
-            email: '',
-            password: '',
-        });
-        setEmailValid(false);
-        setPasswordValid(false);
-        setPasswordVisible(false);
+        resetForm();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
