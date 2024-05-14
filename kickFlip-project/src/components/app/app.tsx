@@ -1,4 +1,4 @@
-import RegistrationPage from '../../pages/registration/registrationPage';
+import RegistrationPage from '@/pages/registration/registrationPage';
 
 function App() {
     return <RegistrationPage />;
