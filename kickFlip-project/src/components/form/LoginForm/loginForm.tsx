@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ErrorMessage } from '../../../types/type';
 import '../form.css';
 
 interface FormState {
@@ -28,7 +29,7 @@ function LoginForm(): JSX.Element {
 
     const checkEmailValidaty = (value: string) => {
         const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
-        const errorMessage: string = 'Please enter valid e-mail address';
+        const errorMessage: string = ErrorMessage.EMAIL_ERROR;
 
         if (!EMAIL_REGEXP.test(value)) {
             setEmailValid(false);
@@ -43,14 +44,13 @@ function LoginForm(): JSX.Element {
         const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
-            errorMessage = 'Password must be at least 8 characters long';
+            errorMessage = ErrorMessage.PASSWORD_ERROR_LENGTH;
             setPasswordValid(false);
         } else if (!PASSWORD_REGEX.test(value)) {
-            errorMessage =
-                'Password must contain at least one uppercase letter, one lowercase letter, and one digit. Please use only Latin characters';
+            errorMessage = ErrorMessage.PASSWORD_ERROR_REGEX;
             setPasswordValid(false);
         } else if (value.trim() !== value) {
-            errorMessage = 'Password must not contain leading or trailing whitespace';
+            errorMessage = ErrorMessage.PASSWORD_ERROR_SPACE;
             setPasswordValid(false);
         } else {
             errorMessage = '';
@@ -87,7 +87,7 @@ function LoginForm(): JSX.Element {
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const currentInput = e.target;
-        const errorMessage: string = 'Required field';
+        const errorMessage: string = ErrorMessage.REQUIRED_FIELD;
         if (!currentInput.value) {
             switch (currentInput.name) {
                 case 'email':
