@@ -73,7 +73,7 @@ To set up and run Kickflip locally, follow these steps:
    ```
 3. **Start the development server:**
    ```bash
-   npm start
+   npm dev
    ```
 
 ## Contributors
