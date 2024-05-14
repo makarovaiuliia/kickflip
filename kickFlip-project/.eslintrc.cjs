@@ -39,6 +39,7 @@ module.exports = {
     },
     ignorePatterns: ['*.config.cjs'],
     rules: {
+        'no-shadow': 'off',
         'react/react-in-jsx-scope': 0,
         '@typescript-eslint/no-explicit-any': 2,
         'import/extensions': [
@@ -51,6 +52,10 @@ module.exports = {
                 tsx: 'never',
             },
         ],
+
+        'no-nested-ternary': 0,
+        'react/jsx-props-no-spreading': 0,
+
         'jsx-a11y/label-has-associated-control': [
             'error',
             {
