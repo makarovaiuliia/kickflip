@@ -21,42 +21,27 @@ export type TUser = {
     email: string;
 };
 
-// export type TUser = {
-//     email: string;
-//     password: string;
-//     firstName: string;
-//     lastName: string;
-//     addresses: TAddress[];
-// };
-
 export type TAddress = {
-    country: string; // CountryCode representing the name of the country.
-    title?: string; // Title of the contact, e.g., 'Dr.'
-    salutation?: string; // Salutation of the contact, e.g., 'Mr.' or 'Ms.'
-    firstName?: string; // Given name (first name) of the contact.
-    lastName?: string; // Family name (last name) of the contact.
-    streetName?: string; // Name of the street.
-    streetNumber?: string; // Street number.
-    additionalStreetInfo?: string; // Further information on the street address.
-    postalCode?: string; // Postal code.
-    city?: string; // Name of the city.
-    region?: string; // Name of the region.
-    state?: string; // Name of the state, e.g., Colorado.
-    company?: string; // Name of the company.
-    department?: string; // Name of the department.
-    building?: string; // Number or name of the building.
-    apartment?: string; // Number or name of the apartment.
-    pOBox?: string; // Post office box number.
-    phone?: string; // Phone number of the contact.
-    mobile?: string; // Mobile phone number of the contact.
-    email?: string; // Email address of the contact.
-    fax?: string; // Fax number of the contact.
-    additionalAddressInfo?: string; // Additional information for the address.
+    country: string;
+    title?: string;
+    salutation?: string;
+    firstName?: string;
+    lastName?: string;
+    streetName?: string;
+    streetNumber?: string;
+    additionalStreetInfo?: string;
+    postalCode?: string;
+    city?: string;
+    region?: string;
+    state?: string;
+    company?: string;
+    department?: string;
+    building?: string;
+    apartment?: string;
+    pOBox?: string;
+    phone?: string;
+    mobile?: string;
+    email?: string;
+    fax?: string;
+    additionalAddressInfo?: string;
 };
-
-// // Constraints for 'key' property
-// const keyConstraints = {
-//     minLength: 2,
-//     maxLength: 256,
-//     pattern: /^[A-Za-z0-9_-]+$/,
-// };

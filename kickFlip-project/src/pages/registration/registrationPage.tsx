@@ -1,4 +1,4 @@
-import RegistrationForm from '../../components/form/registrationForm/regForm';
+import RegistrationForm from '@/components/form/registrationForm/regForm';
 import './regPage.css';
 
 export default function RegistrationPage() {

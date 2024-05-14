@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '../../../types/types';
+import { ErrorMessage } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
 import { getUserByID, loginUser } from '@/services/userSlice';
