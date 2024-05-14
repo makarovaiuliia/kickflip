@@ -27,7 +27,7 @@ function LoginForm(): JSX.Element {
         }
     }, [passwordValid, emailValid]);
 
-    const checkEmailValidaty = (value: string) => {
+    const checkEmailValidity = (value: string) => {
         const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
         const errorMessage: string = ErrorMessage.EMAIL_ERROR;
 
@@ -40,7 +40,7 @@ function LoginForm(): JSX.Element {
         }
     };
 
-    const checkPasswordValidaty = (value: string) => {
+    const checkPasswordValidity = (value: string) => {
         const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
@@ -77,10 +77,10 @@ function LoginForm(): JSX.Element {
             [name]: value,
         }));
         if (name === 'email') {
-            checkEmailValidaty(value);
+            checkEmailValidity(value);
         }
         if (name === 'password') {
-            checkPasswordValidaty(value);
+            checkPasswordValidity(value);
         }
     };
 
