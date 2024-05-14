@@ -1,0 +1,68 @@
+:root {
+    --deep-blue: #18313f;
+    --beige: #ece7e3;
+    --electric-orange: #ff6546;
+    --turquoise: #20768c;
+    --white: #fff;
+    --ink-light: #4c626f;
+    --egg-yolk: #fff8b7;
+    --smoke-grey: #f8f8f8;
+    --border-gray: #d8d8d8;
+    --font-family: 'Clash Display', sans-serif;
+    --second-family: 'Sylvester', sans-serif;
+    --third-family: 'Satoshi', sans-serif;
+}
+
+@font-face {
+    font-family: 'Clash Display';
+    src:
+        url('./assets/fonts/ClashDisplaySemibold.otf') format('opentype'),
+        url('./assets/fonts/ClashDisplayMedium.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src:
+        url('./assets/fonts/Satoshi-Medium.otf') format('opentype'),
+        url('./assets/fonts/Satoshi-Medium.ttf') format('truetype'),
+        url('./assets/fonts/Satoshi-Medium.woff') format('woff'),
+        url('./assets/fonts/Satoshi-Medium.woff2') format('woff2');
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    text-transform: uppercase;
+    border: none;
+}
+
+body {
+    font-family: var(--third-family);
+    color: var(--deep-blue);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
