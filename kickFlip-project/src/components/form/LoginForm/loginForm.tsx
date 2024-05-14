@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '../../../types/type';
+import { ErrorMessage } from '../../../types/types';
 import '../form.css';
+import { useDispatch } from '@/services/store';
+import { loginUser } from '@/services/userSlice';
 
 interface FormState {
     email: string;
@@ -18,6 +20,8 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -74,8 +78,16 @@ function LoginForm(): JSX.Element {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        try {
+            await dispatch(loginUser(formData)).unwrap();
+            // TODO: добавить навигацию navigate('/'), когда появится роутинг
+        } catch (error) {
+            // console.log(error);
+        }
+
         setFormData({
             email: '',
             password: '',

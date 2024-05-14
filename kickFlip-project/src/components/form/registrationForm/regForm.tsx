@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country } from '../../../types/type';
+import { ErrorMessage, Country } from '../../../types/types';
 import '../form.css';
 
 type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };

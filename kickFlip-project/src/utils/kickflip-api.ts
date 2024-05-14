@@ -4,10 +4,6 @@ const projectKey = 'kick-flip_webstore-warriors';
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-type TServerResponse<T> = {
-    success: boolean;
-} & T;
-
 export type TLoginData = {
     email: string;
     password: string;
@@ -26,14 +22,14 @@ export const loginUserApi = (data: TLoginData) =>
     )
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
-            if (result?.success) return data;
-            return Promise.reject(data);
+            if (result) return result;
+            return Promise.reject(result);
         });
 
-type TAuthResponse = TServerResponse<{
+type TAuthResponse = {
     access_token: string;
     expires_in: number;
     token_type: string;
     scope: string;
     refresh_token: string;
-}>;
+};
