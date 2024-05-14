@@ -109,7 +109,7 @@ export default function RegistrationForm() {
                 </label>
                 <input
                     className="form-input"
-                    placeholder="Enter your First Name"
+                    placeholder="Enter your Last Name"
                     id="lastName-input"
                     {...register('lastName', {
                         required: ErrorMessage.REQUIRED_FIELD,

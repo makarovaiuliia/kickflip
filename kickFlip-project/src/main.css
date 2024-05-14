@@ -60,10 +60,8 @@ button {
 
 body {
     font-family: var(--third-family);
-
     color: var(--deep-blue);
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
