@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ErrorMessage } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { getUserByID, loginUser } from '@/services/userSlice';
+import { getUserByID, loginUser, getUserSelector } from '@/services/userSlice';
 import getCustomerId from '@/utils/utils';
 
 interface FormState {
@@ -21,6 +22,8 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+    const [loginError, setLoginError] = useState('');
+    const userState = useSelector(getUserSelector);
 
     const dispatch = useDispatch();
 
@@ -91,7 +94,7 @@ function LoginForm(): JSX.Element {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        setLoginError('');
         try {
             const response = await dispatch(loginUser(formData)).unwrap();
             const userID = getCustomerId(response.scope);
@@ -99,13 +102,11 @@ function LoginForm(): JSX.Element {
             if (userID) {
                 await dispatch(getUserByID(userID));
             }
-
+            resetForm();
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
-            // console.log(error);
+            if (userState.error) setLoginError(userState.error);
         }
-
-        resetForm();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -177,6 +178,7 @@ function LoginForm(): JSX.Element {
             <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
             </button>
+            <span className="error-message">{loginError}</span>
         </form>
     );
 }
