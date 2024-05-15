@@ -1,21 +1,29 @@
-const URL = 'https://auth.europe-west1.gcp.commercetools.com';
+import { TAddress } from '@/types/types';
+import { getCookie } from './cookie';
+
+const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
+const URL = 'https://api.europe-west1.gcp.commercetools.com';
 const projectKey = 'kick-flip_webstore-warriors';
 
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-
-type TServerResponse<T> = {
-    success: boolean;
-} & T;
 
 export type TLoginData = {
     email: string;
     password: string;
 };
 
+type TAuthResponse = {
+    access_token: string;
+    expires_in: number;
+    token_type: string;
+    scope: string;
+    refresh_token: string;
+};
+
 export const loginUserApi = (data: TLoginData) =>
     fetch(
-        `${URL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
+        `${AuthURL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
         {
             method: 'POST',
             headers: {
@@ -26,14 +34,48 @@ export const loginUserApi = (data: TLoginData) =>
     )
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
-            if (result?.success) return data;
-            return Promise.reject(data);
+            if (result) return result;
+            return Promise.reject(result);
         });
 
-type TAuthResponse = TServerResponse<{
-    access_token: string;
-    expires_in: number;
-    token_type: string;
-    scope: string;
-    refresh_token: string;
-}>;
+export type TUserResponse = {
+    id: string;
+    version: number;
+    versionModifiedAt: string;
+    lastMessageSequenceNumber: number;
+    createdAt: string;
+    lastModifiedAt: string;
+    lastModifiedBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    createdBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    addresses: Array<TAddress>;
+    shippingAddressIds: Array<string>;
+    billingAddressIds: Array<string>;
+    isEmailVerified: boolean;
+    stores: Array<string>;
+    authenticationMode: string;
+};
+
+export const getUserByIDApi = (userID: string) => {
+    fetch(`${URL}/${projectKey}/customers/${userID}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};

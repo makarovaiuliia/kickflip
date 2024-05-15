@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '../../../types/type';
+import { ErrorMessage } from '@/types/types';
 import '../form.css';
+import { useDispatch } from '@/services/store';
+import { getUserByID, loginUser } from '@/services/userSlice';
+import getCustomerId from '@/utils/utils';
 
 interface FormState {
     email: string;
@@ -18,6 +21,8 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -60,6 +65,7 @@ function LoginForm(): JSX.Element {
         setPasswordError(errorMessage);
     };
 
+
     const resetForm = () => {
         setFormData({
             email: '',
@@ -77,15 +83,29 @@ function LoginForm(): JSX.Element {
             [name]: value,
         }));
         if (name === 'email') {
-            checkEmailValidity(value);
+          checkEmailValidity(value);
         }
         if (name === 'password') {
             checkPasswordValidity(value);
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        try {
+            const response = await dispatch(loginUser(formData)).unwrap();
+            const userID = getCustomerId(response.scope);
+
+            if (userID) {
+                await dispatch(getUserByID(userID));
+            }
+
+            // TODO: добавить навигацию navigate('/'), когда появится роутинг
+        } catch (error) {
+            // console.log(error);
+        }
+              
         resetForm();
     };
 

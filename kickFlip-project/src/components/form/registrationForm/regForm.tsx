@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country } from '../../../types/type';
+import { ErrorMessage, Country } from '@/types/types';
 import '../form.css';
 
 type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
@@ -32,7 +32,8 @@ export default function RegistrationForm() {
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
 
-    const isAbove = (birthDay: Date) => {
+
+    const ageRestrictionCheck = (birthDay: Date) => {
         const birthDate = new Date(birthDay);
 
         const currentDate = new Date();
@@ -130,7 +131,7 @@ export default function RegistrationForm() {
                     id="age-input"
                     {...register('dateOfBirth', {
                         required: ErrorMessage.REQUIRED_FIELD,
-                        validate: (value) => isAbove(value),
+                        validate: (value) => ageRestrictionCheck(value),
                     })}
                 />
                 <span className="error-message">{!errors.dateOfBirth ? '' : errors.dateOfBirth.message}</span>
