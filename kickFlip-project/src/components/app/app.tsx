@@ -1,11 +1,9 @@
-// import RegistrationPage from '@/pages/registration/registrationPage';
-
 import { Routes, Route } from 'react-router-dom';
 
-// import Header from '../header/header';
 import HomePage from '../../pages/home/homePage';
 import LoginPage from '../../pages/login/loginPage';
 import RegistrationPage from '../../pages/registration/registrationPage';
+import NotFoundPage from '../../pages/notfoundpage/notfoundPage';
 import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '../../pages/cart/cartPage';
 
@@ -20,6 +18,7 @@ function App() {
                 <Route path="login" element={<LoginPage />} />
                 <Route path="registration" element={<RegistrationPage />} />
                 <Route path="cart" element={<CartPage />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Route>
         </Routes>
     );
