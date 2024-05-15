@@ -97,7 +97,7 @@ function LoginForm(): JSX.Element {
 
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
-            // console.log(error);
+            // console.error(error);
         }
 
         resetForm();
