@@ -32,7 +32,7 @@ function LoginForm(): JSX.Element {
         }
     }, [passwordValid, emailValid]);
 
-    const checkEmailValidaty = (value: string) => {
+    const checkEmailValidity = (value: string) => {
         const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
         const errorMessage: string = ErrorMessage.EMAIL_ERROR;
 
@@ -45,7 +45,7 @@ function LoginForm(): JSX.Element {
         }
     };
 
-    const checkPasswordValidaty = (value: string) => {
+    const checkPasswordValidity = (value: string) => {
         const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
@@ -65,6 +65,17 @@ function LoginForm(): JSX.Element {
         setPasswordError(errorMessage);
     };
 
+
+    const resetForm = () => {
+        setFormData({
+            email: '',
+            password: '',
+        });
+        setEmailValid(false);
+        setPasswordValid(false);
+        setPasswordVisible(false);
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -72,10 +83,10 @@ function LoginForm(): JSX.Element {
             [name]: value,
         }));
         if (name === 'email') {
-            checkEmailValidaty(value);
+          checkEmailValidity(value);
         }
         if (name === 'password') {
-            checkPasswordValidaty(value);
+            checkPasswordValidity(value);
         }
     };
 
@@ -94,14 +105,8 @@ function LoginForm(): JSX.Element {
         } catch (error) {
             // console.log(error);
         }
-
-        setFormData({
-            email: '',
-            password: '',
-        });
-        setEmailValid(false);
-        setPasswordValid(false);
-        setPasswordVisible(false);
+              
+        resetForm();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
