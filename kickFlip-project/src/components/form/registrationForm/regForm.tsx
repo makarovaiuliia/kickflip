@@ -32,7 +32,6 @@ export default function RegistrationForm() {
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
 
-
     const ageRestrictionCheck = (birthDay: Date) => {
         const birthDate = new Date(birthDay);
 

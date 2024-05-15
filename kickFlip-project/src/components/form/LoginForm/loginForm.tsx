@@ -65,7 +65,6 @@ function LoginForm(): JSX.Element {
         setPasswordError(errorMessage);
     };
 
-
     const resetForm = () => {
         setFormData({
             email: '',
@@ -83,7 +82,7 @@ function LoginForm(): JSX.Element {
             [name]: value,
         }));
         if (name === 'email') {
-          checkEmailValidity(value);
+            checkEmailValidity(value);
         }
         if (name === 'password') {
             checkPasswordValidity(value);
@@ -105,7 +104,7 @@ function LoginForm(): JSX.Element {
         } catch (error) {
             // console.log(error);
         }
-              
+
         resetForm();
     };
 

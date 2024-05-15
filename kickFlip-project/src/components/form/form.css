@@ -96,6 +96,7 @@
 
 .stretched {
     grid-column: 1 / 3;
+}
 
 @media (width <= 768px) {
     .reg-form {
