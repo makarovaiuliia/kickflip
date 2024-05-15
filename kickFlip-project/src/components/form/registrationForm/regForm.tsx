@@ -1,17 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country } from '@/types/types';
+import { ErrorMessage, Country, SignUpData } from '@/types/types';
 import '../form.css';
-
-type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
-
-interface RegistrationFormState {
-    email: string;
-    password: string;
-    lastName: string;
-    firstName: string;
-    dateOfBirth: Date;
-    address: CustomerAddress;
-}
 
 export default function RegistrationForm() {
     const {
@@ -20,9 +9,9 @@ export default function RegistrationForm() {
         reset,
         watch,
         formState: { errors, isValid },
-    } = useForm<RegistrationFormState>({ mode: 'all' });
+    } = useForm<SignUpData>({ mode: 'all' });
 
-    const submit: SubmitHandler<RegistrationFormState> = () => {
+    const submit: SubmitHandler<SignUpData> = () => {
         reset();
     };
 

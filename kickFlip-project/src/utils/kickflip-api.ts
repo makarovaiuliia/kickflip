@@ -1,4 +1,4 @@
-import { TAddress } from '@/types/types';
+import { LogInData, SignUpData, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
 
 const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
@@ -8,11 +8,6 @@ const projectKey = 'kick-flip_webstore-warriors';
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-export type TLoginData = {
-    email: string;
-    password: string;
-};
-
 type TAuthResponse = {
     access_token: string;
     expires_in: number;
@@ -21,7 +16,7 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
-export const loginUserApi = (data: TLoginData) =>
+export const loginUserApi = (data: LogInData) =>
     fetch(
         `${AuthURL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
         {
@@ -72,6 +67,22 @@ export const getUserByIDApi = (userID: string) => {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const signUpUserApi = (data: SignUpData) => {
+    fetch(`${URL}/${projectKey}/customers`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(data),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {

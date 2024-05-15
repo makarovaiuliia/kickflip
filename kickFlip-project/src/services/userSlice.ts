@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TLoginData, getUserByIDApi, loginUserApi } from '@/utils/kickflip-api';
+import { getUserByIDApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
 import { setCookie } from '@/utils/cookie';
 import type { RootState } from './store';
 import getCustomerId from '@/utils/utils';
-import { TUser } from '@/types/types';
+import { LogInData, SignUpData, TUser } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
-export const loginUser = createAsyncThunk('user/login', async (data: TLoginData) => {
+export const loginUser = createAsyncThunk('user/login', async (data: LogInData) => {
     const response = await loginUserApi(data);
     localStorage.setItem('refreshToken', response.refresh_token);
     setCookie('accessToken', response.access_token);
@@ -16,6 +16,11 @@ export const loginUser = createAsyncThunk('user/login', async (data: TLoginData)
 
 export const getUserByID = createAsyncThunk('user/get', async (userID: string) => {
     const response = await getUserByIDApi(userID);
+    return response;
+});
+
+export const signUpUser = createAsyncThunk('user/register', async (data: SignUpData) => {
+    const response = await signUpUserApi(data);
     return response;
 });
 

@@ -45,3 +45,25 @@ export type TAddress = {
     fax?: string;
     additionalAddressInfo?: string;
 };
+
+export type CustomerAddress = {
+    streetName: string;
+    streetNumber: string;
+    city: string;
+    postalCode: string;
+    country: string;
+};
+
+export interface SignUpData {
+    email: string;
+    password: string;
+    lastName: string;
+    firstName: string;
+    dateOfBirth: Date;
+    address: CustomerAddress;
+}
+
+export interface LogInData {
+    email: string;
+    password: string;
+}

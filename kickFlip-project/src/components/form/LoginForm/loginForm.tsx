@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '@/types/types';
+import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
 import { getUserByID, loginUser } from '@/services/userSlice';
 import getCustomerId from '@/utils/utils';
 
-interface FormState {
-    email: string;
-    password: string;
-}
-
 function LoginForm(): JSX.Element {
-    const [formData, setFormData] = useState<FormState>({
+    const [formData, setFormData] = useState<LogInData>({
         email: '',
         password: '',
     });
