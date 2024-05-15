@@ -60,7 +60,16 @@ export interface SignUpData {
     lastName: string;
     firstName: string;
     dateOfBirth: Date;
-    address: CustomerAddress;
+    addresses: CustomerAddress[];
+}
+
+export interface SignUpDataForm extends SignUpData {
+    isDefaultAddress: string;
+}
+
+export interface SignUpDataRequest extends SignUpData {
+    defaultShippingAddress?: CustomerAddress;
+    defaultBillingAddress?: CustomerAddress;
 }
 
 export interface LogInData {

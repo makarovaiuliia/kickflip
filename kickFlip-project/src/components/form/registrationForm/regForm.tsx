@@ -1,6 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country, SignUpData } from '@/types/types';
+import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
+import { useDispatch } from '@/services/store';
+import { signUpUser } from '@/services/userSlice';
 
 export default function RegistrationForm() {
     const {
@@ -9,9 +11,12 @@ export default function RegistrationForm() {
         reset,
         watch,
         formState: { errors, isValid },
-    } = useForm<SignUpData>({ mode: 'all' });
+    } = useForm<SignUpDataForm>({ mode: 'all' });
 
-    const submit: SubmitHandler<SignUpData> = () => {
+    const dispatch = useDispatch();
+
+    const submit: SubmitHandler<SignUpDataForm> = (data: SignUpDataForm) => {
+        dispatch(signUpUser(data));
         reset();
     };
 
@@ -32,7 +37,7 @@ export default function RegistrationForm() {
     };
 
     const matchCountry = (postalCode: string) => {
-        const country = watch('address.country');
+        const country = watch('addresses.1.country');
         if ((country === Country.AUSTRIA || country === Country.GEORGIA) && !AU_GE_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
@@ -125,27 +130,27 @@ export default function RegistrationForm() {
                 <span className="error-message">{!errors.dateOfBirth ? '' : errors.dateOfBirth.message}</span>
             </div>
             <div className="input-wrapper stretched">
-                <label className="form-label" htmlFor="adress-input">
+                <label className="form-label" htmlFor="address-input">
                     Your Address
                 </label>
                 <input
                     className="form-input"
                     placeholder="First line of address"
-                    id="adress-input"
-                    {...register('address.streetName', {
+                    id="address-input"
+                    {...register('addresses.0.streetName', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
                     })}
                 />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.streetName ? errors.address.streetName.message : ''}
-                </span>
+                {errors.addresses?.[0]?.streetName && (
+                    <span className="error-message">{errors.addresses[0].streetName.message}</span>
+                )}
             </div>
             <div className="input-wrapper stretched">
                 <input
                     className="form-input"
                     placeholder="Second line of address"
-                    {...register('address.streetNumber')}
+                    {...register('addresses.0.streetNumber')}
                 />
             </div>
             <div className="input-wrapper">
@@ -156,21 +161,25 @@ export default function RegistrationForm() {
                     className="form-input"
                     placeholder="Your city"
                     id="city-input"
-                    {...register('address.city', {
+                    {...register('addresses.0.city', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
                         minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
                     })}
                 />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.city ? errors.address.city.message : ''}
-                </span>
+                {errors.addresses?.[0]?.city && (
+                    <span className="error-message">{errors.addresses[0].city.message}</span>
+                )}
             </div>
             <div className="input-wrapper">
                 <label className="form-label" htmlFor="country-input">
                     Country
                 </label>
-                <select id="country-input" className="form-input" {...register('address.country', { required: true })}>
+                <select
+                    id="country-input"
+                    className="form-input"
+                    {...register('addresses.0.country', { required: true })}
+                >
                     <option value="" hidden>
                         Select your country...
                     </option>
@@ -179,9 +188,9 @@ export default function RegistrationForm() {
                     <option value="GE">Georgia</option>
                     <option value="RU">Russia</option>
                 </select>
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.country ? errors.address.country.message : ''}
-                </span>
+                {errors.addresses?.[0]?.country && (
+                    <span className="error-message">{errors.addresses[0].country.message}</span>
+                )}
             </div>
             <div className="input-wrapper stretched">
                 <label className="form-label" htmlFor="zip-input">
@@ -191,14 +200,18 @@ export default function RegistrationForm() {
                     className="form-input"
                     placeholder="Enter postal code"
                     id="zip-input"
-                    {...register('address.postalCode', {
+                    {...register('addresses.0.postalCode', {
                         required: ErrorMessage.REQUIRED_FIELD,
                         validate: (value) => matchCountry(value),
                     })}
                 />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.postalCode ? errors.address.postalCode.message : ''}
-                </span>
+                {errors.addresses?.[0]?.postalCode && (
+                    <span className="error-message">{errors.addresses[0].postalCode.message}</span>
+                )}
+            </div>
+            <div className="checkbox-wrapper">
+                <input type="checkbox" {...register('isDefaultAddress')} />
+                <span>Make this address default</span>
             </div>
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
                 Send Form

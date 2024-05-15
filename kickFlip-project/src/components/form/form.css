@@ -33,6 +33,12 @@
     gap: 8px;
 }
 
+.checkbox-wrapper {
+    display: flex;
+    gap: 8px;
+    font-size: 1.4rem;
+}
+
 .form-input {
     border: 1px solid var(--border-gray);
     color: var(--deep-blue);

@@ -1,4 +1,4 @@
-import { LogInData, SignUpData, TAddress } from '@/types/types';
+import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
 
 const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
@@ -23,7 +23,7 @@ export const loginUserApi = (data: LogInData) =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: 'Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0',
+                Authorization: `Basic ${getCookie('accessToken')}`,
             },
         }
     )
@@ -32,6 +32,21 @@ export const loginUserApi = (data: LogInData) =>
             if (result) return result;
             return Promise.reject(result);
         });
+
+export const getAnonymousTokenApi = () => {
+    fetch(`${AuthURL}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: 'Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0',
+        },
+    })
+        .then((res) => checkResponse<TAuthResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
 
 export type TUserResponse = {
     id: string;
@@ -75,14 +90,23 @@ export const getUserByIDApi = (userID: string) => {
         });
 };
 
-export const signUpUserApi = (data: SignUpData) => {
-    fetch(`${URL}/${projectKey}/customers`, {
+export const signUpUserApi = (data: SignUpDataForm) => {
+    const { isDefaultAddress, ...rest } = data;
+    const defaultAddress = isDefaultAddress ? data.addresses[0] : undefined;
+
+    const signUpData: SignUpDataRequest = {
+        ...rest,
+        defaultBillingAddress: defaultAddress,
+        defaultShippingAddress: defaultAddress,
+    };
+
+    fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(signUpData),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {
