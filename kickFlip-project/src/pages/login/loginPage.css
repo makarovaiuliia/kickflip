@@ -1,17 +1,4 @@
-.reg-page-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 40px;
-    border: 2px solid var(--deep-blue);
-}
-
-@media (width <= 768px) {
-    .reg-page-wrapper {
-        padding: 20px;
-    }
-}
-
-.reg-page-question {
+.login-question {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -35,7 +22,7 @@
     }
 }
 
-.reg-page-question-text {
+.login-question-text {
     font-family: var(--second-family);
     font-weight: 500;
     font-size: 1.1rem;
@@ -43,7 +30,7 @@
     color: var(--deep-blue);
 }
 
-.reg-page-login-button {
+.login-register-button {
     background: var(--electric-orange);
     padding: 10px;
     max-width: 400px;
