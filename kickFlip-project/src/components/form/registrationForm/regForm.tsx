@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, Country } from '@/types/types';
 import '../form.css';
+import FormField from '@/components/formFields/formField';
 
 type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
 
@@ -52,165 +53,138 @@ export default function RegistrationForm() {
         }
         return true;
     };
+
     return (
         <form className="reg-form" onSubmit={handleSubmit(submit)}>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="email-input">
-                    E-mail
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your e-mail"
-                    spellCheck="false"
-                    id="email-input"
-                    {...register('email', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: EMAIL_REGEXP, message: ErrorMessage.EMAIL_ERROR },
-                    })}
-                />
-                <span className="error-message">{!errors.email ? '' : errors.email.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="password-input">
-                    Password
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your password"
-                    type="password"
-                    id="password-input"
-                    {...register('password', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
-                        minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.password ? '' : errors.password.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="firstName-input">
-                    First Name
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your First Name"
-                    id="firstName-input"
-                    {...register('firstName', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.firstName ? '' : errors.firstName.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="lastName-input">
-                    Last Name
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your Last Name"
-                    id="lastName-input"
-                    {...register('lastName', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.lastName ? '' : errors.lastName.message}</span>
-            </div>
-            <div className="input-wrapper stretched">
-                <label className="form-label" htmlFor="age-input">
-                    Date of birth
-                </label>
-                <input
-                    className="form-input"
-                    type="date"
-                    placeholder="Enter your Date of birth"
-                    id="age-input"
-                    {...register('dateOfBirth', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        validate: (value) => ageRestrictionCheck(value),
-                    })}
-                />
-                <span className="error-message">{!errors.dateOfBirth ? '' : errors.dateOfBirth.message}</span>
-            </div>
-            <div className="input-wrapper stretched">
-                <label className="form-label" htmlFor="adress-input">
-                    Your Address
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="First line of address"
-                    id="adress-input"
-                    {...register('address.streetName', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.streetName ? errors.address.streetName.message : ''}
-                </span>
-            </div>
-            <div className="input-wrapper stretched">
-                <input
-                    className="form-input"
-                    placeholder="Second line of address"
-                    {...register('address.streetNumber')}
-                />
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="city-input">
-                    City
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Your city"
-                    id="city-input"
-                    {...register('address.city', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.city ? errors.address.city.message : ''}
-                </span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="country-input">
-                    Country
-                </label>
-                <select id="country-input" className="form-input" {...register('address.country', { required: true })}>
-                    <option value="" hidden>
-                        Select your country...
-                    </option>
-                    <option value="AU">Austria</option>
-                    <option value="BU">Belarus</option>
-                    <option value="GE">Georgia</option>
-                    <option value="RU">Russia</option>
-                </select>
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.country ? errors.address.country.message : ''}
-                </span>
-            </div>
-            <div className="input-wrapper stretched">
-                <label className="form-label" htmlFor="zip-input">
-                    Postal Code
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter postal code"
-                    id="zip-input"
-                    {...register('address.postalCode', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        validate: (value) => matchCountry(value),
-                    })}
-                />
-                <span className="error-message">
-                    {!errors.address ? '' : errors.address.postalCode ? errors.address.postalCode.message : ''}
-                </span>
-            </div>
+            <FormField
+                label="E-mail"
+                id="email-input"
+                name="email"
+                placeholder="Enter your e-mail"
+                register={register}
+                errors={errors.email}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: EMAIL_REGEXP, message: ErrorMessage.EMAIL_ERROR },
+                }}
+            />
+            <FormField
+                label="Password"
+                id="password-input"
+                name="password"
+                placeholder="Enter your password"
+                register={register}
+                errors={errors.password}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
+                    minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="First Name"
+                id="firstName-input"
+                name="firstName"
+                placeholder="Enter your First Name"
+                register={register}
+                errors={errors.firstName}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="Last Name"
+                id="lastName-input"
+                name="firstName"
+                placeholder="Enter your Last Name"
+                register={register}
+                errors={errors.lastName}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="Date of birth"
+                type="date"
+                addWrapperClasses={['stretched']}
+                id="age-input"
+                name="dateOfBirth"
+                placeholder="Enter your Date of birthe"
+                register={register}
+                errors={errors.dateOfBirth}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    validate: (value) => ageRestrictionCheck(value),
+                }}
+            />
+            <FormField
+                label="Your Address"
+                addWrapperClasses={['stretched']}
+                id="adress-input"
+                name="address.streetName"
+                placeholder="First line of address"
+                register={register}
+                errors={errors.address?.streetName}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                addWrapperClasses={['stretched']}
+                name="address.streetNumber"
+                placeholder="Second line of address"
+                register={register}
+            />
+            <FormField
+                label="City"
+                id="city-input"
+                name="address.city"
+                placeholder="Your city"
+                register={register}
+                errors={errors.address?.city}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                fieldTag="select"
+                label="Country"
+                selectOptions={[
+                    { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                    { value: 'AU', text: 'Austria' },
+                    { value: 'BU', text: 'Belarus' },
+                    { value: 'GE', text: 'Georgia' },
+                    { value: 'RU', text: 'Russia' },
+                ]}
+                id="country-input"
+                name="address.country"
+                register={register}
+                errors={errors.address?.country}
+                validationRules={{
+                    required: true,
+                }}
+            />
+
+            <FormField
+                label="Postal Code"
+                addWrapperClasses={['stretched']}
+                id="zip-input"
+                name="address.postalCode"
+                placeholder="Enter postal code"
+                register={register}
+                errors={errors.address?.postalCode}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    validate: (value) => matchCountry(value),
+                }}
+            />
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
                 Send Form
             </button>
