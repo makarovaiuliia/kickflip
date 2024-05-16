@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ErrorMessage } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { getUserByID, loginUser, getUserSelector } from '@/services/userSlice';
+import { getUserByID, loginUser } from '@/services/userSlice';
 import getCustomerId from '@/utils/utils';
 
 interface FormState {
@@ -23,7 +22,6 @@ function LoginForm(): JSX.Element {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
     const [loginError, setLoginError] = useState('');
-    const userState = useSelector(getUserSelector);
 
     const dispatch = useDispatch();
 
@@ -105,7 +103,11 @@ function LoginForm(): JSX.Element {
             resetForm();
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
-            if (userState.error) setLoginError(userState.error);
+            if (error) {
+                if (typeof error === 'object' && 'message' in error) {
+                    if (typeof error.message === 'string') setLoginError(error.message);
+                }
+            }
         }
     };
 
