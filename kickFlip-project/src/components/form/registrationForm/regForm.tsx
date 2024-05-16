@@ -132,86 +132,69 @@ export default function RegistrationForm() {
             />
             {!useBillingAsShipping && (
                 <>
-                    <div className="input-wrapper stretched">
-                        <label className="form-label" htmlFor="address-input">
-                            Shipping Address
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="First line of address"
-                            id="address-input"
-                            {...register('shippingAddress.streetName', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                            })}
-                        />
-                        {errors.shippingAddress?.streetName && (
-                            <span className="error-message">{errors.shippingAddress.streetName.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper stretched">
-                        <input
-                            className="form-input"
-                            placeholder="Second line of address"
-                            {...register('shippingAddress.streetNumber')}
-                        />
-                    </div>
-                    <div className="input-wrapper">
-                        <label className="form-label" htmlFor="city-input">
-                            City
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="Your city"
-                            id="city-input"
-                            {...register('shippingAddress.city', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                            })}
-                        />
-                        {errors.shippingAddress?.city && (
-                            <span className="error-message">{errors.shippingAddress.city.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper">
-                        <label className="form-label" htmlFor="country-input">
-                            Country
-                        </label>
-                        <select
-                            id="country-input"
-                            className="form-input"
-                            {...register('shippingAddress.country', { required: true })}
-                        >
-                            <option value="" hidden>
-                                Select your country...
-                            </option>
-                            <option value="AU">Austria</option>
-                            <option value="BU">Belarus</option>
-                            <option value="GE">Georgia</option>
-                            <option value="RU">Russia</option>
-                        </select>
-                        {errors.shippingAddress?.country && (
-                            <span className="error-message">{errors.shippingAddress.country.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper stretched">
-                        <label className="form-label" htmlFor="zip-input">
-                            Postal Code
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="Enter postal code"
-                            id="zip-input"
-                            {...register('shippingAddress.postalCode', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                validate: (value) => matchCountry(value, 'shippingAddress'),
-                            })}
-                        />
-                        {errors.shippingAddress?.postalCode && (
-                            <span className="error-message">{errors.shippingAddress.postalCode.message}</span>
-                        )}
-                    </div>
+                    <FormField
+                        label="Shipping Address"
+                        addWrapperClasses={['stretched']}
+                        id="address-input"
+                        name="shippingAddress.streetName"
+                        placeholder="First line of address"
+                        register={register}
+                        errors={errors.shippingAddress?.streetName}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                        }}
+                    />
+                    <FormField
+                        addWrapperClasses={['stretched']}
+                        name="shippingAddress.streetNumber"
+                        placeholder="Second line of address"
+                        register={register}
+                    />
+                    <FormField
+                        label="City"
+                        id="city-input"
+                        name="shippingAddress.city"
+                        placeholder="Your city"
+                        register={register}
+                        errors={errors.shippingAddress?.city}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                        }}
+                    />
+                    <FormField
+                        fieldTag="select"
+                        label="Country"
+                        selectOptions={[
+                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                            { value: 'AU', text: 'Austria' },
+                            { value: 'BU', text: 'Belarus' },
+                            { value: 'GE', text: 'Georgia' },
+                            { value: 'RU', text: 'Russia' },
+                        ]}
+                        id="country-input"
+                        name="shippingAddress.country"
+                        register={register}
+                        errors={errors.shippingAddress?.country}
+                        validationRules={{
+                            required: true,
+                        }}
+                    />
+                    <FormField
+                        label="Postal Code"
+                        addWrapperClasses={['stretched']}
+                        id="zip-input"
+                        name="shippingAddress.postalCode"
+                        placeholder="Enter postal code"
+                        register={register}
+                        errors={errors.shippingAddress?.postalCode}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            validate: (value) => matchCountry(value, 'shippingAddress'),
+                        }}
+                    />
                     <div className="checkbox-wrapper">
                         <input type="checkbox" {...register('isDefaultShippingAddress')} />
                         <span>Make this address default</span>
@@ -228,86 +211,69 @@ export default function RegistrationForm() {
             )}
             {!useShippingAsBilling && (
                 <>
-                    <div className="input-wrapper stretched">
-                        <label className="form-label" htmlFor="address-input-billing">
-                            Billing Address
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="First line of address"
-                            id="address-input-billing"
-                            {...register('billingAddress.streetName', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                            })}
-                        />
-                        {errors.billingAddress?.streetName && (
-                            <span className="error-message">{errors.billingAddress.streetName.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper stretched">
-                        <input
-                            className="form-input"
-                            placeholder="Second line of address"
-                            {...register('billingAddress.streetNumber')}
-                        />
-                    </div>
-                    <div className="input-wrapper">
-                        <label className="form-label" htmlFor="city-input-billing">
-                            City
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="Your city"
-                            id="city-input-billing"
-                            {...register('billingAddress.city', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                            })}
-                        />
-                        {errors.billingAddress?.city && (
-                            <span className="error-message">{errors.billingAddress.city.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper">
-                        <label className="form-label" htmlFor="country-input-billing">
-                            Country
-                        </label>
-                        <select
-                            id="country-input-billing"
-                            className="form-input"
-                            {...register('billingAddress.country', { required: true })}
-                        >
-                            <option value="" hidden>
-                                Select your country...
-                            </option>
-                            <option value="AU">Austria</option>
-                            <option value="BU">Belarus</option>
-                            <option value="GE">Georgia</option>
-                            <option value="RU">Russia</option>
-                        </select>
-                        {errors.billingAddress?.country && (
-                            <span className="error-message">{errors.billingAddress.country.message}</span>
-                        )}
-                    </div>
-                    <div className="input-wrapper stretched">
-                        <label className="form-label" htmlFor="zip-input-billing">
-                            Postal Code
-                        </label>
-                        <input
-                            className="form-input"
-                            placeholder="Enter postal code"
-                            id="zip-input-billing"
-                            {...register('billingAddress.postalCode', {
-                                required: ErrorMessage.REQUIRED_FIELD,
-                                validate: (value) => matchCountry(value, 'billingAddress'),
-                            })}
-                        />
-                        {errors.billingAddress?.postalCode && (
-                            <span className="error-message">{errors.billingAddress.postalCode.message}</span>
-                        )}
-                    </div>
+                    <FormField
+                        label="Billing Address"
+                        addWrapperClasses={['stretched']}
+                        id="address-input"
+                        name="billingAddress.streetName"
+                        placeholder="First line of address"
+                        register={register}
+                        errors={errors.billingAddress?.streetName}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                        }}
+                    />
+                    <FormField
+                        addWrapperClasses={['stretched']}
+                        name="billingAddress.streetNumber"
+                        placeholder="Second line of address"
+                        register={register}
+                    />
+                    <FormField
+                        label="City"
+                        id="city-input"
+                        name="billingAddress.city"
+                        placeholder="Your city"
+                        register={register}
+                        errors={errors.billingAddress?.city}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                        }}
+                    />
+                    <FormField
+                        fieldTag="select"
+                        label="Country"
+                        selectOptions={[
+                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                            { value: 'AU', text: 'Austria' },
+                            { value: 'BU', text: 'Belarus' },
+                            { value: 'GE', text: 'Georgia' },
+                            { value: 'RU', text: 'Russia' },
+                        ]}
+                        id="country-input"
+                        name="billingAddress.country"
+                        register={register}
+                        errors={errors.billingAddress?.country}
+                        validationRules={{
+                            required: true,
+                        }}
+                    />
+                    <FormField
+                        label="Postal Code"
+                        addWrapperClasses={['stretched']}
+                        id="zip-input"
+                        name="billingAddress.postalCode"
+                        placeholder="Enter postal code"
+                        register={register}
+                        errors={errors.billingAddress?.postalCode}
+                        validationRules={{
+                            required: ErrorMessage.REQUIRED_FIELD,
+                            validate: (value) => matchCountry(value, 'billingAddress'),
+                        }}
+                    />
                     <div className="checkbox-wrapper">
                         <input type="checkbox" {...register('isDefaultBillingAddress')} />
                         <span>Make this address default</span>
