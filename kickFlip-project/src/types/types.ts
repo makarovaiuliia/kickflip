@@ -45,3 +45,40 @@ export type TAddress = {
     fax?: string;
     additionalAddressInfo?: string;
 };
+
+export type CustomerAddress = {
+    key: string;
+    streetName: string;
+    streetNumber: string;
+    city: string;
+    postalCode: string;
+    country: string;
+};
+
+export interface SignUpData {
+    email: string;
+    password: string;
+    lastName: string;
+    firstName: string;
+    dateOfBirth: Date;
+}
+
+export interface SignUpDataForm extends SignUpData {
+    shippingAddress: CustomerAddress;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
+    billingAddress: CustomerAddress;
+    useBillingAsShipping: boolean;
+    useShippingAsBilling: boolean;
+}
+
+export interface SignUpDataRequest extends SignUpData {
+    defaultShippingAddress?: number;
+    defaultBillingAddress?: number;
+    addresses: CustomerAddress[];
+}
+
+export interface LogInData {
+    email: string;
+    password: string;
+}

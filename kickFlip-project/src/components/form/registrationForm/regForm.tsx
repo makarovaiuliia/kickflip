@@ -1,29 +1,29 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country } from '@/types/types';
+import { useState } from 'react';
+import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
+import { useDispatch } from '@/services/store';
+import { signUpUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 
-type CustomerAddress = { streetName: string; streetNumber: string; city: string; postalCode: string; country: string };
-
-interface RegistrationFormState {
-    email: string;
-    password: string;
-    lastName: string;
-    firstName: string;
-    dateOfBirth: Date;
-    address: CustomerAddress;
-}
-
 export default function RegistrationForm() {
+    const [useShippingAsBilling, setUseShippingAsBilling] = useState(false);
+    const [useBillingAsShipping, setUseBillingAsShipping] = useState(false);
+
     const {
         register,
         handleSubmit,
         reset,
         watch,
         formState: { errors, isValid },
-    } = useForm<RegistrationFormState>({ mode: 'all' });
+    } = useForm<SignUpDataForm>({ mode: 'all' });
 
-    const submit: SubmitHandler<RegistrationFormState> = () => {
+    const dispatch = useDispatch();
+
+    const submit: SubmitHandler<SignUpDataForm> = (data: SignUpDataForm) => {
+        dispatch(signUpUser(data));
+        setUseBillingAsShipping(false);
+        setUseShippingAsBilling(false);
         reset();
     };
 
@@ -43,8 +43,8 @@ export default function RegistrationForm() {
         return age >= 13 ? true : ErrorMessage.TOO_YOUNG_ERROR;
     };
 
-    const matchCountry = (postalCode: string) => {
-        const country = watch('address.country');
+    const matchCountry = (postalCode: string, addressType: 'shippingAddress' | 'billingAddress') => {
+        const country = watch(`${addressType}.country`);
         if ((country === Country.AUSTRIA || country === Country.GEORGIA) && !AU_GE_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
@@ -54,9 +54,16 @@ export default function RegistrationForm() {
         return true;
     };
 
+    const handleShippingAsBillingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUseShippingAsBilling(e.target.checked);
+    };
+
+    const handleBillingAsShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUseBillingAsShipping(e.target.checked);
+    };
+  
     return (
-        <form className="reg-form" onSubmit={handleSubmit(submit)}>
-            <FormField
+       <FormField
                 label="E-mail"
                 id="email-input"
                 name="email"
@@ -122,70 +129,198 @@ export default function RegistrationForm() {
                     validate: (value) => ageRestrictionCheck(value),
                 }}
             />
-            <FormField
-                label="Your Address"
-                addWrapperClasses={['stretched']}
-                id="adress-input"
-                name="address.streetName"
-                placeholder="First line of address"
-                register={register}
-                errors={errors.address?.streetName}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
-            />
-            <FormField
-                addWrapperClasses={['stretched']}
-                name="address.streetNumber"
-                placeholder="Second line of address"
-                register={register}
-            />
-            <FormField
-                label="City"
-                id="city-input"
-                name="address.city"
-                placeholder="Your city"
-                register={register}
-                errors={errors.address?.city}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
-            />
-            <FormField
-                fieldTag="select"
-                label="Country"
-                selectOptions={[
-                    { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
-                    { value: 'AU', text: 'Austria' },
-                    { value: 'BU', text: 'Belarus' },
-                    { value: 'GE', text: 'Georgia' },
-                    { value: 'RU', text: 'Russia' },
-                ]}
-                id="country-input"
-                name="address.country"
-                register={register}
-                errors={errors.address?.country}
-                validationRules={{
-                    required: true,
-                }}
-            />
-
-            <FormField
-                label="Postal Code"
-                addWrapperClasses={['stretched']}
-                id="zip-input"
-                name="address.postalCode"
-                placeholder="Enter postal code"
-                register={register}
-                errors={errors.address?.postalCode}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    validate: (value) => matchCountry(value),
-                }}
-            />
+            {!useBillingAsShipping && (
+                <>
+                    <div className="input-wrapper stretched">
+                        <label className="form-label" htmlFor="address-input">
+                            Shipping Address
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="First line of address"
+                            id="address-input"
+                            {...register('shippingAddress.streetName', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                            })}
+                        />
+                        {errors.shippingAddress?.streetName && (
+                            <span className="error-message">{errors.shippingAddress.streetName.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper stretched">
+                        <input
+                            className="form-input"
+                            placeholder="Second line of address"
+                            {...register('shippingAddress.streetNumber')}
+                        />
+                    </div>
+                    <div className="input-wrapper">
+                        <label className="form-label" htmlFor="city-input">
+                            City
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="Your city"
+                            id="city-input"
+                            {...register('shippingAddress.city', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                            })}
+                        />
+                        {errors.shippingAddress?.city && (
+                            <span className="error-message">{errors.shippingAddress.city.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper">
+                        <label className="form-label" htmlFor="country-input">
+                            Country
+                        </label>
+                        <select
+                            id="country-input"
+                            className="form-input"
+                            {...register('shippingAddress.country', { required: true })}
+                        >
+                            <option value="" hidden>
+                                Select your country...
+                            </option>
+                            <option value="AU">Austria</option>
+                            <option value="BU">Belarus</option>
+                            <option value="GE">Georgia</option>
+                            <option value="RU">Russia</option>
+                        </select>
+                        {errors.shippingAddress?.country && (
+                            <span className="error-message">{errors.shippingAddress.country.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper stretched">
+                        <label className="form-label" htmlFor="zip-input">
+                            Postal Code
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="Enter postal code"
+                            id="zip-input"
+                            {...register('shippingAddress.postalCode', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                validate: (value) => matchCountry(value, 'shippingAddress'),
+                            })}
+                        />
+                        {errors.shippingAddress?.postalCode && (
+                            <span className="error-message">{errors.shippingAddress.postalCode.message}</span>
+                        )}
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('isDefaultShippingAddress')} />
+                        <span>Make this address default</span>
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input
+                            type="checkbox"
+                            {...register('useShippingAsBilling')}
+                            onChange={handleShippingAsBillingChange}
+                        />
+                        <span>Also use as billing address</span>
+                    </div>
+                </>
+            )}
+            {!useShippingAsBilling && (
+                <>
+                    <div className="input-wrapper stretched">
+                        <label className="form-label" htmlFor="address-input-billing">
+                            Billing Address
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="First line of address"
+                            id="address-input-billing"
+                            {...register('billingAddress.streetName', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                            })}
+                        />
+                        {errors.billingAddress?.streetName && (
+                            <span className="error-message">{errors.billingAddress.streetName.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper stretched">
+                        <input
+                            className="form-input"
+                            placeholder="Second line of address"
+                            {...register('billingAddress.streetNumber')}
+                        />
+                    </div>
+                    <div className="input-wrapper">
+                        <label className="form-label" htmlFor="city-input-billing">
+                            City
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="Your city"
+                            id="city-input-billing"
+                            {...register('billingAddress.city', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                                minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                            })}
+                        />
+                        {errors.billingAddress?.city && (
+                            <span className="error-message">{errors.billingAddress.city.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper">
+                        <label className="form-label" htmlFor="country-input-billing">
+                            Country
+                        </label>
+                        <select
+                            id="country-input-billing"
+                            className="form-input"
+                            {...register('billingAddress.country', { required: true })}
+                        >
+                            <option value="" hidden>
+                                Select your country...
+                            </option>
+                            <option value="AU">Austria</option>
+                            <option value="BU">Belarus</option>
+                            <option value="GE">Georgia</option>
+                            <option value="RU">Russia</option>
+                        </select>
+                        {errors.billingAddress?.country && (
+                            <span className="error-message">{errors.billingAddress.country.message}</span>
+                        )}
+                    </div>
+                    <div className="input-wrapper stretched">
+                        <label className="form-label" htmlFor="zip-input-billing">
+                            Postal Code
+                        </label>
+                        <input
+                            className="form-input"
+                            placeholder="Enter postal code"
+                            id="zip-input-billing"
+                            {...register('billingAddress.postalCode', {
+                                required: ErrorMessage.REQUIRED_FIELD,
+                                validate: (value) => matchCountry(value, 'billingAddress'),
+                            })}
+                        />
+                        {errors.billingAddress?.postalCode && (
+                            <span className="error-message">{errors.billingAddress.postalCode.message}</span>
+                        )}
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('isDefaultBillingAddress')} />
+                        <span>Make this address default</span>
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input
+                            type="checkbox"
+                            {...register('useBillingAsShipping')}
+                            onChange={handleBillingAsShippingChange}
+                        />
+                        <span>Also use as shipping address</span>
+                    </div>
+                </>
+            )}
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
                 Send Form
             </button>
