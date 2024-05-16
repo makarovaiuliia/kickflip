@@ -61,9 +61,10 @@ export default function RegistrationForm() {
     const handleBillingAsShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUseBillingAsShipping(e.target.checked);
     };
-  
+
     return (
-       <FormField
+        <form className="reg-form" onSubmit={handleSubmit(submit)}>
+            <FormField
                 label="E-mail"
                 id="email-input"
                 name="email"
