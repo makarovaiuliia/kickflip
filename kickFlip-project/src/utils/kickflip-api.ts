@@ -17,7 +17,7 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
-export const loginUserApi = (data: LogInData) =>
+export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
     fetch(
         `${AuthURL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
         {
@@ -34,8 +34,8 @@ export const loginUserApi = (data: LogInData) =>
             return Promise.reject(result);
         });
 
-export const getAnonymousTokenApi = () => {
-    fetch(`${AuthURL}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
+    return fetch(`${AuthURL}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',

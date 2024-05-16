@@ -9,14 +9,14 @@ import { LogInData, SignUpDataForm, TUser } from '@/types/types';
 
 export const loginUser = createAsyncThunk('user/login', async (data: LogInData) => {
     const response = await loginUserApi(data);
-    localStorage.setItem('refreshToken', response.refresh_token);
+    sessionStorage.setItem('refreshToken', response.refresh_token);
     setCookie('accessToken', response.access_token);
     return response;
 });
 
 export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async () => {
     const response = await getAnonymousTokenApi();
-    localStorage.setItem('refreshToken', response.refresh_token);
+    sessionStorage.setItem('refreshToken', response.refresh_token);
     setCookie('accessToken', response.access_token);
     return response;
 });
