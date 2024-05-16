@@ -122,7 +122,7 @@ export default function RegistrationForm() {
                 addWrapperClasses={['stretched']}
                 id="age-input"
                 name="dateOfBirth"
-                placeholder="Enter your Date of birthe"
+                placeholder="Enter your Date of birth"
                 register={register}
                 errors={errors.dateOfBirth}
                 validationRules={{
