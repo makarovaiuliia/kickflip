@@ -214,7 +214,7 @@ export default function RegistrationForm() {
                     <FormField
                         label="Billing Address"
                         addWrapperClasses={['stretched']}
-                        id="address-input"
+                        id="address-input-billing"
                         name="billingAddress.streetName"
                         placeholder="First line of address"
                         register={register}
@@ -232,7 +232,7 @@ export default function RegistrationForm() {
                     />
                     <FormField
                         label="City"
-                        id="city-input"
+                        id="city-input-billing"
                         name="billingAddress.city"
                         placeholder="Your city"
                         register={register}
@@ -253,7 +253,7 @@ export default function RegistrationForm() {
                             { value: 'GE', text: 'Georgia' },
                             { value: 'RU', text: 'Russia' },
                         ]}
-                        id="country-input"
+                        id="country-input-billing"
                         name="billingAddress.country"
                         register={register}
                         errors={errors.billingAddress?.country}
@@ -264,7 +264,7 @@ export default function RegistrationForm() {
                     <FormField
                         label="Postal Code"
                         addWrapperClasses={['stretched']}
-                        id="zip-input"
+                        id="zip-input-billing"
                         name="billingAddress.postalCode"
                         placeholder="Enter postal code"
                         register={register}
