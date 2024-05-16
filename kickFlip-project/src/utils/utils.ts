@@ -1,4 +1,5 @@
 import { CustomerAddress, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+import { setCookie } from './cookie';
 
 export default function getCustomerId(scopeString: string): string | undefined {
     const match = scopeString.match(/customer_id:([a-f0-9-]+)/);
@@ -40,4 +41,9 @@ export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
         ...(defaultShippingAddress !== undefined && { defaultShippingAddress }),
         ...(defaultBillingAddress !== undefined && { defaultBillingAddress }),
     };
+};
+
+export const saveTokens = (accessToken: string, refreshToken: string): void => {
+    setCookie('accessToken', accessToken);
+    sessionStorage.setItem('refreshToken', refreshToken);
 };

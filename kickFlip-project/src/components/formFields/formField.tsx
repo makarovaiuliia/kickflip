@@ -51,7 +51,7 @@ export default function FormField<T extends FieldValues>({
     placeholder,
     register,
     errors,
-    validationRules,
+    validationRules = {},
 }: FormFieldProps<T>) {
     const options = selectOptions?.map((option) => (
         <option key={option.value} value={option.value}>
@@ -85,6 +85,7 @@ export default function FormField<T extends FieldValues>({
         </div>
     );
 }
+
 FormField.defaultProps = {
     addWrapperClasses: '',
     type: 'text',

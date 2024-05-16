@@ -1,23 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAnonymousTokenApi, getUserByIDApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
-import { setCookie } from '@/utils/cookie';
 import type { RootState } from './store';
-import getCustomerId from '@/utils/utils';
+import getCustomerId, { saveTokens } from '@/utils/utils';
 import { LogInData, SignUpDataForm, TUser } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
 export const loginUser = createAsyncThunk('user/login', async (data: LogInData) => {
     const response = await loginUserApi(data);
-    sessionStorage.setItem('refreshToken', response.refresh_token);
-    setCookie('accessToken', response.access_token);
+    saveTokens(response.access_token, response.refresh_token);
     return response;
 });
 
 export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async () => {
     const response = await getAnonymousTokenApi();
-    sessionStorage.setItem('refreshToken', response.refresh_token);
-    setCookie('accessToken', response.access_token);
+    saveTokens(response.access_token, response.refresh_token);
     return response;
 });
 
