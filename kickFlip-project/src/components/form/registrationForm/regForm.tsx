@@ -177,7 +177,7 @@ export default function RegistrationForm() {
                             className="form-input"
                             placeholder="Your city"
                             id="city-input"
-                            {...register('billingAddress.city', {
+                            {...register('shippingAddress.city', {
                                 required: ErrorMessage.REQUIRED_FIELD,
                                 pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
                                 minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
