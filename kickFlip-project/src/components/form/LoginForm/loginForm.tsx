@@ -16,6 +16,7 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+    const [loginError, setLoginError] = useState('');
 
     const dispatch = useDispatch();
 
@@ -86,7 +87,7 @@ function LoginForm(): JSX.Element {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        setLoginError('');
         try {
             const response = await dispatch(loginUser(formData)).unwrap();
             const userID = getCustomerId(response.scope);
@@ -94,13 +95,15 @@ function LoginForm(): JSX.Element {
             if (userID) {
                 await dispatch(getUserByID(userID));
             }
-
+            resetForm();
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
-            // console.error(error);
+            if (error) {
+                if (typeof error === 'object' && 'message' in error) {
+                    if (typeof error.message === 'string') setLoginError(error.message);
+                }
+            }
         }
-
-        resetForm();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -172,6 +175,7 @@ function LoginForm(): JSX.Element {
             <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
             </button>
+            <span className="error-message">{loginError}</span>
         </form>
     );
 }

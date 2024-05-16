@@ -4,6 +4,7 @@ import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
 import { signUpUser } from '@/services/userSlice';
+import FormField from '@/components/formFields/formField';
 
 export default function RegistrationForm() {
     const [useShippingAsBilling, setUseShippingAsBilling] = useState(false);
@@ -60,89 +61,74 @@ export default function RegistrationForm() {
     const handleBillingAsShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUseBillingAsShipping(e.target.checked);
     };
+  
     return (
-        <form className="reg-form" onSubmit={handleSubmit(submit)}>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="email-input">
-                    E-mail
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your e-mail"
-                    spellCheck="false"
-                    id="email-input"
-                    {...register('email', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: EMAIL_REGEXP, message: ErrorMessage.EMAIL_ERROR },
-                    })}
-                />
-                <span className="error-message">{!errors.email ? '' : errors.email.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="password-input">
-                    Password
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your password"
-                    type="password"
-                    id="password-input"
-                    {...register('password', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
-                        minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.password ? '' : errors.password.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="firstName-input">
-                    First Name
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your First Name"
-                    id="firstName-input"
-                    {...register('firstName', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.firstName ? '' : errors.firstName.message}</span>
-            </div>
-            <div className="input-wrapper">
-                <label className="form-label" htmlFor="lastName-input">
-                    Last Name
-                </label>
-                <input
-                    className="form-input"
-                    placeholder="Enter your Last Name"
-                    id="lastName-input"
-                    {...register('lastName', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                    })}
-                />
-                <span className="error-message">{!errors.lastName ? '' : errors.lastName.message}</span>
-            </div>
-            <div className="input-wrapper stretched">
-                <label className="form-label" htmlFor="age-input">
-                    Date of birth
-                </label>
-                <input
-                    className="form-input"
-                    type="date"
-                    placeholder="Enter your Date of birth"
-                    id="age-input"
-                    {...register('dateOfBirth', {
-                        required: ErrorMessage.REQUIRED_FIELD,
-                        validate: (value) => ageRestrictionCheck(value),
-                    })}
-                />
-                <span className="error-message">{!errors.dateOfBirth ? '' : errors.dateOfBirth.message}</span>
-            </div>
+       <FormField
+                label="E-mail"
+                id="email-input"
+                name="email"
+                placeholder="Enter your e-mail"
+                register={register}
+                errors={errors.email}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: EMAIL_REGEXP, message: ErrorMessage.EMAIL_ERROR },
+                }}
+            />
+            <FormField
+                type="password"
+                label="Password"
+                id="password-input"
+                name="password"
+                placeholder="Enter your password"
+                register={register}
+                errors={errors.password}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
+                    minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="First Name"
+                id="firstName-input"
+                name="firstName"
+                placeholder="Enter your First Name"
+                register={register}
+                errors={errors.firstName}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="Last Name"
+                id="lastName-input"
+                name="lastName"
+                placeholder="Enter your Last Name"
+                register={register}
+                errors={errors.lastName}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                label="Date of birth"
+                type="date"
+                addWrapperClasses={['stretched']}
+                id="age-input"
+                name="dateOfBirth"
+                placeholder="Enter your Date of birthe"
+                register={register}
+                errors={errors.dateOfBirth}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    validate: (value) => ageRestrictionCheck(value),
+                }}
+            />
             {!useBillingAsShipping && (
                 <>
                     <div className="input-wrapper stretched">
@@ -335,7 +321,6 @@ export default function RegistrationForm() {
                     </div>
                 </>
             )}
-
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
                 Send Form
             </button>
