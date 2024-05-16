@@ -1,5 +1,6 @@
 import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
+import { transformData } from './utils';
 
 const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
 const URL = 'https://api.europe-west1.gcp.commercetools.com';
@@ -91,14 +92,7 @@ export const getUserByIDApi = (userID: string) => {
 };
 
 export const signUpUserApi = (data: SignUpDataForm) => {
-    const { isDefaultAddress, ...rest } = data;
-    const defaultAddress = isDefaultAddress ? data.addresses[0] : undefined;
-
-    const signUpData: SignUpDataRequest = {
-        ...rest,
-        defaultBillingAddress: defaultAddress,
-        defaultShippingAddress: defaultAddress,
-    };
+    const signUpData: SignUpDataRequest = transformData(data);
 
     fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',

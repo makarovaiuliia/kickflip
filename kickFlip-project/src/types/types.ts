@@ -47,6 +47,7 @@ export type TAddress = {
 };
 
 export type CustomerAddress = {
+    key: string;
     streetName: string;
     streetNumber: string;
     city: string;
@@ -60,16 +61,21 @@ export interface SignUpData {
     lastName: string;
     firstName: string;
     dateOfBirth: Date;
-    addresses: CustomerAddress[];
 }
 
 export interface SignUpDataForm extends SignUpData {
-    isDefaultAddress: string;
+    shippingAddress: CustomerAddress;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
+    billingAddress: CustomerAddress;
+    useBillingAsShipping: boolean;
+    useShippingAsBilling: boolean;
 }
 
 export interface SignUpDataRequest extends SignUpData {
-    defaultShippingAddress?: CustomerAddress;
-    defaultBillingAddress?: CustomerAddress;
+    defaultShippingAddress?: number;
+    defaultBillingAddress?: number;
+    addresses: CustomerAddress[];
 }
 
 export interface LogInData {
