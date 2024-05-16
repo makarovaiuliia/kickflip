@@ -69,6 +69,7 @@ export default function RegistrationForm() {
                 }}
             />
             <FormField
+                type="password"
                 label="Password"
                 id="password-input"
                 name="password"
@@ -97,7 +98,7 @@ export default function RegistrationForm() {
             <FormField
                 label="Last Name"
                 id="lastName-input"
-                name="firstName"
+                name="lastName"
                 placeholder="Enter your Last Name"
                 register={register}
                 errors={errors.lastName}
