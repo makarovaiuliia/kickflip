@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
@@ -19,6 +21,7 @@ function LoginForm(): JSX.Element {
     const [loginError, setLoginError] = useState('');
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -91,8 +94,8 @@ function LoginForm(): JSX.Element {
         try {
             await dispatch(loginUser(formData)).unwrap();
             await dispatch(getUser());
+            navigate('/');
             resetForm();
-            // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
             if (error) {
                 responsesErrorsHandler(error, setLoginError);

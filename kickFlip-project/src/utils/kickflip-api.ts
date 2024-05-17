@@ -64,7 +64,7 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Basic ${getCookie('accessToken')}`,
+                Authorization: `Basic N30vTyfozdhe1Wl5CHTmKrnNYgozBfMh`,
             },
         }
     )

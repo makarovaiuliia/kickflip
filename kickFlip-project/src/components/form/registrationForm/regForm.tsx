@@ -1,5 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
@@ -20,6 +22,7 @@ export default function RegistrationForm() {
     } = useForm<SignUpDataForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const useShippingAsBilling = watch('useShippingAsBilling');
     const useBillingAsShipping = watch('useBillingAsShipping');
@@ -28,6 +31,7 @@ export default function RegistrationForm() {
         setRegistrationError('');
         try {
             await dispatch(signUpUser(data)).unwrap();
+            navigate('/');
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setRegistrationError);

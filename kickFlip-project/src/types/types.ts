@@ -46,7 +46,6 @@ export type TAddress = {
     additionalAddressInfo?: string;
 };
 
-
 export type AuthRedirectPromptDataType = {
     question: string;
     button: string;
