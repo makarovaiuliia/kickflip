@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
+import { responsesErrorsHandler } from '@/utils/utils';
 import { getUser, loginUser } from '@/services/userSlice';
 
 function LoginForm(): JSX.Element {
@@ -94,9 +95,7 @@ function LoginForm(): JSX.Element {
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
             if (error) {
-                if (typeof error === 'object' && 'message' in error) {
-                    if (typeof error.message === 'string') setLoginError(error.message);
-                }
+                responsesErrorsHandler(error, setLoginError);
             }
         }
     };
