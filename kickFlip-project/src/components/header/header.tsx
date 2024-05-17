@@ -1,20 +1,19 @@
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '@/services/store';
 
 import logo from '@/assets/icons/logo.svg';
 import user from '@/assets/icons/user-icon.svg';
 import cart from '@/assets/icons/cart-icon.svg';
 import logout from '@/assets/icons/logoutIcon.svg';
 import './header.css';
-import { getIsAuth, logoutUser } from '@/services/userSlice';
-import { removeTokens } from '@/utils/utils';
+import { getAnonymousToken, getIsAuth, logoutUser } from '@/services/userSlice';
 
 export default function Header() {
     const isAuth = useSelector(getIsAuth);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
-        removeTokens();
+        dispatch(getAnonymousToken());
         dispatch(logoutUser());
     };
 
