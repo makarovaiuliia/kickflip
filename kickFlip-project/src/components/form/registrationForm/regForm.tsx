@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
@@ -15,6 +15,7 @@ export default function RegistrationForm() {
         handleSubmit,
         reset,
         watch,
+        trigger,
         formState: { errors, isValid },
     } = useForm<SignUpDataForm>({ mode: 'all' });
 
@@ -59,7 +60,20 @@ export default function RegistrationForm() {
         }
         return true;
     };
+    const watchShippingCountry = watch('shippingAddress.country');
+    const watchBillingCountry = watch('billingAddress.country');
 
+    useEffect(() => {
+        if (watchShippingCountry) {
+            trigger('shippingAddress.postalCode');
+        }
+    }, [watchShippingCountry, trigger]);
+
+    useEffect(() => {
+        if (watchBillingCountry) {
+            trigger('billingAddress.postalCode');
+        }
+    }, [watchBillingCountry, trigger]);
     return (
         <form className="reg-form" onSubmit={handleSubmit(submit)}>
             <FormField
