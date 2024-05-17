@@ -29,7 +29,8 @@
     line-height: 115%;
     color: var(--deep-blue);
     text-transform: none;
-    transition: all 0.5s;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s;
     &:hover {
         color: var(--electric-orange);
     }
@@ -37,6 +38,7 @@
 
 .categories-nav-link-active {
     color: var(--electric-orange);
+    border-bottom: 1px solid var(--electric-orange);
 }
 
 .services-nav-list {
@@ -71,7 +73,7 @@
     width: 28px;
     height: 28px;
     fill: var(--deep-blue);
-    transition: all 0.5s;
+    transition: all 0.3s;
 }
 
 .services-nav-link-text {
@@ -90,4 +92,5 @@
 
 .services-nav-link-active .services-nav-link-text {
     color: var(--electric-orange);
+    border-bottom: 1px solid var(--electric-orange);
 }
