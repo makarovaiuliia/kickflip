@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAnonymousTokenApi, getUserByIDApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
+import { getAnonymousTokenApi, getUserApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import getCustomerId, { saveTokens } from '@/utils/utils';
+import { saveTokens } from '@/utils/utils';
 import { LogInData, SignUpDataForm, TUser } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
@@ -18,8 +18,13 @@ export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async (
     return response;
 });
 
-export const getUserByID = createAsyncThunk('user/get', async (userID: string) => {
-    const response = await getUserByIDApi(userID);
+// export const getUserByID = createAsyncThunk('user/get', async (userID: string) => {
+//     const response = await getUserByIDApi(userID);
+//     return response;
+// });
+
+export const getUser = createAsyncThunk('user/getUser', async () => {
+    const response = await getUserApi();
     return response;
 });
 
@@ -29,7 +34,6 @@ export const signUpUser = createAsyncThunk('user/register', async (data: SignUpD
 });
 
 interface InitialState {
-    userID: string | undefined;
     user: TUser | undefined;
     isAuth: boolean;
     error: string | undefined;
@@ -37,7 +41,6 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-    userID: undefined,
     user: undefined,
     isAuth: false,
     error: undefined,
@@ -51,22 +54,36 @@ const userSlice = createSlice({
         authChecked: (state) => {
             state.isAuthChecked = true;
         },
+        logout: (state) => {
+            state.user = undefined;
+            state.isAuth = false;
+        },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state) => {
                 state.isAuth = true;
-                state.userID = getCustomerId(action.payload.scope);
+                state.isAuthChecked = true;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.error = action.error.message;
             })
-            .addCase(getUserByID.fulfilled, (state, action) => {
+            .addCase(getUser.fulfilled, (state, action) => {
                 state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+            })
+            .addCase(getUser.rejected, (state) => {
+                state.isAuthChecked = true;
+            })
+            .addCase(getAnonymousToken.fulfilled, (state) => {
+                state.isAuth = false;
+                state.isAuthChecked = true;
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
                 state.user = action.payload!;
                 state.isAuth = true;
+                state.isAuthChecked = true;
             })
             .addCase(signUpUser.rejected, (state, action) => {
                 state.error = action.error.message;

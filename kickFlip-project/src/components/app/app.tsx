@@ -1,4 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import RegistrationPage from '@/pages/registration/registrationPage';
+import { useDispatch } from '@/services/store';
+import { getAnonymousToken, getUser } from '@/services/userSlice';
+import { getCookie } from '@/utils/cookie';
 
 import HomePage from '../../pages/home/homePage';
 import LoginPage from '../../pages/login/loginPage';
@@ -10,6 +15,21 @@ import CartPage from '../../pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 
 function App() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+        const token = getCookie('accessToken');
+        if (token) {
+            dispatch(getUser())
+                .unwrap()
+                .catch(() => {
+                    dispatch(getAnonymousToken());
+                });
+        } else {
+            dispatch(getAnonymousToken());
+        }
+    }, [dispatch]);
+  
     return (
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
