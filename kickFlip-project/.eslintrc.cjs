@@ -39,10 +39,6 @@ module.exports = {
             typescript: {
                 project: './tsconfig.json',
             },
-            alias: {
-                map: [['@', './src']],
-                extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
-            },
         },
     },
     ignorePatterns: ['*.config.cjs'],
