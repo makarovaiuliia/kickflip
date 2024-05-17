@@ -1,11 +1,6 @@
 import { CustomerAddress, SignUpDataForm, SignUpDataRequest } from '@/types/types';
 import { setCookie } from './cookie';
 
-export default function getCustomerId(scopeString: string): string | undefined {
-    const match = scopeString.match(/customer_id:([a-f0-9-]+)/);
-    return match ? match[1] : undefined;
-}
-
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
     const addresses: CustomerAddress[] = [];
     let defaultShippingAddress: number | undefined;

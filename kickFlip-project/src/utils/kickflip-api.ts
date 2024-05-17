@@ -39,7 +39,8 @@ export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit
             const refreshData = await refreshToken();
             const updatedOptions = { ...options };
             if (updatedOptions.headers) {
-                (updatedOptions.headers as { [key: string]: string }).authorization = refreshData.accessToken;
+                (updatedOptions.headers as { [key: string]: string }).authorization =
+                    `Bearer ${refreshData.accessToken}`;
             }
             const res = await fetch(url, options);
             return await checkResponse<T>(res);
@@ -113,21 +114,6 @@ export type TUserResponse = {
     isEmailVerified: boolean;
     stores: Array<string>;
     authenticationMode: string;
-};
-
-export const getUserByIDApi = (userID: string) => {
-    fetch(`${URL}/${projectKey}/customers/${userID}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-    })
-        .then((res) => checkResponse<TUserResponse>(res))
-        .then((result) => {
-            if (result) return result;
-            return Promise.reject(result);
-        });
 };
 
 export const signUpUserApi = (data: SignUpDataForm) => {

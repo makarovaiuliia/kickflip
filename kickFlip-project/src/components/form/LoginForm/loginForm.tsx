@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { getUserByID, loginUser } from '@/services/userSlice';
-import getCustomerId from '@/utils/utils';
+import { getUser, loginUser } from '@/services/userSlice';
 
 function LoginForm(): JSX.Element {
     const [formData, setFormData] = useState<LogInData>({
@@ -89,12 +88,8 @@ function LoginForm(): JSX.Element {
         e.preventDefault();
         setLoginError('');
         try {
-            const response = await dispatch(loginUser(formData)).unwrap();
-            const userID = getCustomerId(response.scope);
-
-            if (userID) {
-                await dispatch(getUserByID(userID));
-            }
+            await dispatch(loginUser(formData)).unwrap();
+            await dispatch(getUser());
             resetForm();
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
