@@ -1,5 +1,6 @@
-import { TAddress } from '@/types/types';
+import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
+import { transformData } from './utils';
 
 const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
 const URL = 'https://api.europe-west1.gcp.commercetools.com';
@@ -7,11 +8,6 @@ const projectKey = 'kick-flip_webstore-warriors';
 
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-
-export type TLoginData = {
-    email: string;
-    password: string;
-};
 
 type TAuthResponse = {
     access_token: string;
@@ -21,14 +17,14 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
-export const loginUserApi = (data: TLoginData) =>
+export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
     fetch(
         `${AuthURL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
         {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: 'Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0',
+                Authorization: `Basic ${getCookie('accessToken')}`,
             },
         }
     )
@@ -37,6 +33,21 @@ export const loginUserApi = (data: TLoginData) =>
             if (result) return result;
             return Promise.reject(result);
         });
+
+export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
+    return fetch(`${AuthURL}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: 'Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0',
+        },
+    })
+        .then((res) => checkResponse<TAuthResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
 
 export type TUserResponse = {
     id: string;
@@ -72,6 +83,24 @@ export const getUserByIDApi = (userID: string) => {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const signUpUserApi = (data: SignUpDataForm) => {
+    const signUpData: SignUpDataRequest = transformData(data);
+
+    return fetch(`${URL}/${projectKey}/me/signup`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(signUpData),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {

@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '@/types/types';
+import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
 import { getUserByID, loginUser } from '@/services/userSlice';
-import getCustomerId from '@/utils/utils';
-
-interface FormState {
-    email: string;
-    password: string;
-}
+import getCustomerId, { responsesErrorsHandler } from '@/utils/utils';
 
 function LoginForm(): JSX.Element {
-    const [formData, setFormData] = useState<FormState>({
+    const [formData, setFormData] = useState<LogInData>({
         email: '',
         password: '',
     });
@@ -21,6 +16,7 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+    const [loginError, setLoginError] = useState('');
 
     const dispatch = useDispatch();
 
@@ -91,7 +87,7 @@ function LoginForm(): JSX.Element {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        setLoginError('');
         try {
             const response = await dispatch(loginUser(formData)).unwrap();
             const userID = getCustomerId(response.scope);
@@ -99,13 +95,13 @@ function LoginForm(): JSX.Element {
             if (userID) {
                 await dispatch(getUserByID(userID));
             }
-
+            resetForm();
             // TODO: добавить навигацию navigate('/'), когда появится роутинг
         } catch (error) {
-            // console.log(error);
+            if (error) {
+                responsesErrorsHandler(error, setLoginError);
+            }
         }
-
-        resetForm();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -177,6 +173,7 @@ function LoginForm(): JSX.Element {
             <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
             </button>
+            <span className="error-message">{loginError}</span>
         </form>
     );
 }
