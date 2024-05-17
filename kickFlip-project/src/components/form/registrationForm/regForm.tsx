@@ -5,10 +5,10 @@ import '../form.css';
 import { useDispatch } from '@/services/store';
 import { signUpUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
+import { responsesErrorsHandler } from '@/utils/utils';
 
 export default function RegistrationForm() {
-    const [useShippingAsBilling, setUseShippingAsBilling] = useState(false);
-    const [useBillingAsShipping, setUseBillingAsShipping] = useState(false);
+    const [registrationError, setRegistrationError] = useState('');
 
     const {
         register,
@@ -20,11 +20,17 @@ export default function RegistrationForm() {
 
     const dispatch = useDispatch();
 
-    const submit: SubmitHandler<SignUpDataForm> = (data: SignUpDataForm) => {
-        dispatch(signUpUser(data));
-        setUseBillingAsShipping(false);
-        setUseShippingAsBilling(false);
-        reset();
+    const useShippingAsBilling = watch('useShippingAsBilling');
+    const useBillingAsShipping = watch('useBillingAsShipping');
+
+    const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
+        setRegistrationError('');
+        try {
+            await dispatch(signUpUser(data)).unwrap();
+            reset();
+        } catch (error) {
+            responsesErrorsHandler(error, setRegistrationError);
+        }
     };
 
     const EMAIL_REGEXP: RegExp = /^\S+@\S+\.\S+$/;
@@ -52,14 +58,6 @@ export default function RegistrationForm() {
             return ErrorMessage.POSTAL_CODE_ERROR;
         }
         return true;
-    };
-
-    const handleShippingAsBillingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUseShippingAsBilling(e.target.checked);
-    };
-
-    const handleBillingAsShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUseBillingAsShipping(e.target.checked);
     };
 
     return (
@@ -200,11 +198,7 @@ export default function RegistrationForm() {
                         <span>Make this address default</span>
                     </div>
                     <div className="checkbox-wrapper">
-                        <input
-                            type="checkbox"
-                            {...register('useShippingAsBilling')}
-                            onChange={handleShippingAsBillingChange}
-                        />
+                        <input type="checkbox" {...register('useShippingAsBilling')} />
                         <span>Also use as billing address</span>
                     </div>
                 </>
@@ -279,11 +273,7 @@ export default function RegistrationForm() {
                         <span>Make this address default</span>
                     </div>
                     <div className="checkbox-wrapper">
-                        <input
-                            type="checkbox"
-                            {...register('useBillingAsShipping')}
-                            onChange={handleBillingAsShippingChange}
-                        />
+                        <input type="checkbox" {...register('useBillingAsShipping')} />
                         <span>Also use as shipping address</span>
                     </div>
                 </>
@@ -291,6 +281,8 @@ export default function RegistrationForm() {
             <button className={`submit-btn ${isValid ? '' : 'disable'} stretched`} type="submit">
                 Send Form
             </button>
+
+            <span className="error-message stretched">{registrationError}</span>
         </form>
     );
 }

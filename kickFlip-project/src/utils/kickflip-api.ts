@@ -94,7 +94,7 @@ export const getUserByIDApi = (userID: string) => {
 export const signUpUserApi = (data: SignUpDataForm) => {
     const signUpData: SignUpDataRequest = transformData(data);
 
-    fetch(`${URL}/${projectKey}/me/signup`, {
+    return fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
