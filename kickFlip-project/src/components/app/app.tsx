@@ -4,12 +4,12 @@ import { useDispatch } from '@/services/store';
 import { getAnonymousToken, getUser } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
-import HomePage from '../../pages/home/homePage';
-import LoginPage from '../../pages/login/loginPage';
-import RegistrationPage from '../../pages/registration/registrationPage';
-import NotFoundPage from '../../pages/notfoundpage/notfoundPage';
+import HomePage from '@/pages/home/homePage';
+import LoginPage from '@/pages/login/loginPage';
+import RegistrationPage from '@/pages/registration/registrationPage';
+import NotFoundPage from '@/pages/notFoundPage/notfoundPage';
 import ProductsPage from '@/pages/products/productsPage';
-import CartPage from '../../pages/cart/cartPage';
+import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage';
