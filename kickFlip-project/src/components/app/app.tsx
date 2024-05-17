@@ -12,6 +12,7 @@ import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '../../pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
+import ProfilePage from '@/pages/profilePage';
 
 function App() {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="profile" element={<ProfilePage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="registration" element={<RegistrationPage />} />
                 <Route path="cart" element={<CartPage />} />
