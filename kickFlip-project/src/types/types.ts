@@ -46,7 +46,7 @@ export type TAddress = {
     additionalAddressInfo?: string;
 };
 
-export type RegOrLogQuestionDataItemType = {
+export type AuthRedirectPromptDataType = {
     question: string;
     button: string;
     link: string;

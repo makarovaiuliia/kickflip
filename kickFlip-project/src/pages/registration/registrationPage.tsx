@@ -1,7 +1,7 @@
 import RegistrationForm from '@/components/form/registrationForm/regForm';
-import RegOrLogQuestion from '@/components/regorlogquestion/regorlogquestion';
-import RegOrLogQuestionData from '@/data/regorlogquestion-data';
+import AuthRedirectPromptData from '@/data/authRedirectPromptData';
 import './regPage.css';
+import AuthRedirectPrompt from '@/components/authRedirectPrompt/authRedirectPrompt';
 
 export default function RegistrationPage() {
     return (
@@ -10,10 +10,10 @@ export default function RegistrationPage() {
                 <h1 className="form-title">Registration</h1>
                 <RegistrationForm />
             </div>
-            <RegOrLogQuestion
-                question={RegOrLogQuestionData[1].question}
-                button={RegOrLogQuestionData[1].button}
-                link={RegOrLogQuestionData[1].link}
+            <AuthRedirectPrompt
+                question={AuthRedirectPromptData[1].question}
+                button={AuthRedirectPromptData[1].button}
+                link={AuthRedirectPromptData[1].link}
             />
         </>
     );

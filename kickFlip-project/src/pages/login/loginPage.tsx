@@ -1,17 +1,16 @@
 import LoginForm from '@/components/form/LoginForm/loginForm';
-import RegOrLogQuestion from '@/components/regorlogquestion/regorlogquestion';
-import RegOrLogQuestionData from '@/data/regorlogquestion-data';
-// import { RegOrLogQuestionDataItemType } from '@/types/types';
+import AuthRedirectPromptData from '@/data/authRedirectPromptData';
 import './loginPage.css';
+import AuthRedirectPrompt from '@/components/authRedirectPrompt/authRedirectPrompt';
 
 export default function LoginPage() {
     return (
         <>
             <LoginForm />
-            <RegOrLogQuestion
-                question={RegOrLogQuestionData[0].question}
-                button={RegOrLogQuestionData[0].button}
-                link={RegOrLogQuestionData[0].link}
+            <AuthRedirectPrompt
+                question={AuthRedirectPromptData[0].question}
+                button={AuthRedirectPromptData[0].button}
+                link={AuthRedirectPromptData[0].link}
             />
         </>
     );
