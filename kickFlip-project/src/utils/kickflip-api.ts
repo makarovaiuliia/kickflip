@@ -149,8 +149,8 @@ export const signUpUserApi = (data: SignUpDataForm) => {
 };
 
 export const getUserApi = () =>
-    fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
+    fetchWithRefresh<TUserResponse>(`${URL}/${projectKey}/me`, {
         headers: {
-            authorization: getCookie('accessToken'),
+            authorization: `Bearer ${getCookie('accessToken')}`,
         } as HeadersInit,
     });
