@@ -64,7 +64,7 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Basic N30vTyfozdhe1Wl5CHTmKrnNYgozBfMh`,
+                Authorization: `Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0`,
             },
         }
     )

@@ -19,11 +19,7 @@ function App() {
     useEffect(() => {
         const token = getCookie('accessToken');
         if (token) {
-            dispatch(getUser())
-                .unwrap()
-                .catch(() => {
-                    dispatch(getAnonymousToken());
-                });
+            dispatch(getUser()).unwrap();
         } else {
             dispatch(getAnonymousToken());
         }
