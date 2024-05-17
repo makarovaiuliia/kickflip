@@ -1,14 +1,22 @@
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import logo from '../../assets/icons/logo.svg';
-import user from '../../assets/icons/user-icon.svg';
-import cart from '../../assets/icons/cart-icon.svg';
+import logo from '@/assets/icons/logo.svg';
+import user from '@/assets/icons/user-icon.svg';
+import cart from '@/assets/icons/cart-icon.svg';
+import logout from '@/assets/icons/logoutIcon.svg';
 import './header.css';
-import { getIsAuth } from '@/services/userSlice';
+import { getIsAuth, logoutUser } from '@/services/userSlice';
+import { removeTokens } from '@/utils/utils';
 
 export default function Header() {
     const isAuth = useSelector(getIsAuth);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        removeTokens();
+        dispatch(logoutUser());
+    };
 
     return (
         <header className="header">
@@ -67,17 +75,25 @@ export default function Header() {
                             </>
                         )}
                         {isAuth && (
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
-                                }
-                                to="/profile"
-                            >
-                                <svg className="services-nav-link-icon">
-                                    <use xlinkHref={`${user}#user-icon`} />
-                                </svg>
-                                <span className="services-nav-link-text">Profile</span>
-                            </NavLink>
+                            <>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/profile"
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Profile</span>
+                                </NavLink>
+                                <button className="services-nav-link" onClick={handleLogout} type="button">
+                                    <svg className="services-nav-link-icon services-nav-link-icon-logout">
+                                        <use xlinkHref={`${logout}#logout-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Logout</span>
+                                </button>
+                            </>
                         )}
                         <NavLink
                             className={({ isActive }) =>

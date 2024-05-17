@@ -43,6 +43,11 @@ export const saveTokens = (accessToken: string, refreshToken: string): void => {
     sessionStorage.setItem('refreshToken', refreshToken);
 };
 
+export const removeTokens = (): void => {
+    setCookie('accessToken', '');
+    sessionStorage.removeItem('refreshToken');
+};
+
 export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<React.SetStateAction<string>>) => {
     if (error) {
         if (typeof error === 'object' && 'message' in error) {

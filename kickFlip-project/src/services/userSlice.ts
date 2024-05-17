@@ -49,7 +49,7 @@ const userSlice = createSlice({
         authChecked: (state) => {
             state.isAuthChecked = true;
         },
-        logout: (state) => {
+        logoutUser: (state) => {
             state.user = undefined;
             state.isAuth = false;
         },
@@ -88,6 +88,8 @@ const userSlice = createSlice({
 
 export const getUserSelector = (state: RootState) => state.user;
 export const getIsAuth = (state: RootState) => state.user.isAuth;
+
+export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
