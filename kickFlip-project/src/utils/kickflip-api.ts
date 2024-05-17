@@ -1,6 +1,6 @@
 import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
-import { transformData } from './utils';
+import { saveTokens, transformData } from './utils';
 
 const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
 const URL = 'https://api.europe-west1.gcp.commercetools.com';
@@ -8,6 +8,45 @@ const projectKey = 'kick-flip_webstore-warriors';
 
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+
+type TRefreshResponse = {
+    refreshToken: string;
+    accessToken: string;
+};
+
+export const refreshToken = (): Promise<TRefreshResponse> =>
+    fetch(`${AuthURL}/oauth/token?grant_type=refresh_token&refresh_token=${sessionStorage.getItem('refreshToken')}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+        },
+    })
+        .then((res) => checkResponse<TRefreshResponse>(res))
+        .then((refreshData) => {
+            if (!refreshData) {
+                return Promise.reject(refreshData);
+            }
+            saveTokens(refreshData.accessToken, refreshData.refreshToken);
+            return refreshData;
+        });
+
+export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit) => {
+    try {
+        const res = await fetch(url, options);
+        return await checkResponse<T>(res);
+    } catch (err) {
+        if ((err as { message: string }).message === 'invalid_grant') {
+            const refreshData = await refreshToken();
+            if (options.headers) {
+                (options.headers as { [key: string]: string }).authorization = refreshData.accessToken;
+            }
+            const res = await fetch(url, options);
+            return await checkResponse<T>(res);
+        } else {
+            return Promise.reject(err);
+        }
+    }
+};
 
 type TAuthResponse = {
     access_token: string;
@@ -108,3 +147,10 @@ export const signUpUserApi = (data: SignUpDataForm) => {
             return Promise.reject(result);
         });
 };
+
+export const getUserApi = () =>
+    fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
+        headers: {
+            authorization: getCookie('accessToken'),
+        } as HeadersInit,
+    });
