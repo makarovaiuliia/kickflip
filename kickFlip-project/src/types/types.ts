@@ -46,6 +46,13 @@ export type TAddress = {
     additionalAddressInfo?: string;
 };
 
+
+export type AuthRedirectPromptDataType = {
+    question: string;
+    button: string;
+    link: string;
+};
+
 export type CustomerAddress = {
     key: string;
     streetName: string;

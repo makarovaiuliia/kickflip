@@ -1,0 +1,35 @@
+.notfound-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.notfound-title {
+    font-family: var(--font-family);
+    font-size: 3.6rem;
+    font-weight: 600;
+}
+
+.notfound-button {
+    background: var(--electric-orange);
+    padding: 10px 53.5px;
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 1.8rem;
+    color: var(--white);
+    transition: all 0.5s;
+    &:hover {
+        background: var(--deep-blue);
+    }
+}
+
+.notfound-text {
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 150%;
+    color: var(--deep-blue);
+}
