@@ -45,3 +45,9 @@ export type TAddress = {
     fax?: string;
     additionalAddressInfo?: string;
 };
+
+export type RegOrLogQuestionDataItemType = {
+    question: string;
+    button: string;
+    link: string;
+};

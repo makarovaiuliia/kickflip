@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-
 import RegistrationForm from '@/components/form/registrationForm/regForm';
+import RegOrLogQuestion from '@/components/regorlogquestion/regorlogquestion';
+import RegOrLogQuestionData from '@/data/regorlogquestion-data';
 import './regPage.css';
 
 export default function RegistrationPage() {
@@ -10,12 +10,11 @@ export default function RegistrationPage() {
                 <h1 className="form-title">Registration</h1>
                 <RegistrationForm />
             </div>
-            <div className="reg-page-question">
-                <p className="reg-page-question-text">Have an account in Kickflip?</p>
-            </div>
-            <Link className="reg-page-login-button" to="/login">
-                LOGIN WITH YOUR ACCOUNT
-            </Link>
+            <RegOrLogQuestion
+                question={RegOrLogQuestionData[1].question}
+                button={RegOrLogQuestionData[1].button}
+                link={RegOrLogQuestionData[1].link}
+            />
         </>
     );
 }
