@@ -5,17 +5,23 @@ export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
     const addresses: CustomerAddress[] = [];
     let defaultShippingAddress: number | undefined;
     let defaultBillingAddress: number | undefined;
+    const billingAddresses: number[] = [];
+    const shippingAddresses: number[] = [];
 
     if (data.useBillingAsShipping) {
         addresses.push(data.billingAddress);
         if (data.isDefaultBillingAddress) {
             defaultBillingAddress = 0;
         }
+        billingAddresses.push(0);
+        shippingAddresses.push(0);
     } else if (data.useShippingAsBilling) {
         addresses.push(data.shippingAddress);
         if (data.isDefaultShippingAddress) {
             defaultShippingAddress = 0;
         }
+        billingAddresses.push(0);
+        shippingAddresses.push(0);
     } else {
         addresses.push(data.shippingAddress, data.billingAddress);
         if (data.isDefaultShippingAddress) {
@@ -24,6 +30,8 @@ export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
         if (data.isDefaultBillingAddress) {
             defaultBillingAddress = 1;
         }
+        billingAddresses.push(1);
+        shippingAddresses.push(0);
     }
 
     return {
@@ -33,6 +41,8 @@ export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
         firstName: data.firstName,
         dateOfBirth: data.dateOfBirth,
         addresses,
+        shippingAddresses,
+        billingAddresses,
         ...(defaultShippingAddress !== undefined && { defaultShippingAddress }),
         ...(defaultBillingAddress !== undefined && { defaultBillingAddress }),
     };

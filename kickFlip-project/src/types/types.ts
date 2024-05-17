@@ -82,6 +82,8 @@ export interface SignUpDataRequest extends SignUpData {
     defaultShippingAddress?: number;
     defaultBillingAddress?: number;
     addresses: CustomerAddress[];
+    billingAddresses: number[];
+    shippingAddresses: number[];
 }
 
 export interface LogInData {
