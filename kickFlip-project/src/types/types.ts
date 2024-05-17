@@ -17,6 +17,9 @@ export enum Country {
     RUSSIA = 'RU',
 }
 
+export enum StateMessage {
+    Registered = 'You have been successfully registered',
+}
 export type TUser = {
     email: string;
 };

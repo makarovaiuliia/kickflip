@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAnonymousTokenApi, getUserApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import { saveTokens } from '@/utils/utils';
-import { LogInData, SignUpDataForm, TUser } from '@/types/types';
+import getCustomerId, { saveTokens } from '@/utils/utils';
+import { LogInData, SignUpDataForm, StateMessage, TUser } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -33,6 +33,7 @@ interface InitialState {
     isAuth: boolean;
     error: string | undefined;
     isAuthChecked: boolean;
+    registrationMessage: string | undefined;
 }
 
 const initialState: InitialState = {
@@ -40,6 +41,7 @@ const initialState: InitialState = {
     isAuth: false,
     error: undefined,
     isAuthChecked: false,
+    registrationMessage: undefined,
 };
 
 const userSlice = createSlice({
@@ -52,6 +54,10 @@ const userSlice = createSlice({
         logoutUser: (state) => {
             state.user = undefined;
             state.isAuth = false;
+        },
+
+        clearRegistrationMessage: (state) => {
+            state.registrationMessage = undefined;
         },
     },
     extraReducers: (builder) => {
@@ -79,6 +85,7 @@ const userSlice = createSlice({
                 state.user = action.payload!;
                 state.isAuth = true;
                 state.isAuthChecked = true;
+                state.registrationMessage = StateMessage.Registered;
             })
             .addCase(signUpUser.rejected, (state, action) => {
                 state.error = action.error.message;
@@ -90,6 +97,7 @@ export const getUserSelector = (state: RootState) => state.user;
 export const getIsAuth = (state: RootState) => state.user.isAuth;
 
 export const { logoutUser } = userSlice.actions;
+export const { clearRegistrationMessage } = userSlice.actions;
 
 export default userSlice.reducer;
 
