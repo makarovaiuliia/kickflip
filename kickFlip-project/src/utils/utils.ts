@@ -60,3 +60,8 @@ export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<R
         }
     }
 };
+
+export const createBasicAuthToken = (clientId: string, clientSecret: string): string => {
+    const token = `${clientId}:${clientSecret}`;
+    return btoa(token);
+};
