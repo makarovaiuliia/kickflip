@@ -37,14 +37,14 @@ export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit
     } catch (err) {
         if ((err as { message: string }).message === 'invalid_grant') {
             const refreshData = await refreshToken();
-            if (options.headers) {
-                (options.headers as { [key: string]: string }).authorization = refreshData.accessToken;
+            const updatedOptions = { ...options };
+            if (updatedOptions.headers) {
+                (updatedOptions.headers as { [key: string]: string }).authorization = refreshData.accessToken;
             }
             const res = await fetch(url, options);
             return await checkResponse<T>(res);
-        } else {
-            return Promise.reject(err);
         }
+        return Promise.reject(err);
     }
 };
 
