@@ -71,6 +71,14 @@ function LoginForm(): JSX.Element {
         setPasswordVisible(false);
     };
 
+    const formPreventDefault = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.keyCode === 13 && !formValid) {
+            e.preventDefault();
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => formPreventDefault(e);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -138,6 +146,7 @@ function LoginForm(): JSX.Element {
                     value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onKeyDown={handleKeyPress}
                     id="email-input"
                 />
                 <span className="error-message">{emailValid ? '' : emailError}</span>
@@ -162,6 +171,7 @@ function LoginForm(): JSX.Element {
                     value={formData.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onKeyDown={handleKeyPress}
                     id="password-input"
                 />
                 <span className="error-message">{passwordValid ? '' : passwordError}</span>
