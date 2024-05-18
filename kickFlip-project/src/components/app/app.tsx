@@ -7,7 +7,7 @@ import { getCookie } from '@/utils/cookie';
 import HomePage from '@/pages/home/homePage';
 import LoginPage from '@/pages/login/loginPage';
 import RegistrationPage from '@/pages/registration/registrationPage';
-import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
+import NotFoundPage from '@/pages/notfoundpage/notfoundPage';
 import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
 
