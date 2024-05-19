@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAnonymousTokenApi, getUserApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import getCustomerId, { saveTokens } from '@/utils/utils';
+import { saveTokens } from '@/utils/utils';
 import { LogInData, SignUpDataForm, StateMessage, TUser } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
