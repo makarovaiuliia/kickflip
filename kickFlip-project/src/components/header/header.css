@@ -11,7 +11,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 0 80px;
+    margin: 0 40px;
     padding: 24px 0;
 }
 
@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 40px;
+    gap: 30px;
 }
 
 .categories-nav-link {
@@ -156,16 +156,6 @@
     &::after {
         width: 28px;
         transform: translateY(8px);
-    }
-}
-
-@media (width <= 1365px) {
-    .header-wrapper {
-        margin: 0 40px;
-    }
-
-    .categories-nav-list {
-        gap: 30px;
     }
 }
 
