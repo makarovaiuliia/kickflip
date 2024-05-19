@@ -15,16 +15,19 @@ export default function Header() {
     const isAuth = useSelector(getIsAuth);
     const dispatch = useDispatch();
 
+    const closeMenu = () => setMenuIsOpen(false);
+
     const handleLogout = () => {
         dispatch(getAnonymousToken());
         dispatch(logoutUser());
+        closeMenu();
     };
 
     return (
         <header className="header">
             <div className="header-wrapper">
                 <div className="logo">
-                    <NavLink className="logo-link" to="/" onClick={() => setMenuIsOpen(false)}>
+                    <NavLink className="logo-link" to="/" onClick={closeMenu}>
                         <img src={logo} alt="Kickflip" />
                     </NavLink>
                 </div>
@@ -36,7 +39,7 @@ export default function Header() {
                                     isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
                                 }
                                 to="/"
-                                onClick={() => setMenuIsOpen(false)}
+                                onClick={closeMenu}
                             >
                                 Home
                             </NavLink>
@@ -45,7 +48,7 @@ export default function Header() {
                                     isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
                                 }
                                 to="/products"
-                                onClick={() => setMenuIsOpen(false)}
+                                onClick={closeMenu}
                             >
                                 Products
                             </NavLink>
@@ -62,7 +65,7 @@ export default function Header() {
                                                 : 'services-nav-link'
                                         }
                                         to="/login"
-                                        onClick={() => setMenuIsOpen(false)}
+                                        onClick={closeMenu}
                                     >
                                         <svg className="services-nav-link-icon">
                                             <use xlinkHref={`${user}#user-icon`} />
@@ -76,7 +79,7 @@ export default function Header() {
                                                 : 'services-nav-link'
                                         }
                                         to="/registration"
-                                        onClick={() => setMenuIsOpen(false)}
+                                        onClick={closeMenu}
                                     >
                                         <svg className="services-nav-link-icon">
                                             <use xlinkHref={`${user}#user-icon`} />
@@ -94,7 +97,7 @@ export default function Header() {
                                                 : 'services-nav-link'
                                         }
                                         to="/profile"
-                                        onClick={() => setMenuIsOpen(false)}
+                                        onClick={closeMenu}
                                     >
                                         <svg className="services-nav-link-icon">
                                             <use xlinkHref={`${user}#user-icon`} />
@@ -114,7 +117,7 @@ export default function Header() {
                                     isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
                                 }
                                 to="/cart"
-                                onClick={() => setMenuIsOpen(false)}
+                                onClick={closeMenu}
                             >
                                 <svg className="services-nav-link-icon">
                                     <use xlinkHref={`${cart}#cart-icon`} />
