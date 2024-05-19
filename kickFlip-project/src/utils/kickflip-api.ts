@@ -1,10 +1,11 @@
 import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
-import { saveTokens, transformData } from './utils';
+import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
-const AuthURL = 'https://auth.europe-west1.gcp.commercetools.com';
-const URL = 'https://api.europe-west1.gcp.commercetools.com';
-const projectKey = 'kick-flip_webstore-warriors';
+const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
+const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
+const URL = import.meta.env.VITE_CTP_API_URL;
+const basicToken = createBasicAuthToken(import.meta.env.VITE_CTP_CLIENT_ID, import.meta.env.VITE_CTP_CLIENT_SECRET);
 
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -15,7 +16,7 @@ type TRefreshResponse = {
 };
 
 export const refreshToken = (): Promise<TRefreshResponse> =>
-    fetch(`${AuthURL}/oauth/token?grant_type=refresh_token&refresh_token=${sessionStorage.getItem('refreshToken')}`, {
+    fetch(`${authUrl}/oauth/token?grant_type=refresh_token&refresh_token=${sessionStorage.getItem('refreshToken')}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
@@ -59,12 +60,12 @@ type TAuthResponse = {
 
 export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
     fetch(
-        `${AuthURL}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
+        `${authUrl}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
         {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Basic ${getCookie('accessToken')}`,
+                Authorization: `Basic ${basicToken}`,
             },
         }
     )
@@ -75,11 +76,11 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
         });
 
 export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
-    return fetch(`${AuthURL}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+    return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            Authorization: 'Basic bUFNUXlzbVU4eTVyMy1qS0Q5Qm9JamJFOjZKZnFmYjVHR0pYZzZtd2QxNjUxZ2QwdEJYVHRITFE0',
+            Authorization: `Basic ${basicToken}`,
         },
     })
         .then((res) => checkResponse<TAuthResponse>(res))

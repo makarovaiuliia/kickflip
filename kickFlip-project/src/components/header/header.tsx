@@ -1,10 +1,21 @@
 import { NavLink } from 'react-router-dom';
-import logo from '../../assets/icons/logo.svg';
-import user from '../../assets/icons/user-icon.svg';
-import cart from '../../assets/icons/cart-icon.svg';
+import { useDispatch, useSelector } from '@/services/store';
+
+import logo from '@/assets/icons/logo.svg';
+import user from '@/assets/icons/user-icon.svg';
+import cart from '@/assets/icons/cart-icon.svg';
+import logout from '@/assets/icons/logoutIcon.svg';
 import './header.css';
+import { getAnonymousToken, getIsAuth, logoutUser } from '@/services/userSlice';
 
 export default function Header() {
+    const isAuth = useSelector(getIsAuth);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(getAnonymousToken());
+        dispatch(logoutUser());
+    };
     return (
         <header className="header">
             <div className="header-wrapper">
@@ -35,17 +46,53 @@ export default function Header() {
                 </nav>
                 <nav className="services-nav">
                     <div className="services-nav-list">
-                        <NavLink
-                            className={({ isActive }) =>
-                                isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
-                            }
-                            to="/login"
-                        >
-                            <svg className="services-nav-link-icon">
-                                <use xlinkHref={`${user}#user-icon`} />
-                            </svg>
-                            <span className="services-nav-link-text">Log in</span>
-                        </NavLink>
+                        {!isAuth && (
+                            <>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/login"
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Log in</span>
+                                </NavLink>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/registration"
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Sign up</span>
+                                </NavLink>
+                            </>
+                        )}
+                        {isAuth && (
+                            <>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/profile"
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Profile</span>
+                                </NavLink>
+                                <button className="services-nav-link" onClick={handleLogout} type="button">
+                                    <svg className="services-nav-link-icon services-nav-link-icon-logout">
+                                        <use xlinkHref={`${logout}#logout-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Logout</span>
+                                </button>
+                            </>
+                        )}
                         <NavLink
                             className={({ isActive }) =>
                                 isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'

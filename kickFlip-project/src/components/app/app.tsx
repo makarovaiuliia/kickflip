@@ -4,14 +4,16 @@ import { useDispatch } from '@/services/store';
 import { getAnonymousToken, getUser } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
-import HomePage from '../../pages/home/homePage';
-import LoginPage from '../../pages/login/loginPage';
-import RegistrationPage from '../../pages/registration/registrationPage';
-import NotFoundPage from '../../pages/notfoundpage/notfoundPage';
+import HomePage from '@/pages/home/homePage';
+import LoginPage from '@/pages/login/loginPage';
+import RegistrationPage from '@/pages/registration/registrationPage';
+import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
 import ProductsPage from '@/pages/products/productsPage';
-import CartPage from '../../pages/cart/cartPage';
+import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
+import ProfilePage from '@/pages/profilePage';
+import ProtectedRoute from '@/utils/protectedRoute';
 
 function App() {
     const dispatch = useDispatch();
@@ -19,11 +21,7 @@ function App() {
     useEffect(() => {
         const token = getCookie('accessToken');
         if (token) {
-            dispatch(getUser())
-                .unwrap()
-                .catch(() => {
-                    dispatch(getAnonymousToken());
-                });
+            dispatch(getUser()).unwrap();
         } else {
             dispatch(getAnonymousToken());
         }
@@ -34,8 +32,30 @@ function App() {
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="registration" element={<RegistrationPage />} />
+                <Route
+                    path="profile"
+                    element={
+                        <ProtectedRoute>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="login"
+                    element={
+                        <ProtectedRoute onlyUnAuth>
+                            <LoginPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="registration"
+                    element={
+                        <ProtectedRoute onlyUnAuth>
+                            <RegistrationPage />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Route>

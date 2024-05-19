@@ -18,11 +18,6 @@ export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async (
     return response;
 });
 
-// export const getUserByID = createAsyncThunk('user/get', async (userID: string) => {
-//     const response = await getUserByIDApi(userID);
-//     return response;
-// });
-
 export const getUser = createAsyncThunk('user/getUser', async () => {
     const response = await getUserApi();
     return response;
@@ -54,7 +49,7 @@ const userSlice = createSlice({
         authChecked: (state) => {
             state.isAuthChecked = true;
         },
-        logout: (state) => {
+        logoutUser: (state) => {
             state.user = undefined;
             state.isAuth = false;
         },
@@ -92,7 +87,9 @@ const userSlice = createSlice({
 });
 
 export const getUserSelector = (state: RootState) => state.user;
-export const isAuth = (state: RootState) => state.user.isAuth;
+export const getIsAuth = (state: RootState) => state.user.isAuth;
+
+export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;
 

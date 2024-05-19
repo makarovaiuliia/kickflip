@@ -62,6 +62,10 @@
     &:hover .services-nav-link-icon {
         fill: var(--electric-orange);
     }
+    &:hover .services-nav-link-icon-logout {
+        fill: none;
+        stroke: var(--electric-orange);
+    }
 }
 
 .services-nav-link-active .services-nav-link-icon {
@@ -93,4 +97,9 @@
 .services-nav-link-active .services-nav-link-text {
     color: var(--electric-orange);
     border-bottom: 1px solid var(--electric-orange);
+}
+
+.services-nav-link-icon-logout {
+    fill: none;
+    stroke: var(--deep-blue);
 }
