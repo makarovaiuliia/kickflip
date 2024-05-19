@@ -16,7 +16,6 @@ export default function Header() {
         dispatch(getAnonymousToken());
         dispatch(logoutUser());
     };
-
     return (
         <header className="header">
             <div className="header-wrapper">

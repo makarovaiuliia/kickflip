@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
 import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
 import '../form.css';
@@ -64,6 +65,7 @@ export default function RegistrationForm() {
         }
         return true;
     };
+    
     const watchShippingCountry = watch('shippingAddress.country');
     const watchBillingCountry = watch('billingAddress.country');
 
@@ -78,6 +80,7 @@ export default function RegistrationForm() {
             trigger('billingAddress.postalCode');
         }
     }, [watchBillingCountry, trigger]);
+    
     return (
         <form className="reg-form" onSubmit={handleSubmit(submit)}>
             <FormField
