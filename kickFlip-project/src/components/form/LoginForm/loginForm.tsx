@@ -32,7 +32,7 @@ function LoginForm(): JSX.Element {
     }, [passwordValid, emailValid]);
 
     const checkEmailValidity = (value: string) => {
-        const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
+        const EMAIL_REGEXP = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const errorMessage: string = ErrorMessage.EMAIL_ERROR;
 
         if (!EMAIL_REGEXP.test(value)) {
