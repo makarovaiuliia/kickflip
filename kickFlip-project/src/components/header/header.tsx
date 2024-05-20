@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
-import logo from '//logo.svg';
+import logo from '/logo.svg';
 import user from '/user-icon.svg';
 import cart from '/cart-icon.svg';
 import logout from '/logoutIcon.svg';
