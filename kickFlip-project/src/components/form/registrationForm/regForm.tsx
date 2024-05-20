@@ -64,7 +64,7 @@ export default function RegistrationForm() {
         }
         return true;
     };
-
+  
     const watchShippingCountry = watch('shippingAddress.country');
     const watchBillingCountry = watch('billingAddress.country');
 
@@ -80,6 +80,11 @@ export default function RegistrationForm() {
         }
     }, [watchBillingCountry, trigger]);
 
+    useEffect(() => {
+        if (watchBillingCountry) {
+            trigger('billingAddress.postalCode');
+        }
+    }, [watchBillingCountry, trigger]);
     return (
         <form className="reg-form" onSubmit={handleSubmit(submit)}>
             <FormField
