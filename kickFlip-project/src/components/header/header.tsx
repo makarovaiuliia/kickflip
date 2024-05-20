@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
-import logo from '../../../public/assets/icons/logo.svg';
-import user from '../../../public/assets/icons/user-icon.svg';
-import cart from '../../../public/assets/icons/cart-icon.svg';
-import logout from '../../../public/assets/icons/logoutIcon.svg';
+import logo from '../../../public/logo.svg';
+import user from '../../../public/user-icon.svg';
+import cart from '../../../public/cart-icon.svg';
+import logout from '../../../public/logoutIcon.svg';
 import './header.css';
 import { getAnonymousToken, getIsAuth, logoutUser } from '@/services/userSlice';
 
