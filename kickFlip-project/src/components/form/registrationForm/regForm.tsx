@@ -38,9 +38,9 @@ export default function RegistrationForm() {
         }
     };
 
-    const EMAIL_REGEXP: RegExp = /^\S+@\S+\.\S+$/;
+    const EMAIL_REGEXP: RegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
-    const ONLY_LETTER_REGEX: RegExp = /[A-Za-z]+$/;
+    const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
 
