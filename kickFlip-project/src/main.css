@@ -16,17 +16,17 @@
 @font-face {
     font-family: 'Clash Display';
     src:
-        url('../public/assets/fonts/ClashDisplaySemibold.otf') format('opentype'),
-        url('../public/assets/fonts/ClashDisplayMedium.otf') format('opentype');
+        url('../public/ClashDisplaySemibold.otf') format('opentype'),
+        url('../public/ClashDisplayMedium.otf') format('opentype');
 }
 
 @font-face {
     font-family: 'Satoshi';
     src:
-        url('../public/assets/fonts/Satoshi-Medium.otf') format('opentype'),
-        url('../public/assets/fonts/Satoshi-Medium.ttf') format('truetype'),
-        url('../public/assets/fonts/Satoshi-Medium.woff') format('woff'),
-        url('../public/assets/fonts/Satoshi-Medium.woff2') format('woff2');
+        url('../public/Satoshi-Medium.otf') format('opentype'),
+        url('../public/Satoshi-Medium.ttf') format('truetype'),
+        url('../public/Satoshi-Medium.woff') format('woff'),
+        url('../public/Satoshi-Medium.woff2') format('woff2');
 }
 
 html {
