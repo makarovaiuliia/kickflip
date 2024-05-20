@@ -26,7 +26,8 @@
         url('@/assets/fonts/Satoshi-Medium.otf') format('opentype'),
         url('@/assets/fonts/Satoshi-Medium.ttf') format('truetype'),
         url('@/assets/fonts/Satoshi-Medium.woff') format('woff'),
-        url('@/assets/fonts/Satoshi-Medium.woff2') format('w@
+        url('@/assets/fonts/Satoshi-Medium.woff2') format('woff2');
+}
 
 html {
     box-sizing: border-box;
