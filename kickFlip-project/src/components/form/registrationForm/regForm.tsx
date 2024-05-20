@@ -64,7 +64,7 @@ export default function RegistrationForm() {
         }
         return true;
     };
-  
+
     const watchShippingCountry = watch('shippingAddress.country');
     const watchBillingCountry = watch('billingAddress.country');
 
