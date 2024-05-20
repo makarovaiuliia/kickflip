@@ -64,6 +64,7 @@ export default function RegistrationForm() {
         }
         return true;
     };
+  
     const watchShippingCountry = watch('shippingAddress.country');
     const watchBillingCountry = watch('billingAddress.country');
 
@@ -72,6 +73,12 @@ export default function RegistrationForm() {
             trigger('shippingAddress.postalCode');
         }
     }, [watchShippingCountry, trigger]);
+
+    useEffect(() => {
+        if (watchBillingCountry) {
+            trigger('billingAddress.postalCode');
+        }
+    }, [watchBillingCountry, trigger]);
 
     useEffect(() => {
         if (watchBillingCountry) {
