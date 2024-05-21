@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorMessage } from '../../../types/type';
-import '../form.css';
+import { useNavigate } from 'react-router-dom';
 
-interface FormState {
-    email: string;
-    password: string;
-}
+import { ErrorMessage, LogInData } from '@/types/types';
+import '../form.css';
+import { useDispatch } from '@/services/store';
+import { responsesErrorsHandler } from '@/utils/utils';
+import { getUser, loginUser } from '@/services/userSlice';
 
 function LoginForm(): JSX.Element {
-    const [formData, setFormData] = useState<FormState>({
+    const [formData, setFormData] = useState<LogInData>({
         email: '',
         password: '',
     });
@@ -18,6 +18,10 @@ function LoginForm(): JSX.Element {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [formValid, setFormValid] = useState(false);
+    const [loginError, setLoginError] = useState('');
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -27,8 +31,8 @@ function LoginForm(): JSX.Element {
         }
     }, [passwordValid, emailValid]);
 
-    const checkEmailValidaty = (value: string) => {
-        const EMAIL_REGEXP = /^\S+@\S+\.\S+$/;
+    const checkEmailValidity = (value: string) => {
+        const EMAIL_REGEXP = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const errorMessage: string = ErrorMessage.EMAIL_ERROR;
 
         if (!EMAIL_REGEXP.test(value)) {
@@ -40,7 +44,7 @@ function LoginForm(): JSX.Element {
         }
     };
 
-    const checkPasswordValidaty = (value: string) => {
+    const checkPasswordValidity = (value: string) => {
         const PASSWORD_REGEX: RegExp = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
         let errorMessage: string = '';
         if (value.length < 8) {
@@ -60,22 +64,7 @@ function LoginForm(): JSX.Element {
         setPasswordError(errorMessage);
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-        if (name === 'email') {
-            checkEmailValidaty(value);
-        }
-        if (name === 'password') {
-            checkPasswordValidaty(value);
-        }
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const resetForm = () => {
         setFormData({
             email: '',
             password: '',
@@ -83,6 +72,43 @@ function LoginForm(): JSX.Element {
         setEmailValid(false);
         setPasswordValid(false);
         setPasswordVisible(false);
+    };
+
+    const formPreventDefault = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.keyCode === 13 && !formValid) {
+            e.preventDefault();
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => formPreventDefault(e);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        if (name === 'email') {
+            checkEmailValidity(value);
+        }
+        if (name === 'password') {
+            checkPasswordValidity(value);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoginError('');
+        try {
+            await dispatch(loginUser(formData)).unwrap();
+            await dispatch(getUser());
+            navigate('/');
+            resetForm();
+        } catch (error) {
+            if (error) {
+                responsesErrorsHandler(error, setLoginError);
+            }
+        }
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -123,6 +149,7 @@ function LoginForm(): JSX.Element {
                     value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onKeyDown={handleKeyPress}
                     id="email-input"
                 />
                 <span className="error-message">{emailValid ? '' : emailError}</span>
@@ -147,6 +174,7 @@ function LoginForm(): JSX.Element {
                     value={formData.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onKeyDown={handleKeyPress}
                     id="password-input"
                 />
                 <span className="error-message">{passwordValid ? '' : passwordError}</span>
@@ -154,6 +182,7 @@ function LoginForm(): JSX.Element {
             <button className={`submit-btn ${formValid ? '' : 'disable'}`} type="submit">
                 Log In
             </button>
+            <span className="error-message">{loginError}</span>
         </form>
     );
 }

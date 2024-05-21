@@ -1,0 +1,216 @@
+.header {
+    background-color: var(--beige);
+    align-self: start;
+    display: flex;
+    width: 100%;
+}
+
+.header-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 40px;
+    padding: 24px 0;
+}
+
+.logo {
+    flex: 1;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1.35;
+}
+
+.categories-nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.categories-nav-link {
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 115%;
+    color: var(--deep-blue);
+    text-transform: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s;
+    &:hover {
+        color: var(--electric-orange);
+    }
+}
+
+.categories-nav-link-active {
+    color: var(--electric-orange);
+    border-bottom: 1px solid var(--electric-orange);
+}
+
+.services-nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.services-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    gap: 2px;
+    &:hover .services-nav-link-text {
+        color: var(--electric-orange);
+    }
+    &:hover .services-nav-link-icon {
+        fill: var(--electric-orange);
+    }
+    &:hover .services-nav-link-icon-logout {
+        fill: none;
+        stroke: var(--electric-orange);
+    }
+}
+
+.services-nav-link-active .services-nav-link-icon {
+    fill: var(--electric-orange);
+}
+
+.services-nav-link-icon {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    fill: var(--deep-blue);
+    transition: all 0.3s;
+}
+
+.services-nav-link-text {
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 115%;
+    color: var(--deep-blue);
+    text-transform: none;
+    transition: all 0.5s;
+}
+
+.services-nav-link-active .services-nav-link-icon {
+    fill: var(--electric-orange);
+}
+
+.services-nav-link-active .services-nav-link-text {
+    color: var(--electric-orange);
+    border-bottom: 1px solid var(--electric-orange);
+}
+
+.services-nav-link-icon-logout {
+    fill: none;
+    stroke: var(--deep-blue);
+}
+
+.navigation-toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+}
+
+.navigation-toggle-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.navigation-toggle-bar {
+    position: relative;
+    width: 28px;
+    height: 2px;
+    background-color: var(--deep-blue);
+    border-radius: 2px;
+    transition: all 0.45s ease-in-out;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        background: var(--deep-blue);
+        border-radius: 2px;
+        right: 0;
+        transition: all 0.45s ease-in-out;
+    }
+    &::before {
+        width: 23px;
+        transform: translateY(-8px);
+    }
+    &::after {
+        width: 28px;
+        transform: translateY(8px);
+    }
+}
+
+@media (width <= 900px) {
+    .logo {
+        flex: 0;
+    }
+
+    .navigation {
+        display: flex;
+        flex: 0;
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: flex-end;
+        position: fixed;
+        background-color: var(--beige);
+        top: 96px;
+        right: 0;
+        gap: 40px;
+        padding: 40px 0;
+        width: 100%;
+        height: 100vh;
+        transform: translateX(100%);
+        transition: all 1s;
+        z-index: 999999;
+    }
+
+    .navigation.open {
+        transform: translateX(0);
+    }
+
+    .categories-nav-list {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .navigation-toggle {
+        display: flex;
+        width: 48px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navigation-toggle-button.open > .navigation-toggle-bar {
+        transform: translateX(-40px);
+        background: transparent;
+    }
+
+    .navigation-toggle-button.open > .navigation-toggle-bar::before {
+        width: 28px;
+        transform: rotate(45deg) translate(25px, -25px);
+    }
+
+    .navigation-toggle-button.open > .navigation-toggle-bar::after {
+        transform: rotate(-45deg) translate(25px, 25px);
+    }
+}

@@ -1,0 +1,11 @@
+.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 204px);
+    width: 100%;
+    padding: 40px 0;
+    gap: 20px;
+}
