@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import Card from '@/components/card/Card';
+import Card from '@/components/card/card';
 import { mockData } from '../card/mockData';
 
 function App() {
