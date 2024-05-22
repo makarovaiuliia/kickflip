@@ -1,4 +1,4 @@
-import { CustomerAddress, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest } from '@/types/types';
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -64,4 +64,26 @@ export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<R
 export const createBasicAuthToken = (clientId: string, clientSecret: string): string => {
     const token = `${clientId}:${clientSecret}`;
     return btoa(token);
+};
+
+export const getImageFromEachColor = (data: ProductResponse) => {
+    const colors = new Set();
+    const images: string[] = [];
+
+    const processVariant = (variant: Product) => {
+        const colorAttr = variant.attributes.find((attr) => attr.name === 'color');
+        if (colorAttr && !colors.has(colorAttr.value) && variant.images.length > 0) {
+            images.push(variant.images[0].url);
+            colors.add(colorAttr.value);
+        }
+    };
+
+    const { masterVariant } = data.masterData.current;
+    processVariant(masterVariant);
+
+    data.masterData.current.variants.forEach((variant) => {
+        processVariant(variant);
+    });
+
+    return images;
 };

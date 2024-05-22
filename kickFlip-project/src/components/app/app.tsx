@@ -14,6 +14,8 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
+import Card from '@/components/card/Card';
+import { mockData } from '../card/mockData';
 
 function App() {
     const dispatch = useDispatch();
@@ -21,7 +23,11 @@ function App() {
     useEffect(() => {
         const token = getCookie('accessToken');
         if (token) {
-            dispatch(getUser()).unwrap();
+            dispatch(getUser())
+                .unwrap()
+                .catch(() => {
+                    dispatch(getAnonymousToken());
+                });
         } else {
             dispatch(getAnonymousToken());
         }
@@ -32,6 +38,7 @@ function App() {
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="product" element={<Card productInfo={mockData} />} />
                 <Route
                     path="profile"
                     element={

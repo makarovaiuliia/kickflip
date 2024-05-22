@@ -95,10 +95,18 @@ export interface LogInData {
 }
 
 export interface ProductResponse {
+    id: string;
+    key: string;
+    masterData: {
+        current: ProductData;
+    };
+}
+
+export interface ProductData {
     name: ProductText;
     description: ProductText;
     categories: Category[];
-    slug: string;
+    slug: ProductText;
     masterVariant: Product;
     variants: Product[];
 }
@@ -106,6 +114,7 @@ export interface ProductResponse {
 export interface Product {
     id: number;
     sku: string;
+    key: string;
     prices: Price[];
     images: Image[];
     attributes: Attributes[];
@@ -121,7 +130,7 @@ export interface Category {
 }
 
 export interface Price {
-    id: 'f8f81238-3315-436e-b8b1-066fb1255c3e';
+    id: string;
     value: PriceValue;
     key: string;
 }
@@ -143,5 +152,5 @@ export interface Image {
 
 export interface Attributes {
     name: string;
-    value: string;
+    value: string | number;
 }
