@@ -1,4 +1,11 @@
-.reg-page-wrapper {
+.registration-wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.reg-form-wrapper {
     display: flex;
     flex-direction: column;
     padding: 40px;
@@ -6,7 +13,7 @@
 }
 
 @media (width <= 768px) {
-    .reg-page-wrapper {
+    .reg-form-wrapper {
         padding: 20px;
     }
 }

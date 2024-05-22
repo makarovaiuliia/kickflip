@@ -25,7 +25,7 @@ export default function HomePage(): JSX.Element {
     }, [registrationMessage, dispatch]);
 
     return (
-        <div className="home-wrapper">
+        <div className="main-wrapper home-wrapper">
             <h1 className="home-title">Home page will be here</h1>
             <p className={`successful-message ${showMessage ? 'show' : 'hide'}`}>{registrationMessage}</p>
         </div>
