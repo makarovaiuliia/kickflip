@@ -5,8 +5,8 @@ import AuthRedirectPrompt from '@/components/authRedirectPrompt/authRedirectProm
 
 export default function RegistrationPage() {
     return (
-        <>
-            <div className="reg-page-wrapper ">
+        <div className="registration-wrapper">
+            <div className="reg-form-wrapper ">
                 <h1 className="form-title">Registration</h1>
                 <RegistrationForm />
             </div>
@@ -15,6 +15,6 @@ export default function RegistrationPage() {
                 button={AuthRedirectPromptData[1].button}
                 link={AuthRedirectPromptData[1].link}
             />
-        </>
+        </div>
     );
 }

@@ -12,7 +12,7 @@ import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
-import ProfilePage from '@/pages/profilePage';
+import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
 
 function App() {

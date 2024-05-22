@@ -5,13 +5,13 @@ import AuthRedirectPrompt from '@/components/authRedirectPrompt/authRedirectProm
 
 export default function LoginPage() {
     return (
-        <>
+        <div className="login-wrapper">
             <LoginForm />
             <AuthRedirectPrompt
                 question={AuthRedirectPromptData[0].question}
                 button={AuthRedirectPromptData[0].button}
                 link={AuthRedirectPromptData[0].link}
             />
-        </>
+        </div>
     );
 }
