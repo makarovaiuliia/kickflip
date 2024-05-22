@@ -17,8 +17,9 @@ function Card({ productInfo }: CardProps): JSX.Element {
 
     return (
         <div className="temp card">
-            <Link to={`products/${slug['en-US']}`} className="">
-                <img src={images[activeImage]} alt="ProductImage" className="card_image" />
+            <Link to={`products/${slug['en-US']}`} className="image-link">
+                <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
+                <img src={images[activeImage][1]} alt="ProductImage second" className="card_image card_image-second" />
             </Link>
             <div className="card_variant-list">
                 {images.map((image, index) => (
@@ -26,16 +27,16 @@ function Card({ productInfo }: CardProps): JSX.Element {
                         type="button"
                         onClick={() => setActiveImage(index)}
                         className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
-                        key={image}
+                        key={image[0]}
                         style={{
-                            backgroundImage: `url(${image})`,
+                            backgroundImage: `url(${image[0]})`,
                         }}
                         aria-label={`Variant ${index + 1}`}
                     />
                 ))}
             </div>
             <h3 className="card_title">{name['en-US']}</h3>
-            <p className="card_price">{`${price}€`}</p>
+            <p className="card_price">{`€ ${price}`}</p>
         </div>
     );
 }
