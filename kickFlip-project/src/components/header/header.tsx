@@ -43,7 +43,7 @@ export default function Header() {
                                 to="/"
                                 onClick={closeMenu}
                             >
-                                Home
+                                Main
                             </NavLink>
                             <NavLink
                                 className={({ isActive }) =>
@@ -52,7 +52,7 @@ export default function Header() {
                                 to="/products"
                                 onClick={closeMenu}
                             >
-                                Products
+                                Sneakers
                             </NavLink>
                         </div>
                     </nav>

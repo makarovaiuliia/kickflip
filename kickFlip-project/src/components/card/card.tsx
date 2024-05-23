@@ -18,7 +18,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
     return (
         <div className="temp card">
             {/* TODO: подправить путь, когда будет ясно, на каком пути лежит product list */}
-            <Link to={`products/${productInfo.id}/${slug['en-US']}`} className="image-link">
+            <Link to={`${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
                 <img src={images[activeImage][1]} alt="ProductImage second" className="card_image card_image-second" />
             </Link>

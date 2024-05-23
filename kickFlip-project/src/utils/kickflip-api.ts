@@ -1,4 +1,4 @@
-import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
+import { LogInData, ProductResponse, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
@@ -141,3 +141,25 @@ export const getUserApi = () =>
             authorization: `Bearer ${getCookie('accessToken')}`,
         } as HeadersInit,
     });
+
+type TProductResponse = {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: ProductResponse[];
+};
+
+export const getProductsApi = () => {
+    return fetch(`${URL}/${projectKey}/products`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<TProductResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};

@@ -16,11 +16,13 @@ import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
 import Card from '@/components/card/card';
 import { mockData } from '../card/mockData';
+import { getProducts } from '@/services/sneakersSlice';
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(getProducts());
         const token = getCookie('accessToken');
         if (token) {
             dispatch(getUser())
