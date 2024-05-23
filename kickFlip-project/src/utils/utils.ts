@@ -66,9 +66,8 @@ export const createBasicAuthToken = (clientId: string, clientSecret: string): st
     return btoa(token);
 };
 
-export const getImageFromEachColor = (data: ProductResponse) => {
+const processVariants = (masterVariant: Product, variants: Product[]): { [key: string]: string[] } => {
     const colorImagesMap: { [key: string]: string[] } = {};
-    const imagePairs: string[][] = [];
 
     const processVariant = (variant: Product) => {
         const colorAttr = variant.attributes.find((attr) => attr.name === 'color');
@@ -78,25 +77,26 @@ export const getImageFromEachColor = (data: ProductResponse) => {
                 colorImagesMap[color] = [];
             }
             variant.images.forEach((image) => {
-                if (colorImagesMap[color].length < 2) {
-                    colorImagesMap[color].push(image.url);
-                }
+                colorImagesMap[color].push(image.url);
             });
         }
     };
 
-    const { masterVariant } = data.masterData.current;
     processVariant(masterVariant);
+    variants.forEach(processVariant);
 
-    data.masterData.current.variants.forEach((variant) => {
-        processVariant(variant);
-    });
+    return colorImagesMap;
+};
+
+export const getImageFromEachColor = (data: ProductResponse): string[][] => {
+    const { masterVariant, variants } = data.masterData.current;
+
+    const colorImagesMap = processVariants(masterVariant, variants);
+    const imageGroups: string[][] = [];
 
     Object.values(colorImagesMap).forEach((images) => {
-        if (images.length === 2) {
-            imagePairs.push(images);
-        }
+        imageGroups.push(images);
     });
 
-    return imagePairs;
+    return imageGroups;
 };
