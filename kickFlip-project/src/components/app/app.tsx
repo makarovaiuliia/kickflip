@@ -15,6 +15,11 @@ import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
 
+import ProfileAccount from '../profileAccount/profileAccount';
+import ProfileAddress from '../profileAddress/profileAddress';
+import ProfileOrders from '../profileOrders/profileOrders';
+import ProfilePassword from '../profilePassword/profilePassword';
+
 function App() {
     const dispatch = useDispatch();
 
@@ -33,13 +38,18 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
                 <Route
-                    path="profile"
+                    path="profile/*"
                     element={
                         <ProtectedRoute>
                             <ProfilePage />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route path="account" element={<ProfileAccount />} />
+                    <Route path="orders" element={<ProfileAddress />} />
+                    <Route path="address" element={<ProfileOrders />} />
+                    <Route path="password" element={<ProfilePassword />} />
+                </Route>
                 <Route
                     path="login"
                     element={

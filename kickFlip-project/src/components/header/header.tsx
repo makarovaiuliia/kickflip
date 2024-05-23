@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -24,6 +24,13 @@ export default function Header() {
         dispatch(logoutUser());
         closeMenu();
     };
+
+    const navigate = useNavigate();
+    const match = useMatch('/profile');
+
+    useEffect(() => {
+        if (match) navigate('profile/account');
+    }, [match, navigate]);
 
     return (
         <header className="header">
