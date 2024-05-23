@@ -58,30 +58,40 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
-export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
-    fetch(
-        `${authUrl}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Basic ${basicToken}`,
-            },
-        }
-    )
+export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
+    const loginBody = {
+        username: data.email,
+        password: data.password,
+        grant_type: 'password',
+    };
+
+    return fetch(`${authUrl}/oauth/${projectKey}/customers/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${basicToken}`,
+        },
+        body: new URLSearchParams(Object.entries(loginBody)).toString(),
+    })
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
         });
+};
 
 export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
-    return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+    const body = {
+        grant_type: 'client_credentials',
+    };
+
+    return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8',
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${basicToken}`,
         },
+        body: new URLSearchParams(Object.entries(body)).toString(),
     })
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
