@@ -10,14 +10,14 @@ interface CardProps {
 
 function Card({ productInfo }: CardProps): JSX.Element {
     const productData = productInfo.masterData.current;
-    const { masterVariant, name } = productData;
+    const { masterVariant, name, slug } = productData;
     const price = masterVariant.prices[0].value.centAmount / 100;
     const images = getImageFromEachColor(productInfo);
     const [activeImage, setActiveImage] = useState(0);
 
     return (
         <div className="temp card">
-            <Link to={`products/${productInfo.id}}`} className="image-link">
+            <Link to={`products/${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
                 <img src={images[activeImage][1]} alt="ProductImage second" className="card_image card_image-second" />
             </Link>

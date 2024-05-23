@@ -40,7 +40,7 @@ function App() {
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="product" element={<Card productInfo={mockData} />} />
                 {/* TODO: Вставить сюда элемент, который является страницей продукта */}
-                {/* <Route path="products/:id" element={} /> */}
+                {/* <Route path="products/:id/:slug" element={} /> */}
                 <Route
                     path="profile"
                     element={
