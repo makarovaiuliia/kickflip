@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -29,9 +29,9 @@ export default function Header() {
         <header className="header">
             <div className="header-wrapper">
                 <div className="logo">
-                    <NavLink className="logo-link" to="/" onClick={closeMenu}>
+                    <Link className="logo-link" to="/" onClick={closeMenu}>
                         <img src={logo} alt="Kickflip" />
-                    </NavLink>
+                    </Link>
                 </div>
                 <div className={`navigation ${isOpen && 'open'}`}>
                     <nav className="categories-nav">

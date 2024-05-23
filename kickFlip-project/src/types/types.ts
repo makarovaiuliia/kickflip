@@ -93,3 +93,64 @@ export interface LogInData {
     email: string;
     password: string;
 }
+
+export interface ProductResponse {
+    id: string;
+    key: string;
+    masterData: {
+        current: ProductData;
+    };
+}
+
+export interface ProductData {
+    name: ProductText;
+    description: ProductText;
+    categories: Category[];
+    slug: ProductText;
+    masterVariant: Product;
+    variants: Product[];
+}
+
+export interface Product {
+    id: number;
+    sku: string;
+    key: string;
+    prices: Price[];
+    images: Image[];
+    attributes: Attributes[];
+}
+
+export interface ProductText {
+    'en-US': string;
+}
+
+export interface Category {
+    typeId: string;
+    id: string;
+}
+
+export interface Price {
+    id: string;
+    value: PriceValue;
+    key: string;
+}
+
+export interface PriceValue {
+    type: string;
+    currencyCode: string;
+    centAmount: number;
+    fractionDigits: number;
+}
+
+export interface Image {
+    url: string;
+    dimensions: {
+        w: number;
+        h: number;
+    };
+}
+
+export interface Attributes {
+    name: string;
+    value: string | number;
+}

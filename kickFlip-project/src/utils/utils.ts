@@ -1,4 +1,4 @@
-import { CustomerAddress, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest } from '@/types/types';
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -64,4 +64,39 @@ export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<R
 export const createBasicAuthToken = (clientId: string, clientSecret: string): string => {
     const token = `${clientId}:${clientSecret}`;
     return btoa(token);
+};
+
+const processVariants = (masterVariant: Product, variants: Product[]): { [key: string]: string[] } => {
+    const colorImagesMap: { [key: string]: string[] } = {};
+
+    const processVariant = (variant: Product) => {
+        const colorAttr = variant.attributes.find((attr) => attr.name === 'color');
+        if (colorAttr) {
+            const color = colorAttr.value;
+            if (!colorImagesMap[color]) {
+                colorImagesMap[color] = [];
+            }
+            variant.images.forEach((image) => {
+                colorImagesMap[color].push(image.url);
+            });
+        }
+    };
+
+    processVariant(masterVariant);
+    variants.forEach(processVariant);
+
+    return colorImagesMap;
+};
+
+export const getImageFromEachColor = (data: ProductResponse): string[][] => {
+    const { masterVariant, variants } = data.masterData.current;
+
+    const colorImagesMap = processVariants(masterVariant, variants);
+    const imageGroups: string[][] = [];
+
+    Object.values(colorImagesMap).forEach((images) => {
+        imageGroups.push(images);
+    });
+
+    return imageGroups;
 };
