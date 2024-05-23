@@ -8,12 +8,13 @@ import HomePage from '@/pages/home/homePage';
 import LoginPage from '@/pages/login/loginPage';
 import RegistrationPage from '@/pages/registration/registrationPage';
 import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
-import ProductsPage from '@/pages/products/productsPage';
+// import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
+import ProductPage from '@/pages/product/productPage';
 
 function App() {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function App() {
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
-                <Route path="products" element={<ProductsPage />} />
+                {/* <Route path="products" element={<ProductsPage />} /> */}
                 <Route
                     path="profile"
                     element={
@@ -58,6 +59,7 @@ function App() {
                 />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
+                <Route path="products" element={<ProductPage productKey="blazer-mid-77" />} />
             </Route>
         </Routes>
     );

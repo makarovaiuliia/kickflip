@@ -1,4 +1,4 @@
-import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
+import { LogInData, ProductResponse, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
@@ -141,3 +141,14 @@ export const getUserApi = () =>
             authorization: `Bearer ${getCookie('accessToken')}`,
         } as HeadersInit,
     });
+
+export const getProductByKey = async (key: string) => {
+    const response = await fetch(`${URL}/${projectKey}/products/key=${key}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+
+    const data = checkResponse<ProductResponse>(response);
+    return data;
+};
