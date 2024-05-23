@@ -36,7 +36,7 @@ export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit
         const res = await fetch(url, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as { message: string }).message === 'invalid_grant') {
+        if ((err as { message: string }).message === 'invalid_token') {
             const refreshData = await refreshToken();
             const updatedOptions = { ...options };
             if (updatedOptions.headers) {
