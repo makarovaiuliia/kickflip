@@ -20,7 +20,11 @@ function Card({ productInfo }: CardProps): JSX.Element {
             {/* TODO: подправить путь, когда будет ясно, на каком пути лежит product list */}
             <Link to={`${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
-                <img src={images[activeImage][1]} alt="ProductImage second" className="card_image card_image-second" />
+                <img
+                    src={images[activeImage][Math.random() < 0.5 ? 1 : 2]}
+                    alt="ProductImage second"
+                    className="card_image card_image-second"
+                />
             </Link>
             <div className="card_variant-list">
                 {images.map((image, index) => (

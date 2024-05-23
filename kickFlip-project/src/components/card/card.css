@@ -1,7 +1,3 @@
-.temp {
-    /* border: 1px solid var(--electric-orange); */
-}
-
 .card {
     display: flex;
     flex-direction: column;
@@ -65,5 +61,13 @@
 .card_price {
     color: var(--electric-orange);
     font-size: 1.25rem;
-    font-family: var(--third-family);
+    font-family: var(--font-family);
+}
+
+@media (width < 800px) {
+    .card_image {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%; /* от 125 до 335 (380-1440) */
+        gap: 8px 20px;
+    }
 }

@@ -1,5 +1,6 @@
 import { ProductResponse } from '@/types/types';
 import Card from '../card/card';
+import './cardList.css';
 
 interface CardListProps {
     products: ProductResponse[];
