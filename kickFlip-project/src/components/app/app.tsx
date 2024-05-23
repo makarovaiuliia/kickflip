@@ -39,6 +39,8 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="product" element={<Card productInfo={mockData} />} />
+                {/* TODO: Вставить сюда элемент, который является страницей продукта */}
+                {/* <Route path="products/:id" element={} /> */}
                 <Route
                     path="profile"
                     element={
