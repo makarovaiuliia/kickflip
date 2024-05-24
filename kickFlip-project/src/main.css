@@ -8,9 +8,8 @@
     --egg-yolk: #fff8b7;
     --smoke-grey: #f8f8f8;
     --border-gray: #d8d8d8;
-    --font-family: 'Clash Display', sans-serif;
-    --second-family: 'Sylvester', sans-serif;
-    --third-family: 'Satoshi', sans-serif;
+    --font-family: 'Satoshi', sans-serif;
+    --second-family: 'Clash Display', sans-serif;
 }
 
 @font-face {
