@@ -34,7 +34,6 @@
 .card_variant-list {
     display: flex;
     gap: 0.3rem;
-    overflow-y: scroll;
 }
 
 .card_image-mini {
@@ -84,7 +83,7 @@
 @media (width < 800px) {
     .card_image {
         grid-template-columns: repeat(2, 1fr);
-        width: 100%; /* от 125 до 335 (380-1440) */
+        width: 100%;
         gap: 8px 20px;
     }
 }
