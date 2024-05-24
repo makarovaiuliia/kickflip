@@ -27,3 +27,7 @@ export interface ProductInfoProps {
 export interface ProductDescriptionProps {
     description: string;
 }
+
+export interface ProductSizesProps {
+    sizes: number[];
+}
