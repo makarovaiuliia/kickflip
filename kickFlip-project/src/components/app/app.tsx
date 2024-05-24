@@ -14,6 +14,8 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
+import Card from '@/components/card/card';
+import { mockData } from '../card/mockData';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -26,7 +28,11 @@ function App() {
     useEffect(() => {
         const token = getCookie('accessToken');
         if (token) {
-            dispatch(getUser()).unwrap();
+            dispatch(getUser())
+                .unwrap()
+                .catch(() => {
+                    dispatch(getAnonymousToken());
+                });
         } else {
             dispatch(getAnonymousToken());
         }
@@ -37,6 +43,9 @@ function App() {
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="product" element={<Card productInfo={mockData} />} />
+                {/* TODO: Вставить сюда элемент, который является страницей продукта */}
+                {/* <Route path="products/:id/:slug" element={} /> */}
                 <Route
                     path="profile/*"
                     element={

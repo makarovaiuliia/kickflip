@@ -36,9 +36,9 @@ export default function Header() {
         <header className="header">
             <div className="header-wrapper">
                 <div className="logo">
-                    <NavLink className="logo-link" to="/" onClick={closeMenu}>
+                    <Link className="logo-link" to="/" onClick={closeMenu}>
                         <img src={logo} alt="Kickflip" />
-                    </NavLink>
+                    </Link>
                 </div>
                 <div className={`navigation ${isOpen && 'open'}`}>
                     <nav className="categories-nav">
