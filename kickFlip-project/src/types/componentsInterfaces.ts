@@ -31,3 +31,10 @@ export interface ProductDescriptionProps {
 export interface ProductSizesProps {
     sizes: number[];
 }
+
+export interface DetailsContainerProps {
+    infoProps: ProductInfoProps;
+    variantProps: VariantImagesProps;
+    sizesProps: ProductSizesProps;
+    descrProps: ProductDescriptionProps;
+}
