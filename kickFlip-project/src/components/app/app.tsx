@@ -17,6 +17,11 @@ import ProtectedRoute from '@/utils/protectedRoute';
 import Card from '@/components/card/card';
 import { mockData } from '../card/mockData';
 
+import ProfileAccount from '../profileAccount/profileAccount';
+import ProfileAddress from '../profileAddress/profileAddress';
+import ProfileOrders from '../profileOrders/profileOrders';
+import ProfilePassword from '../profilePassword/profilePassword';
+
 function App() {
     const dispatch = useDispatch();
 
@@ -42,13 +47,18 @@ function App() {
                 {/* TODO: Вставить сюда элемент, который является страницей продукта */}
                 {/* <Route path="products/:id/:slug" element={} /> */}
                 <Route
-                    path="profile"
+                    path="profile/*"
                     element={
                         <ProtectedRoute>
                             <ProfilePage />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route path="account" element={<ProfileAccount />} />
+                    <Route path="orders" element={<ProfileAddress />} />
+                    <Route path="address" element={<ProfileOrders />} />
+                    <Route path="password" element={<ProfilePassword />} />
+                </Route>
                 <Route
                     path="login"
                     element={
