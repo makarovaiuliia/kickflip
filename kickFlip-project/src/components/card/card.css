@@ -1,12 +1,9 @@
-.temp {
-    /* border: 1px solid var(--electric-orange); */
-}
-
 .card {
     display: flex;
     flex-direction: column;
     gap: 10px;
     color: var(--deep-blue);
+    font-family: var(--font-family);
 }
 
 .image-link {
@@ -62,8 +59,32 @@
     margin: 0;
 }
 
+.card_description {
+    font-family: var(--third-family);
+    margin-top: -0.8rem;
+    opacity: 0.7;
+}
+
+.card_discounted {
+    display: flex;
+    gap: 1rem;
+}
+
 .card_price {
     color: var(--electric-orange);
     font-size: 1.25rem;
-    font-family: var(--third-family);
+}
+
+.card_price_old {
+    font-size: 1.25rem;
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+@media (width < 800px) {
+    .card_image {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%; /* от 125 до 335 (380-1440) */
+        gap: 8px 20px;
+    }
 }

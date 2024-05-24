@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useMatch } from 'react-router-dom';
+import { NavLink, Link, useNavigate, useMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -50,7 +50,7 @@ export default function Header() {
                                 to="/"
                                 onClick={closeMenu}
                             >
-                                Home
+                                Main
                             </NavLink>
                             <NavLink
                                 className={({ isActive }) =>
@@ -59,7 +59,7 @@ export default function Header() {
                                 to="/products"
                                 onClick={closeMenu}
                             >
-                                Products
+                                Sneakers
                             </NavLink>
                         </div>
                     </nav>

@@ -1,9 +1,10 @@
+import CardList from '@/components/cardList/cardList';
 import './productsPage.css';
+import { useSelector } from '@/services/store';
+import { getAllSneakers } from '@/services/sneakersSlice';
 
 export default function ProductsPage(): JSX.Element {
-    return (
-        <div className="main-wrapper cart-wrapper">
-            <h1 className="cart-title">Cart page will be here</h1>
-        </div>
-    );
+    const allSneakers = useSelector(getAllSneakers);
+
+    return <CardList products={allSneakers!} />;
 }

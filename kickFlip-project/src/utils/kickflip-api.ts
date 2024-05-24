@@ -1,4 +1,13 @@
-import { LogInData, ProductResponse, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
+import {
+    CategoriesResponse,
+    DiscountResponse,
+    LogInData,
+    ProductResponse,
+    ServerResponse,
+    SignUpDataForm,
+    SignUpDataRequest,
+    TAddress,
+} from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
@@ -152,6 +161,47 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
+export const getProductsApi = () => {
+    return fetch(`${URL}/${projectKey}/products`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<ProductResponse>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const getDiscountsApi = () => {
+    return fetch(`${URL}/${projectKey}/product-discounts`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<DiscountResponse>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const getCategoriesApi = () => {
+    return fetch(`${URL}/${projectKey}/categories`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<CategoriesResponse>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+
 export const getProductByKey = async (key: string) => {
     const response = await fetch(`${URL}/${projectKey}/products/key=${key}`, {
         headers: {
@@ -161,4 +211,5 @@ export const getProductByKey = async (key: string) => {
 
     const data = checkResponse<ProductResponse>(response);
     return data;
+
 };

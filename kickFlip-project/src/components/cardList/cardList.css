@@ -1,0 +1,12 @@
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 40px;
+}
+
+@media (width < 800px) {
+    .card-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px 20px;
+    }
+}
