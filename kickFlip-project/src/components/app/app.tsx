@@ -8,12 +8,13 @@ import HomePage from '@/pages/home/homePage';
 import LoginPage from '@/pages/login/loginPage';
 import RegistrationPage from '@/pages/registration/registrationPage';
 import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
-import ProductsPage from '@/pages/products/productsPage';
+// import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
+
 import Card from '@/components/card/card';
 import { mockData } from '../card/mockData';
 
@@ -21,6 +22,7 @@ import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
 import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
+
 
 function App() {
     const dispatch = useDispatch();
@@ -42,10 +44,12 @@ function App() {
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
+
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="product" element={<Card productInfo={mockData} />} />
                 {/* TODO: Вставить сюда элемент, который является страницей продукта */}
                 {/* <Route path="products/:id/:slug" element={} /> */}
+
                 <Route
                     path="profile/*"
                     element={
@@ -77,6 +81,7 @@ function App() {
                 />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
+                <Route path="products" element={<ProductPage productKey="blazer-mid-77" />} />
             </Route>
         </Routes>
     );
