@@ -11,14 +11,19 @@ interface CardProps {
 function Card({ productInfo }: CardProps): JSX.Element {
     const productData = productInfo.masterData.current;
     const { masterVariant, name, slug } = productData;
-    const discounted = !!masterVariant.prices[0].discounted;
 
-    const price = masterVariant.prices[0].value.centAmount / 100;
-    const images = getImageFromEachColor(productInfo);
     const [activeImage, setActiveImage] = useState(0);
 
+    const productPrices = masterVariant.prices[0];
+
+    const price = productPrices.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits;
+    const discountPrice = productPrices.discounted
+        ? productPrices.discounted.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits
+        : undefined;
+    const images = getImageFromEachColor(productInfo);
+
     return (
-        <div className="temp card">
+        <div className="card">
             <Link to={`${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
                 <img
@@ -32,8 +37,8 @@ function Card({ productInfo }: CardProps): JSX.Element {
                     <button
                         type="button"
                         onClick={() => setActiveImage(index)}
-                        className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         key={image[0]}
+                        className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         style={{
                             backgroundImage: `url(${image[0]})`,
                         }}
@@ -43,10 +48,10 @@ function Card({ productInfo }: CardProps): JSX.Element {
             </div>
             <h3 className="card_title">{name['en-US']}</h3>
             <p className="card_description">{masterVariant.attributes[2].value}</p>
-            {!discounted && <p className="card_price">{`€ ${price}`}</p>}
-            {discounted && (
+            {!discountPrice && <p className="card_price">{`€ ${price}`}</p>}
+            {discountPrice && (
                 <div className="card_discounted">
-                    <p className="card_price">{`$ ${masterVariant.prices[0].discounted.value.centAmount / 100}`}</p>
+                    <p className="card_price">{`$ ${discountPrice}`}</p>
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
