@@ -45,8 +45,8 @@ function App() {
                 <Route index element={<HomePage />} />
 
                 <Route path="products" element={<ProductsPage />} />
-                {/* TODO: Вставить сюда элемент, который является страницей продукта */}
-                {/* <Route path="products/:id/:slug" element={} /> */}
+
+                <Route path="products/:id/:slug" element={<ProductPage />} />
 
                 <Route
                     path="profile/*"

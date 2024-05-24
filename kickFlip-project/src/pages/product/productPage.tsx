@@ -1,22 +1,23 @@
 import { useEffect, useState } from 'react';
-import { getProductByKey } from '@/utils/kickflip-api';
+import { useParams } from 'react-router-dom';
+import { getProductById } from '@/utils/kickflip-api';
 import { responsesErrorsHandler } from '@/utils/utils';
 import { ProductResponse } from '@/types/types';
 import Product from '@/components/product/product';
+import './productPage.css';
 
-interface ProductProps {
-    productKey: string;
-}
-
-export default function ProductPage({ productKey }: ProductProps) {
+export default function ProductPage() {
+    const productId = useParams<{ id: string }>();
     const [productData, setProductData] = useState<ProductResponse | null>(null);
     const [productError, setProductErrorError] = useState('');
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const data = await getProductByKey(productKey);
-                setProductData(data);
+                if (productId.id) {
+                    const data = await getProductById(productId.id);
+                    setProductData(data);
+                }
             } catch (error) {
                 if (error) {
                     responsesErrorsHandler(error, setProductErrorError);
@@ -25,15 +26,17 @@ export default function ProductPage({ productKey }: ProductProps) {
         };
 
         fetchProduct();
-    }, [productKey]);
+    }, [productId]);
 
-    if (productError) {
-        return <div> {productError}</div>;
-    }
-
-    if (!productData) {
-        return <div>Loading...</div>;
-    }
-
-    return <Product productData={productData} />;
+    return (
+        <div className="main-wrapper">
+            {productData ? (
+                <Product productData={productData} />
+            ) : productError ? (
+                <div> {productError}</div>
+            ) : (
+                <div className="load">Loading...</div>
+            )}
+        </div>
+    );
 }
