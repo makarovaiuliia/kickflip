@@ -201,6 +201,7 @@ export const getCategoriesApi = () => {
             if (result) return result;
             return Promise.reject(result);
         });
+};
 
 export const getProductByKey = async (key: string) => {
     const response = await fetch(`${URL}/${projectKey}/products/key=${key}`, {
@@ -211,5 +212,4 @@ export const getProductByKey = async (key: string) => {
 
     const data = checkResponse<ProductResponse>(response);
     return data;
-
 };

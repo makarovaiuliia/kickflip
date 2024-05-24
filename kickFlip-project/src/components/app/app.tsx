@@ -8,7 +8,7 @@ import HomePage from '@/pages/home/homePage';
 import LoginPage from '@/pages/login/loginPage';
 import RegistrationPage from '@/pages/registration/registrationPage';
 import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
-// import ProductsPage from '@/pages/products/productsPage';
+import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
@@ -20,7 +20,7 @@ import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
 import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
-
+import ProductPage from '@/pages/product/productPage';
 
 function App() {
     const dispatch = useDispatch();
@@ -79,7 +79,7 @@ function App() {
                 />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
-                <Route path="products" element={<ProductPage productKey="blazer-mid-77" />} />
+                <Route path="product" element={<ProductPage productKey="blazer-mid-77" />} />
             </Route>
         </Routes>
     );

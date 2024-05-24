@@ -1,5 +1,4 @@
-
-import { CustomerAddress, Product,ProductResponse, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
+import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
 
 import { setCookie } from './cookie';
 
@@ -68,9 +67,7 @@ export const createBasicAuthToken = (clientId: string, clientSecret: string): st
     return btoa(token);
 };
 
-
 export const processVariants = (masterVariant: Product, variants: Product[]): Variants => {
-
     const colorImagesMap: { [key: string]: string[] } = {};
 
     const processVariant = (variant: Product) => {
@@ -86,7 +83,6 @@ export const processVariants = (masterVariant: Product, variants: Product[]): Va
                     colorImagesMap[color].push(image.url);
                 });
             }
-
         }
     };
 
@@ -122,6 +118,7 @@ export const getAdditionalSize = (sizes: number[]) => {
     }
 
     return enlargedSizes;
+};
 
 export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     const { masterVariant, variants } = data.masterData.current;
@@ -134,5 +131,4 @@ export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     });
 
     return imageGroups;
-
 };
