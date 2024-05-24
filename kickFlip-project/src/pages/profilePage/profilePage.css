@@ -4,5 +4,39 @@
 
 .profile-wrapper {
     flex-direction: column;
+    margin: 0 40px;
     gap: 40px;
+}
+
+.profile {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 40px;
+}
+
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.profile-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    &.active .button {
+        background-color: var(--deep-blue);
+        color: var(--white);
+    }
+}
+
+.profile-nav-button {
+    background-color: var(--beige);
+    color: var(--deep-blue);
+    &:hover {
+        background-color: var(--electric-orange);
+        color: var(--white);
+    }
 }
