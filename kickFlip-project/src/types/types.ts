@@ -154,3 +154,7 @@ export interface Attributes {
     name: string;
     value: string | number;
 }
+
+export type Variants = {
+    [key: string]: string[];
+};

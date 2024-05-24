@@ -1,4 +1,4 @@
-import { CustomerAddress, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+import { CustomerAddress, Product, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -64,4 +64,56 @@ export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<R
 export const createBasicAuthToken = (clientId: string, clientSecret: string): string => {
     const token = `${clientId}:${clientSecret}`;
     return btoa(token);
+};
+
+export const processVariants = (masterVariant: Product, variants: Product[]): Variants => {
+    const colorImagesMap: { [key: string]: string[] } = {};
+
+    const processVariant = (variant: Product) => {
+        const colorAttr = variant.attributes.find((attr) => attr.name === 'color');
+        if (colorAttr) {
+            const color = colorAttr.value;
+            if (!colorImagesMap[color]) {
+                colorImagesMap[color] = [];
+            }
+            if (variant.images.length) {
+                variant.images.forEach((image) => {
+                    colorImagesMap[color].push(image.url);
+                });
+            }
+        }
+    };
+
+    processVariant(masterVariant);
+    variants.forEach(processVariant);
+
+    return colorImagesMap;
+};
+
+export const getProductsSizes = (masterVariant: Product, variants: Product[]) => {
+    const sizes: Set<number> = new Set();
+
+    const getVariantsSizes = (variant: Product) => {
+        const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size');
+        if (sizeAttribute && typeof sizeAttribute.value === 'number') sizes.add(sizeAttribute.value);
+    };
+
+    getVariantsSizes(masterVariant);
+    variants.forEach(getVariantsSizes);
+    return sizes;
+};
+
+export const getAdditionalSize = (sizes: number[]) => {
+    const enlargedSizes = [...sizes];
+    if (sizes.length < 10) {
+        const additionalCount = 10 - sizes.length;
+        let lastSize = sizes[sizes.length - 1];
+
+        for (let i = 0; i < additionalCount; i += 1) {
+            lastSize += 0.5;
+            enlargedSizes.push(lastSize);
+        }
+    }
+
+    return enlargedSizes;
 };
