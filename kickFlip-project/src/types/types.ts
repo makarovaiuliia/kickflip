@@ -103,10 +103,10 @@ export interface ProductResponse {
 }
 
 export interface ProductData {
-    name: ProductText;
-    description: ProductText;
+    name: Text;
+    description: Text;
     categories: Category[];
-    slug: ProductText;
+    slug: Text;
     masterVariant: Product;
     variants: Product[];
 }
@@ -120,7 +120,7 @@ export interface Product {
     attributes: Attributes[];
 }
 
-export interface ProductText {
+export interface Text {
     'en-US': string;
 }
 
@@ -133,6 +133,9 @@ export interface Price {
     id: string;
     value: PriceValue;
     key: string;
+    discounted: {
+        value: PriceValue;
+    };
 }
 
 export interface PriceValue {
@@ -153,4 +156,34 @@ export interface Image {
 export interface Attributes {
     name: string;
     value: string | number;
+}
+
+export interface ServerResponse<T> {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: T[];
+}
+
+export interface DiscountResponse {
+    id: string;
+    value: DiscountValue;
+    predicate: string;
+    name: Text;
+    description: Text;
+    active: boolean;
+}
+
+interface DiscountValue {
+    type: string;
+    permyriad: number;
+}
+
+export interface CategoriesResponse {
+    id: string;
+    key: string;
+    name: Text;
+    slug: Text;
+    description: Text;
 }

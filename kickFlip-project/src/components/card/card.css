@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 10px;
     color: var(--deep-blue);
+    font-family: var(--font-family);
 }
 
 .image-link {
@@ -58,10 +59,20 @@
     margin: 0;
 }
 
+.card_discounted {
+    display: flex;
+    gap: 1rem;
+}
+
 .card_price {
     color: var(--electric-orange);
     font-size: 1.25rem;
-    font-family: var(--font-family);
+}
+
+.card_price_old {
+    font-size: 1.25rem;
+    text-decoration: line-through;
+    opacity: 0.5;
 }
 
 @media (width < 800px) {
