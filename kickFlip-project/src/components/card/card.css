@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 10px;
     color: var(--deep-blue);
-    font-family: var(--font-family);
+    font-family: var(--second-family);
 }
 
 .image-link {
@@ -34,7 +34,6 @@
 .card_variant-list {
     display: flex;
     gap: 0.3rem;
-    overflow-y: scroll;
 }
 
 .card_image-mini {
@@ -51,7 +50,7 @@
 }
 
 .card_title {
-    font-family: var(--font-family);
+    font-family: var(--second-family);
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 24px;
@@ -60,7 +59,7 @@
 }
 
 .card_description {
-    font-family: var(--third-family);
+    font-family: var(--font-family);
     margin-top: -0.8rem;
     opacity: 0.7;
 }
@@ -84,7 +83,7 @@
 @media (width < 800px) {
     .card_image {
         grid-template-columns: repeat(2, 1fr);
-        width: 100%; /* от 125 до 335 (380-1440) */
+        width: 100%;
         gap: 8px 20px;
     }
 }

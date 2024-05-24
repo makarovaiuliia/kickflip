@@ -26,7 +26,6 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getProducts());
         const token = getCookie('accessToken');
         if (token) {
             dispatch(getUser())
@@ -37,6 +36,7 @@ function App() {
         } else {
             dispatch(getAnonymousToken());
         }
+        dispatch(getProducts());
     }, [dispatch]);
 
     return (
