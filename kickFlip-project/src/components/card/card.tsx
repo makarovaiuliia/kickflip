@@ -42,6 +42,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
                 ))}
             </div>
             <h3 className="card_title">{name['en-US']}</h3>
+            <p className="card_description">{masterVariant.attributes[2].value}</p>
             {!discounted && <p className="card_price">{`€ ${price}`}</p>}
             {discounted && (
                 <div className="card_discounted">
