@@ -1,4 +1,6 @@
-import { CustomerAddress, Product, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
+
+import { CustomerAddress, Product,ProductResponse, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
+
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -66,7 +68,9 @@ export const createBasicAuthToken = (clientId: string, clientSecret: string): st
     return btoa(token);
 };
 
+
 export const processVariants = (masterVariant: Product, variants: Product[]): Variants => {
+
     const colorImagesMap: { [key: string]: string[] } = {};
 
     const processVariant = (variant: Product) => {
@@ -76,11 +80,13 @@ export const processVariants = (masterVariant: Product, variants: Product[]): Va
             if (!colorImagesMap[color]) {
                 colorImagesMap[color] = [];
             }
+
             if (variant.images.length) {
                 variant.images.forEach((image) => {
                     colorImagesMap[color].push(image.url);
                 });
             }
+
         }
     };
 
@@ -116,4 +122,17 @@ export const getAdditionalSize = (sizes: number[]) => {
     }
 
     return enlargedSizes;
+
+export const getImageFromEachColor = (data: ProductResponse): string[][] => {
+    const { masterVariant, variants } = data.masterData.current;
+
+    const colorImagesMap = processVariants(masterVariant, variants);
+    const imageGroups: string[][] = [];
+
+    Object.values(colorImagesMap).forEach((images) => {
+        imageGroups.push(images);
+    });
+
+    return imageGroups;
+
 };

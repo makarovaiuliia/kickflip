@@ -12,9 +12,17 @@ import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
 import CartPage from '@/pages/cart/cartPage';
 
 import BasicLayoutPage from '../layout/basicLayout';
-import ProfilePage from '@/pages/profilePage';
+import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import ProductPage from '@/pages/product/productPage';
+
+import Card from '@/components/card/card';
+import { mockData } from '../card/mockData';
+
+import ProfileAccount from '../profileAccount/profileAccount';
+import ProfileAddress from '../profileAddress/profileAddress';
+import ProfileOrders from '../profileOrders/profileOrders';
+import ProfilePassword from '../profilePassword/profilePassword';
+
 
 function App() {
     const dispatch = useDispatch();
@@ -22,7 +30,11 @@ function App() {
     useEffect(() => {
         const token = getCookie('accessToken');
         if (token) {
-            dispatch(getUser()).unwrap();
+            dispatch(getUser())
+                .unwrap()
+                .catch(() => {
+                    dispatch(getAnonymousToken());
+                });
         } else {
             dispatch(getAnonymousToken());
         }
@@ -32,15 +44,25 @@ function App() {
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
-                {/* <Route path="products" element={<ProductsPage />} /> */}
+
+                <Route path="products" element={<ProductsPage />} />
+                <Route path="product" element={<Card productInfo={mockData} />} />
+                {/* TODO: Вставить сюда элемент, который является страницей продукта */}
+                {/* <Route path="products/:id/:slug" element={} /> */}
+
                 <Route
-                    path="profile"
+                    path="profile/*"
                     element={
                         <ProtectedRoute>
                             <ProfilePage />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route path="account" element={<ProfileAccount />} />
+                    <Route path="orders" element={<ProfileAddress />} />
+                    <Route path="address" element={<ProfileOrders />} />
+                    <Route path="password" element={<ProfilePassword />} />
+                </Route>
                 <Route
                     path="login"
                     element={

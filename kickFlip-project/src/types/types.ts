@@ -158,3 +158,4 @@ export interface Attributes {
 export type Variants = {
     [key: string]: string[];
 };
+

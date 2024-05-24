@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -25,13 +25,20 @@ export default function Header() {
         closeMenu();
     };
 
+    const navigate = useNavigate();
+    const match = useMatch('/profile');
+
+    useEffect(() => {
+        if (match) navigate('profile/account');
+    }, [match, navigate]);
+
     return (
         <header className="header">
             <div className="header-wrapper">
                 <div className="logo">
-                    <NavLink className="logo-link" to="/" onClick={closeMenu}>
+                    <Link className="logo-link" to="/" onClick={closeMenu}>
                         <img src={logo} alt="Kickflip" />
-                    </NavLink>
+                    </Link>
                 </div>
                 <div className={`navigation ${isOpen && 'open'}`}>
                     <nav className="categories-nav">
