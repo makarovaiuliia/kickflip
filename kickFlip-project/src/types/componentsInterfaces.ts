@@ -1,3 +1,5 @@
+import { Variants } from './types';
+
 export interface SideImgProps {
     sideImagesSrc: string[];
     mainImageSrc: string;
@@ -7,4 +9,12 @@ export interface SideImgProps {
 
 export interface MainImgProps {
     imageSrc: string;
+}
+
+export interface VariantImagesProps {
+    images: Variants;
+    index: number;
+    setImage: (image: string) => void;
+    setImages: (images: string[]) => void;
+    currentImages: string[];
 }
