@@ -14,7 +14,6 @@ function CardList({ products }: CardListProps): JSX.Element {
                     <Card productInfo={product} key={product.id} />
                 ))}
             </div>
-            s
         </div>
     );
 }
