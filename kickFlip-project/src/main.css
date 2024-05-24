@@ -39,6 +39,7 @@ html {
     /* Две строчки нужны для того, чтобы при пофвленнии вертикального скролла контент не двишался в сторону на несколько пикселей */
     overflow-x: hidden;
     margin-right: calc(-1 * (100vw - 100%));
+    height: 100vh;
 }
 
 *,
@@ -68,13 +69,17 @@ button {
 body {
     font-family: var(--font-family);
     color: var(--deep-blue);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
     width: 100%;
 }
 
 #root {
     width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
 }
