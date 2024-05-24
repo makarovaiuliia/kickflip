@@ -1,6 +1,4 @@
-interface MainImgProps {
-    imageSrc: string;
-}
+import { MainImgProps } from '@/types/componentsInterfaces';
 
 export default function MainImage({ imageSrc }: MainImgProps) {
     return (

@@ -1,9 +1,4 @@
-interface SideImgProps {
-    sideImagesSrc: string[];
-    mainImageSrc: string;
-    setIndex: (index: number) => void;
-    setImage: (image: string) => void;
-}
+import { SideImgProps } from '@/types/componentsInterfaces';
 
 export default function SideImages({ sideImagesSrc, mainImageSrc, setIndex, setImage }: SideImgProps) {
     return (
