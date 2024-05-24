@@ -46,8 +46,8 @@ function Card({ productInfo }: CardProps): JSX.Element {
             {!discounted && <p className="card_price">{`€ ${price}`}</p>}
             {discounted && (
                 <div className="card_discounted">
-                    <p className="card_price">{`€ ${masterVariant.prices[0].discounted.value.centAmount / 100}`}</p>
-                    <p className="card_price_old">{`€ ${price}`}</p>
+                    <p className="card_price">{`$ ${masterVariant.prices[0].discounted.value.centAmount / 100}`}</p>
+                    <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
         </div>
