@@ -14,9 +14,14 @@
 
 @font-face {
     font-family: 'Clash Display';
-    src:
-        url('@/assets/fonts/ClashDisplaySemibold.otf') format('opentype'),
-        url('@/assets/fonts/ClashDisplayMedium.otf') format('opentype');
+    src: url('@/assets/fonts/ClashDisplaySemibold.otf') format('opentype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Clash Display';
+    src: url('@/assets/fonts/ClashDisplayMedium.otf') format('opentype');
+    font-weight: 500;
 }
 
 @font-face {
@@ -61,7 +66,7 @@ button {
 }
 
 body {
-    font-family: var(--third-family);
+    font-family: var(--font-family);
     color: var(--deep-blue);
     min-height: 100vh;
     display: flex;
