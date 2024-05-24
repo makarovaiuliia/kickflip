@@ -48,7 +48,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
             </div>
             <h3 className="card_title">{name['en-US']}</h3>
             <p className="card_description">{masterVariant.attributes[2].value}</p>
-            {!discountPrice && <p className="card_price">{`€ ${price}`}</p>}
+            {!discountPrice && <p className="card_price">{`$ ${price}`}</p>}
             {discountPrice && (
                 <div className="card_discounted">
                     <p className="card_price">{`$ ${discountPrice}`}</p>
