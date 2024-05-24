@@ -1,4 +1,6 @@
-import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+
+import { CustomerAddress, Product,ProductResponse, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
+
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -66,7 +68,9 @@ export const createBasicAuthToken = (clientId: string, clientSecret: string): st
     return btoa(token);
 };
 
-const processVariants = (masterVariant: Product, variants: Product[]): { [key: string]: string[] } => {
+
+export const processVariants = (masterVariant: Product, variants: Product[]): Variants => {
+
     const colorImagesMap: { [key: string]: string[] } = {};
 
     const processVariant = (variant: Product) => {
@@ -76,9 +80,13 @@ const processVariants = (masterVariant: Product, variants: Product[]): { [key: s
             if (!colorImagesMap[color]) {
                 colorImagesMap[color] = [];
             }
-            variant.images.forEach((image) => {
-                colorImagesMap[color].push(image.url);
-            });
+
+            if (variant.images.length) {
+                variant.images.forEach((image) => {
+                    colorImagesMap[color].push(image.url);
+                });
+            }
+
         }
     };
 
@@ -87,6 +95,33 @@ const processVariants = (masterVariant: Product, variants: Product[]): { [key: s
 
     return colorImagesMap;
 };
+
+export const getProductsSizes = (masterVariant: Product, variants: Product[]) => {
+    const sizes: Set<number> = new Set();
+
+    const getVariantsSizes = (variant: Product) => {
+        const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size');
+        if (sizeAttribute && typeof sizeAttribute.value === 'number') sizes.add(sizeAttribute.value);
+    };
+
+    getVariantsSizes(masterVariant);
+    variants.forEach(getVariantsSizes);
+    return sizes;
+};
+
+export const getAdditionalSize = (sizes: number[]) => {
+    const enlargedSizes = [...sizes];
+    if (sizes.length < 10) {
+        const additionalCount = 10 - sizes.length;
+        let lastSize = sizes[sizes.length - 1];
+
+        for (let i = 0; i < additionalCount; i += 1) {
+            lastSize += 0.5;
+            enlargedSizes.push(lastSize);
+        }
+    }
+
+    return enlargedSizes;
 
 export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     const { masterVariant, variants } = data.masterData.current;
@@ -99,4 +134,5 @@ export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     });
 
     return imageGroups;
+
 };

@@ -187,3 +187,7 @@ export interface CategoriesResponse {
     slug: Text;
     description: Text;
 }
+
+export type Variants = {
+    [key: string]: string[];
+};
