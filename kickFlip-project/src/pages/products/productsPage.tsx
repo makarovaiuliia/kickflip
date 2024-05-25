@@ -9,8 +9,8 @@ import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 export default function ProductsPage(): JSX.Element {
     const allSneakers = useSelector(getAllSneakers);
     const categories = useSelector(getAllCategories);
-    const { category } = useParams();
 
+    const { category } = useParams();
     const products = category
         ? allSneakers.filter(
               (product) => product.masterData.current.categories[0].id === categories[category.toUpperCase()].id

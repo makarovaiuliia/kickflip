@@ -105,7 +105,7 @@ export interface ProductResponse {
 export interface ProductData {
     name: Text;
     description: Text;
-    categories: Category[];
+    categories: CategoryInfo[];
     slug: Text;
     masterVariant: Product;
     variants: Product[];
@@ -124,7 +124,7 @@ export interface Text {
     'en-US': string;
 }
 
-export interface Category {
+export interface CategoryInfo {
     typeId: string;
     id: string;
 }
