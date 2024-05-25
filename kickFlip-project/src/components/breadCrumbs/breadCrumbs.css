@@ -2,40 +2,38 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 9px;
+    gap: 1rem;
     width: 100%;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    text-transform: capitalize;
 }
 
 .crumb-current {
-    color: var(--border-gray);
+    color: var(--electric-orange);
     cursor: default;
 }
 
 .crumb-link {
-    color: var(--deep-blue);
+    color: var(--ink-light);
     text-transform: none;
     text-decoration: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .crumb-link:hover {
-    opacity: 60%;
+    text-decoration: underline;
 }
 
 .crumb-separator {
     width: 1px;
-    height: 12.85px;
-    transform: rotate(20.71deg);
-    background-color: var(--deep-blue);
+    height: 1.5rem;
+    transform: rotate(21deg);
+    background-color: var(--ink-light);
     cursor: default;
 }
 
 .crumb-section {
     display: flex;
-    gap: 11px;
+    gap: 1.2rem;
 }

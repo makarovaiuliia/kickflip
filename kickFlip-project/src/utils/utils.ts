@@ -1,6 +1,16 @@
-import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest, Variants } from '@/types/types';
+import {
+    CategoriesResponse,
+    CustomerAddress,
+    Product,
+    ProductResponse,
+    ServerResponse,
+    SignUpDataForm,
+    SignUpDataRequest,
+    Variants,
+} from '@/types/types';
 
 import { setCookie } from './cookie';
+import categoryImageData from '@/data/categoryData';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
     const addresses: CustomerAddress[] = [];
@@ -131,4 +141,28 @@ export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     });
 
     return imageGroups;
+};
+
+export interface Category {
+    imageUrl: string;
+    url: string;
+    sectionName: string;
+    id: string;
+}
+
+export interface CategoryData {
+    [key: string]: Category;
+}
+
+export const transformCategoryData = (responseData: ServerResponse<CategoriesResponse>): CategoryData => {
+    const categoryData: CategoryData = {};
+    responseData.results.forEach((category) => {
+        categoryData[category.key] = {
+            url: `../products/${category.slug['en-US']}`,
+            sectionName: category.name['en-US'],
+            id: category.id,
+            imageUrl: categoryImageData[category.key],
+        };
+    });
+    return categoryData;
 };

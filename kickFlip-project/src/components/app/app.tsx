@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getProducts } from '@/services/sneakersSlice';
+import { getCategories, getProducts } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -26,7 +26,6 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getProducts());
         const token = getCookie('accessToken');
         if (token) {
             dispatch(getUser())
@@ -37,6 +36,8 @@ function App() {
         } else {
             dispatch(getAnonymousToken());
         }
+        dispatch(getProducts());
+        dispatch(getCategories());
     }, [dispatch]);
 
     return (
@@ -45,6 +46,8 @@ function App() {
                 <Route index element={<HomePage />} />
 
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="products/:category" element={<ProductsPage />} />
+
                 {/* TODO: Вставить сюда элемент, который является страницей продукта */}
                 {/* <Route path="products/:id/:slug" element={} /> */}
 
