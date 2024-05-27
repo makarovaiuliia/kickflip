@@ -79,7 +79,6 @@ function App() {
                 />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
-                <Route path="product" element={<ProductPage productKey="blazer-mid-77" />} />
             </Route>
         </Routes>
     );
