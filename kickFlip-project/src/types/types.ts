@@ -22,6 +22,9 @@ export enum StateMessage {
 }
 export type TUser = {
     email: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
 };
 
 export type TAddress = {

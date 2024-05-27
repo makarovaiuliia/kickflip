@@ -4,7 +4,6 @@
 
 .profile-wrapper {
     flex-direction: column;
-    margin: 0 40px;
     gap: 40px;
 }
 
@@ -19,6 +18,12 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .profile-nav-links {

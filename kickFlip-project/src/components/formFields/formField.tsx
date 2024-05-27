@@ -32,7 +32,9 @@ interface FormFieldProps<T extends FieldValues> {
     addWrapperClasses?: string[];
     type?: string;
     label?: string;
+    readOnly?: boolean;
     id?: string;
+    defaultValue?: string;
     name: Path<T>;
     placeholder?: string;
     register: UseFormRegister<T>;
@@ -47,6 +49,8 @@ export default function FormField<T extends FieldValues>({
     type,
     label,
     id,
+    defaultValue,
+    readOnly,
     name,
     placeholder,
     register,
@@ -73,6 +77,8 @@ export default function FormField<T extends FieldValues>({
                     placeholder={placeholder}
                     spellCheck="false"
                     id={id}
+                    defaultValue={defaultValue}
+                    readOnly={readOnly}
                     {...register(name, validationRules)}
                 />
             )}
@@ -96,4 +102,6 @@ FormField.defaultProps = {
     fieldTag: 'input',
     selectOptions: [],
     placeholder: '',
+    readOnly: false,
+    defaultValue: null,
 };

@@ -1,10 +1,18 @@
 import './profileAccount.css';
+import { useSelector } from 'react-redux';
+import ChangeUserDataForm from '../form/changeUserDataForm/chageUserDataForm';
+import { getUserSelector } from '@/services/userSlice';
 
 export default function ProfileAccount(): JSX.Element {
+    const { user } = useSelector(getUserSelector);
+
+    console.log(user);
+    console.log('//--//--//--//');
+
     return (
         <>
-            <h2>Account details will be here.</h2>
-            <p>Here user can see account details: first name, last name, email etc. Also user and change them.</p>
+            <h2 className="form-subtitle">Account details</h2>
+            <ChangeUserDataForm />
         </>
     );
 }
