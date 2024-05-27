@@ -26,18 +26,23 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const token = getCookie('accessToken');
-        if (token) {
-            dispatch(getUser())
-                .unwrap()
-                .catch(() => {
-                    dispatch(getAnonymousToken());
-                });
-        } else {
-            dispatch(getAnonymousToken());
-        }
-        dispatch(getProducts());
-        dispatch(getCategories());
+        const fetchData = async () => {
+            const token = getCookie('accessToken');
+            if (token) {
+                try {
+                    await dispatch(getUser()).unwrap();
+                } catch (error) {
+                    await dispatch(getAnonymousToken()).unwrap();
+                }
+            } else {
+                await dispatch(getAnonymousToken()).unwrap();
+            }
+
+            await dispatch(getProducts()).unwrap();
+            dispatch(getCategories());
+        };
+
+        fetchData();
     }, [dispatch]);
 
     return (
