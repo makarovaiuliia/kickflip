@@ -51,10 +51,13 @@ function App() {
                 <Route index element={<HomePage />} />
 
                 <Route path="products" element={<ProductsPage />} />
+
+
+                <Route path="products/:id/:slug" element={<ProductPage />} />
+
                 <Route path="products/:category" element={<ProductsPage />} />
 
-                {/* TODO: Вставить сюда элемент, который является страницей продукта */}
-                {/* <Route path="products/:id/:slug" element={} /> */}
+              
 
                 <Route
                     path="profile/*"
@@ -87,7 +90,6 @@ function App() {
                 />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="*" element={<NotFoundPage />} />
-                <Route path="product" element={<ProductPage productKey="blazer-mid-77" />} />
             </Route>
         </Routes>
     );

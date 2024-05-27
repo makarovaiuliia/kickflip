@@ -203,8 +203,8 @@ export const getCategoriesApi = () => {
         });
 };
 
-export const getProductByKey = async (key: string) => {
-    const response = await fetch(`${URL}/${projectKey}/products/key=${key}`, {
+export const getProductById = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/products/${id}`, {
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
         },
