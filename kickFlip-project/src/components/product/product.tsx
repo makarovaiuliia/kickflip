@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ProductResponse, ProductData, PriceValue } from '@/types/types';
+import { ProductResponse, ProductData, Price } from '@/types/types';
 import { getProductsSizes, processVariants } from '@/utils/utils';
 import './product.css';
 
@@ -14,7 +14,7 @@ export default function Product({ productData }: ProductProps) {
     const product: ProductData = productData.masterData.current;
     const productName: string = product.name['en-US'];
     const productDescription: string = product.description['en-US'];
-    const productPrice: PriceValue = product.masterVariant.prices[0].value;
+    const productPrices: Price = product.masterVariant.prices[0];
     const imagesData = processVariants(product.masterVariant, product.variants);
     const sizes = Array.from(getProductsSizes(product.masterVariant, product.variants));
 
@@ -31,7 +31,7 @@ export default function Product({ productData }: ProductProps) {
                 setImage={setMainImage}
             />
             <DetailsContainer
-                infoProps={{ name: productName, priceData: productPrice }}
+                infoProps={{ name: productName, priceData: productPrices }}
                 variantProps={{
                     images: imagesData,
                     index: activeIndex,
