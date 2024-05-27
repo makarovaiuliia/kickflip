@@ -162,7 +162,7 @@ export const getUserApi = () =>
     });
 
 export const getProductsApi = () => {
-    return fetch(`${URL}/${projectKey}/products`, {
+    return fetch(`${URL}/${projectKey}/products?limit=500`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${getCookie('accessToken')}`,

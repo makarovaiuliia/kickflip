@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getProducts } from '@/services/sneakersSlice';
+import { getCategories, getProducts } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -26,6 +26,25 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+<<<<<<< RSS-ECOMM-3_08_implementCategoryAndBreadcrumbNavigation
+        const fetchData = async () => {
+            const token = getCookie('accessToken');
+            if (token) {
+                try {
+                    await dispatch(getUser()).unwrap();
+                } catch (error) {
+                    await dispatch(getAnonymousToken()).unwrap();
+                }
+            } else {
+                await dispatch(getAnonymousToken()).unwrap();
+            }
+
+            await dispatch(getProducts()).unwrap();
+            dispatch(getCategories());
+        };
+
+        fetchData();
+=======
         const token = getCookie('accessToken');
         if (token) {
             dispatch(getUser())
@@ -37,6 +56,7 @@ function App() {
             dispatch(getAnonymousToken());
         }
         dispatch(getProducts());
+>>>>>>> release/catalog-product-profile
     }, [dispatch]);
 
     return (
@@ -45,6 +65,8 @@ function App() {
                 <Route index element={<HomePage />} />
 
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="products/:category" element={<ProductsPage />} />
+
                 {/* TODO: Вставить сюда элемент, который является страницей продукта */}
                 {/* <Route path="products/:id/:slug" element={} /> */}
 
