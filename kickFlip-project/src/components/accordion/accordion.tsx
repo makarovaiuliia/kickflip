@@ -10,7 +10,7 @@ function Accordion({ title, options }: AccordionProps): JSX.Element {
     const [isActive, setIsActive] = useState(false);
 
     return (
-        <div className="accordion">
+        <li className="accordion">
             <button
                 type="button"
                 className="accordion_title"
@@ -23,12 +23,14 @@ function Accordion({ title, options }: AccordionProps): JSX.Element {
                 <ul className="accordion-content">
                     {options.map((option) => (
                         <li className="accordion-content-item" key={option}>
-                            {option}
+                            <button type="button" className="accordion-content-button">
+                                {option}
+                            </button>
                         </li>
                     ))}
                 </ul>
             )}
-        </div>
+        </li>
     );
 }
 

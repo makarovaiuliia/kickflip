@@ -37,7 +37,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
                     <button
                         type="button"
                         onClick={() => setActiveImage(index)}
-                        key={image[0]}
+                        key={`image url: ${image[0]}`}
                         className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         style={{
                             backgroundImage: `url(${image[0]})`,
