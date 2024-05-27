@@ -19,13 +19,19 @@ function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
         removeCategory(target.textContent!);
     };
 
+    const handleClearAll = () => {
+        setCategories([]);
+    };
+
     return (
         <div className="filter-wrapper">
             {!!categories.length && (
                 <div className="selected">
                     <div className="selected_title">
                         <p>Selected categories</p>
-                        <p className="selected_text">Clear all</p>
+                        <button type="button" className="selected_text" onClick={handleClearAll}>
+                            Clear all
+                        </button>
                     </div>
                     <ul className="category_list">
                         {categories.map((category) => (

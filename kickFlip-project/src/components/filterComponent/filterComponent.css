@@ -47,6 +47,11 @@
 
 .selected_text {
     font-size: 1.3rem;
+    cursor: pointer;
+    text-transform: none;
+}
+.selected_text:hover {
+    text-decoration: underline;
 }
 
 .filter-wrapper {
