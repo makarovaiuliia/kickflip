@@ -24,7 +24,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
 
     return (
         <div className="card">
-            <Link to={`${productInfo.id}/${slug['en-US']}`} className="image-link">
+            <Link to={`/products/${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
                 <img
                     src={images[activeImage][Math.random() < 0.5 ? 1 : 2]}

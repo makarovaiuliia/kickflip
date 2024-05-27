@@ -52,12 +52,9 @@ function App() {
 
                 <Route path="products" element={<ProductsPage />} />
 
-
                 <Route path="products/:id/:slug" element={<ProductPage />} />
 
                 <Route path="products/:category" element={<ProductsPage />} />
-
-              
 
                 <Route
                     path="profile/*"

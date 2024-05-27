@@ -5,6 +5,8 @@ import { useSelector } from '@/services/store';
 import { getAllCategories, getAllSneakers } from '@/services/sneakersSlice';
 import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
+import FilterComponent from '@/components/filterComponent/filterComponent';
+import { filter } from '@/components/filterComponent/filterComponentData';
 
 export default function ProductsPage(): JSX.Element {
     const allSneakers = useSelector(getAllSneakers);
@@ -39,7 +41,7 @@ export default function ProductsPage(): JSX.Element {
             </div>
             {category && <BreadCrumbs crumbs={breadCrumbs} />}
             <div className="products">
-                <div />
+                <FilterComponent filterOptions={filter} />
                 <CardList products={products} />
             </div>
         </div>
