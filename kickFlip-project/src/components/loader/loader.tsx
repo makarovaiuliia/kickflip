@@ -1,3 +1,9 @@
+import './loader.css';
+
 export default function Loader() {
-    return <p className="load">Loading....</p>;
+    return (
+        <div className="loader">
+            <div className="loader-inner" />
+        </div>
+    );
 }
