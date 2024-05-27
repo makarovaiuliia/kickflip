@@ -38,7 +38,8 @@ export default function ProductsPage(): JSX.Element {
                 ))}
             </div>
             {category && <BreadCrumbs crumbs={breadCrumbs} />}
-            <div>
+            <div className="products">
+                <div />
                 <CardList products={products} />
             </div>
         </div>
