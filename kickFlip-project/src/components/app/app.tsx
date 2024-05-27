@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getProducts } from '@/services/sneakersSlice';
+import { getCategories, getProducts } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -26,17 +26,23 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const token = getCookie('accessToken');
-        if (token) {
-            dispatch(getUser())
-                .unwrap()
-                .catch(() => {
-                    dispatch(getAnonymousToken());
-                });
-        } else {
-            dispatch(getAnonymousToken());
-        }
-        dispatch(getProducts());
+        const fetchData = async () => {
+            const token = getCookie('accessToken');
+            if (token) {
+                try {
+                    await dispatch(getUser()).unwrap();
+                } catch (error) {
+                    await dispatch(getAnonymousToken()).unwrap();
+                }
+            } else {
+                await dispatch(getAnonymousToken()).unwrap();
+            }
+
+            await dispatch(getProducts()).unwrap();
+            dispatch(getCategories());
+        };
+
+        fetchData();
     }, [dispatch]);
 
     return (
@@ -46,7 +52,12 @@ function App() {
 
                 <Route path="products" element={<ProductsPage />} />
 
+
                 <Route path="products/:id/:slug" element={<ProductPage />} />
+
+                <Route path="products/:category" element={<ProductsPage />} />
+
+              
 
                 <Route
                     path="profile/*"
