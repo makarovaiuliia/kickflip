@@ -1,6 +1,6 @@
 .accordion {
     width: 100%;
-    padding: 1.6rem 0;
+    padding: 2rem 0;
     font-size: 1.6rem;
     border-top: 0.5px solid var(--deep-blue);
     display: flex;
@@ -25,29 +25,4 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-}
-
-.accordion-content-item {
-    display: flex;
-    border: 0.5px solid var(--deep-blue);
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    padding: 8px 16px;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.accordion-content-item:hover {
-    background-color: var(--deep-blue);
-    color: #fff;
-}
-
-.accordion-content-item-active {
-    border: 0.5px solid var(--electric-orange);
-}
-
-.accordion-content-button {
-    text-transform: none;
 }
