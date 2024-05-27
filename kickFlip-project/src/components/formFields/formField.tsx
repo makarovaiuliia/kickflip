@@ -23,6 +23,7 @@ type OptionProps = {
 type Option = {
     value: string;
     text: string;
+    selected?: boolean | undefined;
     props?: OptionProps[];
 };
 
@@ -58,7 +59,7 @@ export default function FormField<T extends FieldValues>({
     validationRules,
 }: FormFieldProps<T>) {
     const options = selectOptions?.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option key={option.value} value={option.value} selected={option.selected}>
             {option.text}
         </option>
     ));

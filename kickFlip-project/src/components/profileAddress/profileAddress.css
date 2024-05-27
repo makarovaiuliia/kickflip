@@ -1,0 +1,7 @@
+.form-addresses-wrapper {
+    display: flex;
+    flex-direction: column;
+    &:empty {
+        display: none;
+    }
+}

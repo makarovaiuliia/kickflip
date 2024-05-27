@@ -45,3 +45,17 @@
         color: var(--white);
     }
 }
+
+@media (width <= 900px) {
+    .profile {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .profile-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+}

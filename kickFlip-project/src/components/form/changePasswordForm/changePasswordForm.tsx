@@ -54,7 +54,7 @@ export default function ChangePasswordForm() {
             />
             <div className="input-wrapper">
                 <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
-                    Save
+                    Update
                 </button>
             </div>
 

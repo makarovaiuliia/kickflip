@@ -25,10 +25,14 @@ export type TUser = {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
+    addresses: Array<TAddress>;
+    billingAddressIds: Array<string>;
+    shippingAddressIds: Array<string>;
 };
 
 export type TAddress = {
     country: string;
+    id?: string;
     title?: string;
     salutation?: string;
     firstName?: string;

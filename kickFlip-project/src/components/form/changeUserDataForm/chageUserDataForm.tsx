@@ -110,10 +110,10 @@ export default function ChangeUserDataForm() {
             />
             <div className="buttons-wrapper">
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
-                    Update
+                    Edit
                 </button>
                 <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
-                    Save
+                    Update
                 </button>
             </div>
             <span className="error-message stretched">{registrationError}</span>
