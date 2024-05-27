@@ -4,7 +4,7 @@ import { getProductById } from '@/utils/kickflip-api';
 import { responsesErrorsHandler } from '@/utils/utils';
 import { ProductResponse } from '@/types/types';
 import Product from '@/components/product/product';
-import './productPage.css';
+import Loader from '@/components/loader/loader';
 
 export default function ProductPage() {
     const productId = useParams<{ id: string }>();
@@ -33,9 +33,9 @@ export default function ProductPage() {
             {productData ? (
                 <Product productData={productData} />
             ) : productError ? (
-                <div> {productError}</div>
+                <div>{productError}</div>
             ) : (
-                <div className="load">Loading...</div>
+                <Loader />
             )}
         </div>
     );
