@@ -26,7 +26,6 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-<<<<<<< RSS-ECOMM-3_08_implementCategoryAndBreadcrumbNavigation
         const fetchData = async () => {
             const token = getCookie('accessToken');
             if (token) {
@@ -44,19 +43,6 @@ function App() {
         };
 
         fetchData();
-=======
-        const token = getCookie('accessToken');
-        if (token) {
-            dispatch(getUser())
-                .unwrap()
-                .catch(() => {
-                    dispatch(getAnonymousToken());
-                });
-        } else {
-            dispatch(getAnonymousToken());
-        }
-        dispatch(getProducts());
->>>>>>> release/catalog-product-profile
     }, [dispatch]);
 
     return (
