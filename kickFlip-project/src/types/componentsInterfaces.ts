@@ -1,4 +1,4 @@
-import { PriceValue, Variants } from './types';
+import { Price, Variants } from './types';
 
 export interface SideImgProps {
     sideImagesSrc: string[];
@@ -19,9 +19,13 @@ export interface VariantImagesProps {
     currentImages: string[];
 }
 
+export interface ProductPricesProps {
+    priceData: Price;
+}
+
 export interface ProductInfoProps {
     name: string;
-    priceData: PriceValue;
+    priceData: Price;
 }
 
 export interface ProductDescriptionProps {

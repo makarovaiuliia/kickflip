@@ -82,9 +82,22 @@
     font-size: 3.6rem;
 }
 
+.product-prices {
+    display: flex;
+    gap: 20px;
+}
+
 .product-price {
     font-size: 2.4rem;
     color: var(--electric-orange);
+}
+
+.old-price {
+    order: 1;
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: var(--deep-blue);
+    font-weight: normal;
 }
 
 .product-descr-text {
@@ -117,6 +130,11 @@
     font-weight: 500;
     font-size: 1.6rem;
     color: var(--deep-blue);
+    transition: all 0.3s;
+}
+
+.size-btn:hover {
+    border: 1px solid var(--electric-orange);
 }
 
 .unavailable {
