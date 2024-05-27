@@ -1,6 +1,6 @@
 import { VariantImagesProps } from '@/types/componentsInterfaces';
 
-export default function VariantsImages({ images, index, setImage, setImages, currentImages }: VariantImagesProps) {
+export default function VariantsImages({ images, setImages, currentImages }: VariantImagesProps) {
     return (
         <div className="variants">
             {Object.values(images).map((imgs, i) => (
@@ -11,12 +11,11 @@ export default function VariantsImages({ images, index, setImage, setImages, cur
                         backgroundImage: `url(${imgs[0]})`,
                     }}
                     onClick={() => {
-                        setImage(imgs[index]);
                         setImages(imgs);
                     }}
                     className={`variant-img ${currentImages[0] === imgs[0] ? 'active' : ''}`}
                     type="button"
-                    aria-label={`Variant ${index + 1} main image `}
+                    aria-label={`Variant ${i + 1} main image `}
                 />
             ))}
         </div>

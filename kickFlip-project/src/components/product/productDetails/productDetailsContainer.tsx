@@ -10,8 +10,6 @@ export default function DetailsContainer({ infoProps, variantProps, sizesProps, 
             <ProductInfo name={infoProps.name} priceData={infoProps.priceData} />
             <VariantsImages
                 images={variantProps.images}
-                index={variantProps.index}
-                setImage={variantProps.setImage}
                 setImages={variantProps.setImages}
                 currentImages={variantProps.currentImages}
             />

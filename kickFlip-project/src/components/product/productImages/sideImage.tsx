@@ -1,9 +1,9 @@
-import { SideImgProps } from '@/types/componentsInterfaces';
+import { ImgProps } from '@/types/componentsInterfaces';
 
-export default function SideImages({ sideImagesSrc, mainImageSrc, setIndex, setImage }: SideImgProps) {
+export default function SideImages({ imagesSrc, activeIndex, setIndex }: ImgProps) {
     return (
         <div className="side-wrapper">
-            {sideImagesSrc.map((img, index) => (
+            {imagesSrc.map((img, index) => (
                 <button
                     // eslint-disable-next-line react/no-array-index-key
                     key={index}
@@ -11,10 +11,9 @@ export default function SideImages({ sideImagesSrc, mainImageSrc, setIndex, setI
                         backgroundImage: `url(${img})`,
                     }}
                     onClick={() => {
-                        setImage(img);
                         setIndex(index);
                     }}
-                    className={`side-img ${mainImageSrc === img ? 'active' : ''}`}
+                    className={`side-img ${activeIndex === index ? 'active' : ''}`}
                     type="button"
                     aria-label={`Variant image ${index + 1}`}
                 >
