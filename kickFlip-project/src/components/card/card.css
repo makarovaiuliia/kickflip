@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 10px;
     color: var(--deep-blue);
-    font-family: var(--font-family);
+    font-family: var(--second-family);
 }
 
 .image-link {
@@ -50,7 +50,7 @@
 }
 
 .card_title {
-    font-family: var(--font-family);
+    font-family: var(--second-family);
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 24px;
@@ -59,7 +59,7 @@
 }
 
 .card_description {
-    font-family: var(--third-family);
+    font-family: var(--font-family);
     margin-top: -0.8rem;
     opacity: 0.7;
 }

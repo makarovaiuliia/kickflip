@@ -45,7 +45,7 @@
     border: 1px solid var(--border-gray);
     color: var(--deep-blue);
     height: 56px;
-    font-family: var(--third-family);
+    font-family: var(--font-family);
     font-weight: 500;
     font-size: 2rem;
     line-height: 150%;
@@ -62,7 +62,7 @@
 
 .form-label {
     position: relative;
-    font-family: var(--third-family);
+    font-family: var(--font-family);
     font-weight: 500;
     font-size: 2rem;
     color: var(--deep-blue);
@@ -86,7 +86,7 @@
     background: var(--electric-orange);
     padding: 10px;
     width: 100%;
-    font-family: var(--font-family);
+    font-family: var(--second-family);
     font-weight: 500;
     font-size: 1.8rem;
     color: var(--white);
