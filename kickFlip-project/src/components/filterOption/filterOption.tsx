@@ -2,15 +2,16 @@ import { MouseEventHandler } from 'react';
 import './filterOption.css';
 
 interface FilterOptionProps {
-    option: string;
+    attribute: string;
+    value: string;
     handleClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-function FilterOption({ option, handleClick }: FilterOptionProps): JSX.Element {
+function FilterOption({ attribute, value, handleClick }: FilterOptionProps): JSX.Element {
     return (
-        <li className="accordion-content-item" key={option}>
-            <button type="button" className="accordion-content-button" onClick={handleClick}>
-                {option}
+        <li className="accordion-content-item" key={attribute}>
+            <button type="button" className="accordion-content-button" onClick={handleClick} data-attribute={attribute}>
+                {value}
             </button>
         </li>
     );

@@ -7,16 +7,25 @@ interface FilterComponentProps {
     filterOptions: { title: string; options: string[] }[];
 }
 
-function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
-    const [categories, setCategories] = useState<string[]>([]);
+export interface SelectedFilterOptions {
+    attribute: string;
+    value: string;
+}
 
-    const removeCategory = (category: string) => {
-        setCategories((prevCategories) => prevCategories.filter((cat) => cat !== category));
+function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
+    const [categories, setCategories] = useState<SelectedFilterOptions[]>([]);
+
+    const removeCategory = (category: SelectedFilterOptions) => {
+        setCategories((prevCategories) =>
+            prevCategories.filter((cat) => !(cat.attribute === category.attribute && cat.value === category.value))
+        );
     };
 
     const handleClick = (event: SyntheticEvent) => {
         const target = event.target as HTMLElement;
-        removeCategory(target.textContent!);
+        const attribute = target.getAttribute('data-attribute')!;
+        const value = target.textContent!;
+        removeCategory({ attribute, value });
     };
 
     const handleClearAll = () => {
@@ -34,7 +43,7 @@ function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
                         </button>
                     </div>
                     <ul className="category_list">
-                        {categories.map((category) => (
+                        {Object.keys(categories).map((category) => (
                             <li key={category}>
                                 <button type="button" className="category" onClick={handleClick}>
                                     <span className="category_title">{category}</span>
