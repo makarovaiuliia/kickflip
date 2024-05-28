@@ -43,10 +43,10 @@ function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
                         </button>
                     </div>
                     <ul className="category_list">
-                        {Object.keys(categories).map((category) => (
-                            <li key={category}>
+                        {categories.map((category) => (
+                            <li key={category.value}>
                                 <button type="button" className="category" onClick={handleClick}>
-                                    <span className="category_title">{category}</span>
+                                    <span className="category_title">{category.value}</span>
                                     <img src={cross} alt="cross" className="category_icon" />
                                 </button>
                             </li>
