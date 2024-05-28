@@ -1,36 +1,45 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
-import { ErrorMessage, SignUpDataForm } from '@/types/types';
+import { ErrorMessage, UpdatePasswordForm } from '@/types/types';
 import { useDispatch } from '@/services/store';
-import { signUpUser } from '@/services/userSlice';
+import { updateUserPassword, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
 import '../form.css';
 
 export default function ChangePasswordForm() {
-    const [registrationError, setRegistrationError] = useState('');
+    const { user } = useSelector(getUserSelector);
+    // console.log(user);
+    // console.log(user?.password);
+
+    const [updatePaswordError, setUpdatePaswordError] = useState('');
 
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors, isValid },
-    } = useForm<SignUpDataForm>({ mode: 'all' });
+    } = useForm<UpdatePasswordForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
-        setRegistrationError('');
+    const submit: SubmitHandler<UpdatePasswordForm> = async (data: UpdatePasswordForm) => {
+        const requestData = {
+            id: user?.id,
+            version: user?.version,
+            currentPassword: data.currentPassword,
+            newPassword: data.newPassword,
+        };
+        // console.log(requestData);
+        setUpdatePaswordError('');
         try {
-            await dispatch(signUpUser(data)).unwrap();
-            navigate('/');
+            await dispatch(updateUserPassword(requestData)).unwrap();
             reset();
         } catch (error) {
-            responsesErrorsHandler(error, setRegistrationError);
+            responsesErrorsHandler(error, setUpdatePaswordError);
         }
     };
 
@@ -40,12 +49,26 @@ export default function ChangePasswordForm() {
         <form className="change-password-form" onSubmit={handleSubmit(submit)}>
             <FormField
                 type="password"
+                label="Current Password"
+                id="current-password-input"
+                name="currentPassword"
+                placeholder="Enter your First Name"
+                register={register}
+                errors={errors.currentPassword}
+                validationRules={{
+                    required: ErrorMessage.REQUIRED_FIELD,
+                    pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
+                    minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
+                }}
+            />
+            <FormField
+                type="password"
                 label="New Password:"
                 id="new-password-input"
-                name="password"
+                name="newPassword"
                 placeholder="Enter your password"
                 register={register}
-                errors={errors.password}
+                errors={errors.newPassword}
                 validationRules={{
                     required: ErrorMessage.REQUIRED_FIELD,
                     pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
@@ -58,7 +81,7 @@ export default function ChangePasswordForm() {
                 </button>
             </div>
 
-            <span className="error-message stretched">{registrationError}</span>
+            <span className="error-message stretched">{updatePaswordError}</span>
         </form>
     );
 }

@@ -1,4 +1,4 @@
-import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress } from '@/types/types';
+import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress, UpdatePasswordForm } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
@@ -127,6 +127,22 @@ export const signUpUserApi = (data: SignUpDataForm) => {
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
         body: JSON.stringify(signUpData),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
+    return fetch(`${URL}/${projectKey}/customers/password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(data),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {

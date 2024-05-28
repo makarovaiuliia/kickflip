@@ -1,8 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAnonymousTokenApi, getUserApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
+import {
+    getAnonymousTokenApi,
+    getUserApi,
+    loginUserApi,
+    signUpUserApi,
+    updateUserPasswordApi,
+} from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
-import { LogInData, SignUpDataForm, StateMessage, TUser } from '@/types/types';
+import { LogInData, SignUpDataForm, StateMessage, TUser, UpdatePasswordForm } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -25,6 +31,11 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
 
 export const signUpUser = createAsyncThunk('user/register', async (data: SignUpDataForm) => {
     const response = await signUpUserApi(data);
+    return response;
+});
+
+export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
+    const response = await updateUserPasswordApi(data);
     return response;
 });
 

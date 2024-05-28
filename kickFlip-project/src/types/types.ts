@@ -22,12 +22,15 @@ export enum StateMessage {
 }
 export type TUser = {
     email: string;
-    firstName: string;
-    lastName: string;
-    dateOfBirth: string;
-    addresses: Array<TAddress>;
-    billingAddressIds: Array<string>;
-    shippingAddressIds: Array<string>;
+    firstName?: string;
+    lastName?: string;
+    dateOfBirth?: string;
+    addresses?: Array<TAddress>;
+    billingAddressIds?: Array<string>;
+    shippingAddressIds?: Array<string>;
+    password?: string;
+    id?: string;
+    version?: number;
 };
 
 export type TAddress = {
@@ -86,6 +89,11 @@ export interface SignUpDataForm extends SignUpData {
     billingAddress: CustomerAddress;
     useBillingAsShipping: boolean;
     useShippingAsBilling: boolean;
+}
+
+export interface UpdatePasswordForm {
+    currentPassword: string;
+    newPassword: string;
 }
 
 export interface SignUpDataRequest extends SignUpData {
