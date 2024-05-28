@@ -54,6 +54,9 @@
 }
 
 .side-wrapper {
+    position: sticky;
+    top: 15px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 1rem;
