@@ -11,6 +11,7 @@ import {
 
 import { setCookie } from './cookie';
 import categoryImageData from '@/data/categoryData';
+import type { SelectedFilterOptions } from '@/components/filterComponent/filterComponent';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
     const addresses: CustomerAddress[] = [];
@@ -165,4 +166,17 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
         };
     });
     return categoryData;
+};
+
+export const transformToMap = (filterOptions: SelectedFilterOptions[]): Record<string, string[]> => {
+    return filterOptions.reduce(
+        (acc, { attribute, value }) => {
+            if (!acc[attribute]) {
+                acc[attribute] = [];
+            }
+            acc[attribute].push(value);
+            return acc;
+        },
+        {} as Record<string, string[]>
+    );
 };

@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 import CardList from '@/components/cardList/cardList';
 import './productsPage.css';
 import { useSelector } from '@/services/store';
@@ -7,17 +9,30 @@ import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
 import filterData from '@/components/filterComponent/filterComponentData';
+import { ProductResponse } from '@/types/types';
 
 export default function ProductsPage(): JSX.Element {
+    const [products, setProducts] = useState<ProductResponse[]>([]);
     const allSneakers = useSelector(getAllSneakers);
     const categories = useSelector(getAllCategories);
+    const { category } = useParams<{ category: string }>();
 
-    const { category } = useParams();
-    const products = category
-        ? allSneakers.filter(
-              (product) => product.masterData.current.categories[0].id === categories[category.toUpperCase()].id
-          )
-        : allSneakers;
+    useEffect(() => {
+        if (!categories || !category) {
+            setProducts(allSneakers);
+            return;
+        }
+
+        const categoryId = categories[category.toUpperCase()]?.id;
+        if (categoryId) {
+            const filteredProducts = allSneakers.filter((product) =>
+                product.masterData.current.categories.some((cat) => cat.id === categoryId)
+            );
+            setProducts(filteredProducts);
+        } else {
+            setProducts(allSneakers);
+        }
+    }, [category, allSneakers, categories]);
 
     const breadCrumbs: CrumbType[] = category
         ? [
