@@ -19,25 +19,17 @@ export default function Product({ productData }: ProductProps) {
     const sizes = Array.from(getProductsSizes(product.masterVariant, product.variants));
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [mainImage, setMainImage] = useState(Object.values(imagesData)[0][activeIndex]);
-    const [sideImages, setSideImages] = useState(Object.values(imagesData)[0]);
+    const [images, setImages] = useState(Object.values(imagesData)[0]);
 
     return (
         <div className="product-wrapper">
-            <ImagesContainer
-                sideImagesSrc={sideImages}
-                mainImageSrc={mainImage}
-                setIndex={setActiveIndex}
-                setImage={setMainImage}
-            />
+            <ImagesContainer imagesSrc={images} activeIndex={activeIndex} setIndex={setActiveIndex} />
             <DetailsContainer
                 infoProps={{ name: productName, priceData: productPrices }}
                 variantProps={{
                     images: imagesData,
-                    index: activeIndex,
-                    setImage: setMainImage,
-                    setImages: setSideImages,
-                    currentImages: sideImages,
+                    setImages,
+                    currentImages: images,
                 }}
                 sizesProps={{ sizes }}
                 descrProps={{ description: productDescription }}

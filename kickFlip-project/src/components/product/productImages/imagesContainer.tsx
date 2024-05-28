@@ -1,18 +1,13 @@
-import { SideImgProps } from '@/types/componentsInterfaces';
+import { ImgProps } from '@/types/componentsInterfaces';
 
 import MainImage from './mainImage';
 import SideImages from './sideImage';
 
-export default function ImagesContainer({ sideImagesSrc, mainImageSrc, setIndex, setImage }: SideImgProps) {
+export default function ImagesContainer({ imagesSrc, setIndex, activeIndex }: ImgProps) {
     return (
         <div className="images-container">
-            <SideImages
-                sideImagesSrc={sideImagesSrc}
-                mainImageSrc={mainImageSrc}
-                setIndex={setIndex}
-                setImage={setImage}
-            />
-            <MainImage imageSrc={mainImageSrc} />
+            <SideImages imagesSrc={imagesSrc} activeIndex={activeIndex} setIndex={setIndex} />
+            <MainImage imagesSrc={imagesSrc} activeIndex={activeIndex} setIndex={setIndex} />
         </div>
     );
 }
