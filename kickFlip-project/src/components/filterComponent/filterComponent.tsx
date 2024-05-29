@@ -2,9 +2,9 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
 import cross from '../../../public/cross.svg';
-// import { transformToMap } from '@/utils/utils';
-// import { useDispatch } from '@/services/store';
-// import { getProducts } from '@/services/sneakersSlice';
+import { getFilteredProducts } from '@/services/sneakersSlice';
+import { transformToMap } from '@/utils/utils';
+import { useDispatch } from '@/services/store';
 
 interface FilterComponentProps {
     filterOptions: { title: string; options: string[] }[];
@@ -17,7 +17,7 @@ export interface SelectedFilterOptions {
 
 function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
     const [categories, setCategories] = useState<SelectedFilterOptions[]>([]);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const removeCategory = (category: SelectedFilterOptions) => {
         setCategories((prevCategories) =>
@@ -37,9 +37,9 @@ function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
     };
 
     useEffect(() => {
-        // const transformed = transformToMap(categories);
-        // dispatch(getProducts(transformed));
-    }, [categories]);
+        const transformed = transformToMap(categories);
+        dispatch(getFilteredProducts(transformed));
+    }, [categories, dispatch]);
 
     return (
         <div className="filter-wrapper">

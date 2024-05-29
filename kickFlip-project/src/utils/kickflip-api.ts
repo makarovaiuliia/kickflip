@@ -176,16 +176,15 @@ export const getProductsApi = () => {
         });
 };
 
+// price.centAmount:range (5000 to 10000)
+
 export const getProductsFilteredApi = (options?: Record<string, string[]>) => {
     let query = '';
     if (options) {
         query = Object.entries(options)
             .map(([key, values]) => {
-                if (Array.isArray(values)) {
-                    const formattedValues = values.map((value) => `"${value}"`).join(',');
-                    return `filter=variants.attributes.${key}:${formattedValues}`;
-                }
-                return `filter=variants.attributes.${key}:"${values}"`;
+                const formattedValues = values.map((value) => `%22${value.toLowerCase()}%22`).join(',');
+                return `filter=variants.attributes.${key}:${formattedValues}`;
             })
             .join('&');
     }
@@ -196,6 +195,7 @@ export const getProductsFilteredApi = (options?: Record<string, string[]>) => {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
         },
     })
         .then((res) => checkResponse<ServerResponse<ProductProjected>>(res))

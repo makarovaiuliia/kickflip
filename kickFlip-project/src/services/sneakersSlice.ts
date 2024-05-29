@@ -16,8 +16,8 @@ export const getCategories = createAsyncThunk('categories/post', async () => {
     return response;
 });
 
-export const getFilteredProducts = createAsyncThunk('filtered/get', async () => {
-    const response = await getProductsFilteredApi();
+export const getFilteredProducts = createAsyncThunk('filtered/get', async (options?: Record<string, string[]>) => {
+    const response = await getProductsFilteredApi(options);
     return response;
 });
 
