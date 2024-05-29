@@ -1,9 +1,9 @@
-import { ProductResponse } from '@/types/types';
+import { ProductProjected } from '@/types/types';
 import Card from '../card/card';
 import './cardList.css';
 
 interface CardListProps {
-    products: ProductResponse[];
+    products: ProductProjected[];
 }
 
 function CardList({ products }: CardListProps): JSX.Element {

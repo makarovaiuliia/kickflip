@@ -9,10 +9,10 @@ import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
 import filterData from '@/components/filterComponent/filterComponentData';
-import { ProductResponse } from '@/types/types';
+import { ProductProjected } from '@/types/types';
 
 export default function ProductsPage(): JSX.Element {
-    const [products, setProducts] = useState<ProductResponse[]>([]);
+    const [products, setProducts] = useState<ProductProjected[]>([]);
     const allSneakers = useSelector(getAllSneakers);
     const categories = useSelector(getAllCategories);
     const { category } = useParams<{ category: string }>();
@@ -26,7 +26,7 @@ export default function ProductsPage(): JSX.Element {
         const categoryId = categories[category.toUpperCase()]?.id;
         if (categoryId) {
             const filteredProducts = allSneakers.filter((product) =>
-                product.masterData.current.categories.some((cat) => cat.id === categoryId)
+                product.categories.some((cat) => cat.id === categoryId)
             );
             setProducts(filteredProducts);
         } else {

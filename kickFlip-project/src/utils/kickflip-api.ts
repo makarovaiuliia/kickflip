@@ -2,6 +2,7 @@ import {
     CategoriesResponse,
     DiscountResponse,
     LogInData,
+    ProductProjected,
     ProductResponse,
     ServerResponse,
     SignUpDataForm,
@@ -169,6 +170,35 @@ export const getProductsApi = () => {
         },
     })
         .then((res) => checkResponse<ServerResponse<ProductResponse>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const getProductsFilteredApi = (options?: Record<string, string[]>) => {
+    let query = '';
+    if (options) {
+        query = Object.entries(options)
+            .map(([key, values]) => {
+                if (Array.isArray(values)) {
+                    const formattedValues = values.map((value) => `"${value}"`).join(',');
+                    return `filter=variants.attributes.${key}:${formattedValues}`;
+                }
+                return `filter=variants.attributes.${key}:"${values}"`;
+            })
+            .join('&');
+    }
+
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+
+    return fetch(fetchUrl, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<ProductProjected>>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);

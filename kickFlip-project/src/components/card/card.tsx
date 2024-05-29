@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ProductResponse } from '@/types/types';
+import { ProductProjected } from '@/types/types';
 import './card.css';
 import { getImageFromEachColor } from '@/utils/utils';
 
 interface CardProps {
-    productInfo: ProductResponse;
+    productInfo: ProductProjected;
 }
 
 function Card({ productInfo }: CardProps): JSX.Element {
-    const productData = productInfo.masterData.current;
-    const { masterVariant, name, slug } = productData;
-
+    const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState(0);
 
     const productPrices = masterVariant.prices[0];

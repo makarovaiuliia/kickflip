@@ -191,3 +191,14 @@ export interface CategoriesResponse {
 export type Variants = {
     [key: string]: string[];
 };
+
+export interface ProductProjected {
+    id: string;
+    key: string;
+    name: Text;
+    description: Text;
+    categories: CategoryInfo[];
+    slug: Text;
+    masterVariant: Product;
+    variants: Product[];
+}
