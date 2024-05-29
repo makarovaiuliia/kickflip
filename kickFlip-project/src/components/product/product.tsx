@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ProductResponse, ProductData, Price } from '@/types/types';
-import { getProductsSizes, processVariants } from '@/utils/utils';
+import { getProductsSizes, processVariants, setBodyoverflowStyle } from '@/utils/utils';
 import './product.css';
 
 import ImagesContainer from './productImages/imagesContainer';
 import DetailsContainer from './productDetails/productDetailsContainer';
 import ModalWindow from '../modalWindow/modalWindow';
+import ModalSlider from '../modalSlider/modalSlider';
 
 interface ProductProps {
     productData: ProductResponse;
@@ -23,6 +24,8 @@ export default function Product({ productData }: ProductProps) {
     const [images, setImages] = useState(Object.values(imagesData)[0]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const modalContent = <ModalSlider sliderImages={images} />;
+    setBodyoverflowStyle(isModalOpen);
     return (
         <>
             <div className="product-wrapper">
@@ -43,7 +46,7 @@ export default function Product({ productData }: ProductProps) {
                     descrProps={{ description: productDescription }}
                 />
             </div>
-            {isModalOpen && <ModalWindow content="gjhgjkh" closeModal={setIsModalOpen} open={isModalOpen} />}
+            {isModalOpen && <ModalWindow content={modalContent} closeModal={setIsModalOpen} open={isModalOpen} />}
         </>
     );
 }

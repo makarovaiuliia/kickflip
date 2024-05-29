@@ -1,0 +1,35 @@
+:root {
+    --container-width: 500px;
+}
+
+.swiper-slide {
+    max-width: var(--container-width);
+    position: relative;
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+}
+
+.slider-arrow {
+    position: absolute;
+    bottom: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: var(--electric-orange);
+    font-size: 2rem;
+    font-weight: 600;
+    z-index: 5;
+}
+
+.swiper-button-prev {
+    left: calc(51% - var(--container-width) / 2);
+}
+
+.swiper-button-next {
+    right: calc(51% - var(--container-width) / 2);
+}
