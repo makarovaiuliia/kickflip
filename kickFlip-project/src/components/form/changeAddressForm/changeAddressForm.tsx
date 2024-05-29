@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country, SignUpDataForm, TAddress } from '@/types/types';
+import { ErrorMessage, Country, UpdateUserAddressForm, TAddress } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { signUpUser } from '@/services/userSlice';
+import { updateUserAddress } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -15,28 +14,25 @@ type Props = {
 export default function ChangeUserAddressForm(props: Props) {
     const { address } = props;
 
-    const [registrationError, setRegistrationError] = useState('');
+    const [updateUserAddressError, setUpdateUserAddressError] = useState('');
 
     const {
         register,
         handleSubmit,
         reset,
         watch,
-        trigger,
         formState: { errors, isValid },
-    } = useForm<SignUpDataForm>({ mode: 'all' });
+    } = useForm<UpdateUserAddressForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
-        setRegistrationError('');
+    const submit: SubmitHandler<UpdateUserAddressForm> = async (data: UpdateUserAddressForm) => {
+        setUpdateUserAddressError('');
         try {
-            await dispatch(signUpUser(data)).unwrap();
-            navigate('/');
+            await dispatch(updateUserAddress(data)).unwrap();
             reset();
         } catch (error) {
-            responsesErrorsHandler(error, setRegistrationError);
+            responsesErrorsHandler(error, setUpdateUserAddressError);
         }
     };
 
@@ -54,27 +50,6 @@ export default function ChangeUserAddressForm(props: Props) {
         }
         return true;
     };
-
-    const watchShippingCountry = watch('shippingAddress.country');
-    const watchBillingCountry = watch('billingAddress.country');
-
-    useEffect(() => {
-        if (watchShippingCountry) {
-            trigger('shippingAddress.postalCode');
-        }
-    }, [watchShippingCountry, trigger]);
-
-    useEffect(() => {
-        if (watchBillingCountry) {
-            trigger('billingAddress.postalCode');
-        }
-    }, [watchBillingCountry, trigger]);
-
-    useEffect(() => {
-        if (watchBillingCountry) {
-            trigger('billingAddress.postalCode');
-        }
-    }, [watchBillingCountry, trigger]);
 
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
 
@@ -161,7 +136,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
                     Edit
                 </button>
-                <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
+                <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'}`} type="submit">
                     Update
                 </button>
                 <button className="change-user-btn" type="button">
@@ -169,7 +144,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 </button>
             </div>
 
-            <span className="error-message stretched">{registrationError}</span>
+            <span className="error-message stretched">{updateUserAddressError}</span>
         </form>
     );
 }

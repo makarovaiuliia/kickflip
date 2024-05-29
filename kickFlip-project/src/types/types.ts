@@ -91,6 +91,15 @@ export interface SignUpDataForm extends SignUpData {
     useShippingAsBilling: boolean;
 }
 
+export interface UpdateUserAddressForm {
+    shippingAddress: CustomerAddress;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
+    billingAddress: CustomerAddress;
+    useBillingAsShipping: boolean;
+    useShippingAsBilling: boolean;
+}
+
 export interface UpdatePasswordForm {
     currentPassword: string;
     newPassword: string;

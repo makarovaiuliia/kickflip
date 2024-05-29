@@ -102,7 +102,7 @@ export default function ChangeUserDataForm() {
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
                     Edit
                 </button>
-                <button className={`change-user-btn ${isValid ? '' : 'disable'} `} type="submit">
+                <button className={`change-user-btn ${isValid || !abilityChangeForm ? '' : 'disable'} `} type="submit">
                     Update
                 </button>
             </div>

@@ -6,10 +6,19 @@ import {
     signUpUserApi,
     updateUserPasswordApi,
     updateUserDataApi,
+    updateUserAddressApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
-import { LogInData, SignUpDataForm, StateMessage, TUser, UpdatePasswordForm, UpdateUserDataForm } from '@/types/types';
+import {
+    LogInData,
+    SignUpDataForm,
+    StateMessage,
+    TUser,
+    UpdatePasswordForm,
+    UpdateUserDataForm,
+    UpdateUserAddressForm,
+} from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -42,6 +51,11 @@ export const updateUserPassword = createAsyncThunk('user/updatePasword', async (
 
 export const updateUserData = createAsyncThunk('user/updateData', async (data: UpdateUserDataForm) => {
     const response = await updateUserDataApi(data);
+    return response;
+});
+
+export const updateUserAddress = createAsyncThunk('user/updateAddress', async (data: UpdateUserAddressForm) => {
+    const response = await updateUserAddressApi(data);
     return response;
 });
 
