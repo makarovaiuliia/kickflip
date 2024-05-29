@@ -183,6 +183,9 @@ export const getProductsFilteredApi = (options?: Record<string, string[]>) => {
     if (options) {
         query = Object.entries(options)
             .map(([key, values]) => {
+                if (key === 'sort') {
+                    return `sort=${options[key].toString()}`;
+                }
                 const formattedValues = values.map((value) => `%22${value.toLowerCase()}%22`).join(',');
                 return `filter=variants.attributes.${key}:${formattedValues}`;
             })
