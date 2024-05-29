@@ -1,4 +1,11 @@
-import { LogInData, SignUpDataForm, SignUpDataRequest, TAddress, UpdatePasswordForm } from '@/types/types';
+import {
+    LogInData,
+    SignUpDataForm,
+    SignUpDataRequest,
+    TAddress,
+    UpdatePasswordForm,
+    UpdateUserDataForm,
+} from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
 
@@ -91,6 +98,34 @@ export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
 };
 
 export type TUserResponse = {
+    customer: TCustomerResponse;
+    id: string;
+    version: number;
+    versionModifiedAt: string;
+    lastMessageSequenceNumber: number;
+    createdAt: string;
+    lastModifiedAt: string;
+    lastModifiedBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    createdBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    addresses: Array<TAddress>;
+    shippingAddressIds: Array<string>;
+    billingAddressIds: Array<string>;
+    isEmailVerified: boolean;
+    stores: Array<string>;
+    authenticationMode: string;
+};
+
+export type TCustomerResponse = {
     id: string;
     version: number;
     versionModifiedAt: string;
@@ -136,6 +171,23 @@ export const signUpUserApi = (data: SignUpDataForm) => {
 };
 
 export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
+    return fetch(`${URL}/${projectKey}/customers/password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(data),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+// Need to check
+export const updateUserDataApi = (data: UpdateUserDataForm) => {
     return fetch(`${URL}/${projectKey}/customers/password`, {
         method: 'POST',
         headers: {

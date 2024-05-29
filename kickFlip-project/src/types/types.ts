@@ -96,6 +96,13 @@ export interface UpdatePasswordForm {
     newPassword: string;
 }
 
+export interface UpdateUserDataForm {
+    email: string;
+    lastName: string;
+    firstName: string;
+    dateOfBirth: Date;
+}
+
 export interface SignUpDataRequest extends SignUpData {
     defaultShippingAddress?: number;
     defaultBillingAddress?: number;

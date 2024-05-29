@@ -5,10 +5,11 @@ import {
     loginUserApi,
     signUpUserApi,
     updateUserPasswordApi,
+    updateUserDataApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
-import { LogInData, SignUpDataForm, StateMessage, TUser, UpdatePasswordForm } from '@/types/types';
+import { LogInData, SignUpDataForm, StateMessage, TUser, UpdatePasswordForm, UpdateUserDataForm } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -36,6 +37,11 @@ export const signUpUser = createAsyncThunk('user/register', async (data: SignUpD
 
 export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
     const response = await updateUserPasswordApi(data);
+    return response;
+});
+
+export const updateUserData = createAsyncThunk('user/updateData', async (data: UpdateUserDataForm) => {
+    const response = await updateUserDataApi(data);
     return response;
 });
 
@@ -93,7 +99,7 @@ const userSlice = createSlice({
                 state.isAuthChecked = true;
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
-                state.user = action.payload!;
+                state.user = action.payload.customer;
                 state.isAuth = true;
                 state.isAuthChecked = true;
                 state.registrationMessage = StateMessage.Registered;

@@ -12,9 +12,6 @@ import '../form.css';
 
 export default function ChangePasswordForm() {
     const { user } = useSelector(getUserSelector);
-    // console.log(user);
-    // console.log(user?.password);
-
     const [updatePaswordError, setUpdatePaswordError] = useState('');
 
     const {
@@ -33,7 +30,6 @@ export default function ChangePasswordForm() {
             currentPassword: data.currentPassword,
             newPassword: data.newPassword,
         };
-        // console.log(requestData);
         setUpdatePaswordError('');
         try {
             await dispatch(updateUserPassword(requestData)).unwrap();

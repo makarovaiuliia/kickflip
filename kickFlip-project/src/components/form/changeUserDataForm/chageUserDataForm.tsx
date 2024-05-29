@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ErrorMessage, SignUpDataForm } from '@/types/types';
@@ -8,7 +7,7 @@ import '../form.css';
 import { useDispatch } from '@/services/store';
 import { signUpUser, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
-import { responsesErrorsHandler } from '@/utils/utils';
+import { responsesErrorsHandler, ageRestrictionCheck } from '@/utils/utils';
 
 export default function ChangeUserDataForm() {
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
@@ -18,7 +17,7 @@ export default function ChangeUserDataForm() {
     };
 
     const { user } = useSelector(getUserSelector);
-    const [registrationError, setRegistrationError] = useState('');
+    const [updateUserDataError, setUpdateUserDataError] = useState('');
 
     const {
         register,
@@ -28,27 +27,18 @@ export default function ChangeUserDataForm() {
     } = useForm<SignUpDataForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
-        setRegistrationError('');
+        setUpdateUserDataError('');
         try {
             await dispatch(signUpUser(data)).unwrap();
-            navigate('/');
             reset();
         } catch (error) {
-            responsesErrorsHandler(error, setRegistrationError);
+            responsesErrorsHandler(error, setUpdateUserDataError);
         }
     };
 
     const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
-
-    const ageRestrictionCheck = (birthDay: Date) => {
-        const birthDate = new Date(birthDay);
-        const currentDate = new Date();
-        const age = currentDate.getFullYear() - birthDate.getFullYear();
-        return age >= 13 ? true : ErrorMessage.TOO_YOUNG_ERROR;
-    };
 
     return (
         <form className="change-user-data-form" onSubmit={handleSubmit(submit)}>
@@ -112,11 +102,11 @@ export default function ChangeUserDataForm() {
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
                     Edit
                 </button>
-                <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
+                <button className={`change-user-btn ${isValid ? '' : 'disable'} `} type="submit">
                     Update
                 </button>
             </div>
-            <span className="error-message stretched">{registrationError}</span>
+            <span className="error-message stretched">{updateUserDataError}</span>
         </form>
     );
 }

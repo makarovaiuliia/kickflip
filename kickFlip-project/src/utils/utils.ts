@@ -1,4 +1,11 @@
-import { CustomerAddress, Product, ProductResponse, SignUpDataForm, SignUpDataRequest } from '@/types/types';
+import {
+    CustomerAddress,
+    Product,
+    ProductResponse,
+    SignUpDataForm,
+    SignUpDataRequest,
+    ErrorMessage,
+} from '@/types/types';
 import { setCookie } from './cookie';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
@@ -99,4 +106,11 @@ export const getImageFromEachColor = (data: ProductResponse): string[][] => {
     });
 
     return imageGroups;
+};
+
+export const ageRestrictionCheck = (birthDay: Date) => {
+    const birthDate = new Date(birthDay);
+    const currentDate = new Date();
+    const age = currentDate.getFullYear() - birthDate.getFullYear();
+    return age >= 13 ? true : ErrorMessage.TOO_YOUNG_ERROR;
 };
