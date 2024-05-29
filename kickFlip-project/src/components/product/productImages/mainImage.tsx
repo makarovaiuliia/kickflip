@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ImgProps } from '@/types/componentsInterfaces';
 
-export default function MainImage({ imagesSrc, setIndex, activeIndex }: ImgProps) {
+export default function MainImage({ imagesSrc, setIndex, activeIndex, openModal }: ImgProps) {
     const [currentIndex, setCurrentIndex] = useState(activeIndex);
 
     useEffect(() => setIndex(currentIndex), [currentIndex, setIndex]);
@@ -15,12 +15,31 @@ export default function MainImage({ imagesSrc, setIndex, activeIndex }: ImgProps
         setCurrentIndex((prevIndex) => (prevIndex - 1 + imagesSrc.length) % imagesSrc.length);
     };
 
+    const handleOpen = () => {
+        if (openModal) {
+            openModal(true);
+        }
+    };
+
     return (
         <div className="carousel-wrapper">
-            <div className="carousel-inner" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+            <div
+                className="carousel-inner"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                onClick={handleOpen}
+                onKeyDown={handleOpen}
+                tabIndex={0}
+                role="button"
+                aria-label="show modal"
+            >
                 {imagesSrc.map((src, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <img key={index} src={src} alt={`Slide ${index}`} className="main-img" />
+                    <img
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={index}
+                        src={src}
+                        alt={`Slide ${index}`}
+                        className="main-img"
+                    />
                 ))}
             </div>
             <button className="slider-btn prev" onClick={handlePrev} aria-label="Previous image" type="button">
