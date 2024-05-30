@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, UpdateUserDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserData, getUserSelector } from '@/services/userSlice';
+import { updateUserAnyData, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler, ageRestrictionCheck } from '@/utils/utils';
 
@@ -31,7 +31,7 @@ export default function ChangeUserDataForm() {
     const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
         setUpdateUserDataError('');
         try {
-            await dispatch(updateUserData(data)).unwrap();
+            await dispatch(updateUserAnyData(data)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserDataError);
@@ -39,6 +39,18 @@ export default function ChangeUserDataForm() {
     };
 
     const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
+
+    const validationRules = {
+        names: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+        },
+        dateBirth: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            validate: (value: Date) => ageRestrictionCheck(value),
+        },
+    };
 
     return (
         <form className="change-user-data-form" onSubmit={handleSubmit(submit)}>
@@ -61,11 +73,7 @@ export default function ChangeUserDataForm() {
                 readOnly={abilityChangeForm}
                 register={register}
                 errors={errors.firstName}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
+                validationRules={validationRules.names}
             />
             <FormField
                 label="Last name:"
@@ -76,11 +84,7 @@ export default function ChangeUserDataForm() {
                 readOnly={abilityChangeForm}
                 register={register}
                 errors={errors.lastName}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
+                validationRules={validationRules.names}
             />
             <FormField
                 label="Date of birth:"
@@ -93,10 +97,7 @@ export default function ChangeUserDataForm() {
                 placeholder="Enter your Date of birth"
                 register={register}
                 errors={errors.dateOfBirth}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    validate: (value) => ageRestrictionCheck(value),
-                }}
+                validationRules={validationRules.dateBirth}
             />
             <div className="buttons-wrapper">
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>

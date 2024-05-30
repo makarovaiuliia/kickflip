@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, Country, UpdateUserAddressForm, TAddress } from '@/types/types';
+import { ErrorMessage, Country, UpdateUserDataForm, TAddress } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserAddress } from '@/services/userSlice';
+import { updateUserAnyData } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -15,6 +15,7 @@ export default function ChangeUserAddressForm(props: Props) {
     const { address } = props;
 
     const [updateUserAddressError, setUpdateUserAddressError] = useState('');
+    const [abilityChangeForm, setAbilityChangeForm] = useState(true);
 
     const {
         register,
@@ -22,25 +23,36 @@ export default function ChangeUserAddressForm(props: Props) {
         reset,
         watch,
         formState: { errors, isValid },
-    } = useForm<UpdateUserAddressForm>({ mode: 'all' });
+    } = useForm<UpdateUserDataForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
 
-    const submit: SubmitHandler<UpdateUserAddressForm> = async (data: UpdateUserAddressForm) => {
+    const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
         setUpdateUserAddressError('');
         try {
-            await dispatch(updateUserAddress(data)).unwrap();
+            await dispatch(updateUserAnyData(data)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserAddressError);
         }
     };
 
+    const handleProtectUpdateFormAbility = (abilityChange: boolean) => {
+        setAbilityChangeForm(abilityChange);
+    };
+
     const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
 
-    const matchCountry = (postalCode: string, addressType: 'shippingAddress' | 'billingAddress') => {
+    enum AddressTypes {
+        shippingAddress,
+        billingAddress,
+    }
+
+    type AddressTypeItem = keyof typeof AddressTypes;
+
+    const matchCountry = (postalCode: string, addressType: AddressTypeItem) => {
         const country = watch(`${addressType}.country`);
         if ((country === Country.AUSTRIA || country === Country.GEORGIA) && !AU_GE_ZIP_REGEX.test(postalCode)) {
             return ErrorMessage.POSTAL_CODE_ERROR;
@@ -51,10 +63,23 @@ export default function ChangeUserAddressForm(props: Props) {
         return true;
     };
 
-    const [abilityChangeForm, setAbilityChangeForm] = useState(true);
-
-    const handleProtectUpdateFormAbility = (abilityChange: boolean) => {
-        setAbilityChangeForm(abilityChange);
+    const validationRules = {
+        address: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+        },
+        city: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+            minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+        },
+        сountry: {
+            required: true,
+        },
+        postalCode: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            validate: (value: string) => matchCountry(value, 'shippingAddress'),
+        },
     };
 
     return (
@@ -69,10 +94,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 register={register}
                 readOnly={abilityChangeForm}
                 errors={errors.shippingAddress?.streetName}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
+                validationRules={validationRules.address}
             />
             <FormField
                 addWrapperClasses={['stretched']}
@@ -91,11 +113,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 register={register}
                 readOnly={abilityChangeForm}
                 errors={errors.shippingAddress?.city}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
+                validationRules={validationRules.city}
             />
             <FormField
                 fieldTag="select"
@@ -113,9 +131,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 name="shippingAddress.country"
                 register={register}
                 errors={errors.shippingAddress?.country}
-                validationRules={{
-                    required: true,
-                }}
+                validationRules={validationRules.сountry}
             />
             <FormField
                 label="Postal Code"
@@ -127,10 +143,7 @@ export default function ChangeUserAddressForm(props: Props) {
                 readOnly={abilityChangeForm}
                 register={register}
                 errors={errors.shippingAddress?.postalCode}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    validate: (value) => matchCountry(value, 'shippingAddress'),
-                }}
+                validationRules={validationRules.postalCode}
             />
             <div className="buttons-wrapper">
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>

@@ -106,10 +106,16 @@ export interface UpdatePasswordForm {
 }
 
 export interface UpdateUserDataForm {
-    email: string;
-    lastName: string;
-    firstName: string;
-    dateOfBirth: Date;
+    email?: string;
+    lastName?: string;
+    firstName?: string;
+    dateOfBirth?: Date;
+    shippingAddress?: CustomerAddress;
+    isDefaultShippingAddress?: boolean;
+    isDefaultBillingAddress?: boolean;
+    billingAddress?: CustomerAddress;
+    useBillingAsShipping?: boolean;
+    useShippingAsBilling?: boolean;
 }
 
 export interface SignUpDataRequest extends SignUpData {

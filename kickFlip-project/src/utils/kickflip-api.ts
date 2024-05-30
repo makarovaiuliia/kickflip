@@ -5,7 +5,6 @@ import {
     TAddress,
     UpdatePasswordForm,
     UpdateUserDataForm,
-    UpdateUserAddressForm,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -188,25 +187,8 @@ export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
 };
 
 // Need to check
-export const updateUserDataApi = (data: UpdateUserDataForm) => {
-    return fetch(`${URL}/${projectKey}/customers/password`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-        body: JSON.stringify(data),
-    })
-        .then((res) => checkResponse<TUserResponse>(res))
-        .then((result) => {
-            if (result) return result;
-            return Promise.reject(result);
-        });
-};
-
-// Need to check
-export const updateUserAddressApi = (data: UpdateUserAddressForm) => {
-    return fetch(`${URL}/${projectKey}/customers/password`, {
+export const updateUserAnyDataApi = (data: UpdateUserDataForm) => {
+    return fetch(`${URL}/${projectKey}/customers/id`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
