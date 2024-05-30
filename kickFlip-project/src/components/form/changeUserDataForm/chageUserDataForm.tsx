@@ -100,9 +100,24 @@ export default function ChangeUserDataForm() {
                 validationRules={validationRules.dateBirth}
             />
             <div className="buttons-wrapper">
-                <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
-                    Edit
-                </button>
+                {abilityChangeForm && (
+                    <button
+                        className="change-user-btn"
+                        type="button"
+                        onClick={() => handleProtectUpdateFormAbility(false)}
+                    >
+                        Edit
+                    </button>
+                )}
+                {!abilityChangeForm && (
+                    <button
+                        className="change-user-btn"
+                        type="button"
+                        onClick={() => handleProtectUpdateFormAbility(true)}
+                    >
+                        Cancel
+                    </button>
+                )}
                 <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'} `} type="submit">
                     Update
                 </button>

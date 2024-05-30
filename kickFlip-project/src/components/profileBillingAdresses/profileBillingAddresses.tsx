@@ -9,12 +9,9 @@ export default function ProfileBillingAddresses(): JSX.Element {
     const billingAddresses = user?.addresses?.filter((item) => (item.id ? billingAddressIds?.includes(item.id) : ''));
 
     return (
-        <>
-            <h2 className="form-subtitle">Change address</h2>
-            <div className="form-addresses-wrapper">
-                <h3 className="form-heading">Billing addresses</h3>
-                {billingAddresses?.map((address) => <ChangeUserAddressForm address={address} key={address.id} />)}
-            </div>
-        </>
+        <div className="form-addresses-wrapper">
+            <h3 className="form-heading">Billing addresses</h3>
+            {billingAddresses?.map((address) => <ChangeUserAddressForm address={address} key={address.id} />)}
+        </div>
     );
 }

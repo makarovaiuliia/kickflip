@@ -30,6 +30,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 20px;
 }
 
 .form-title {
@@ -90,6 +91,11 @@
         border: 1px solid transparent;
         border-top: 1px solid var(--border-gray);
         padding-left: 0;
+        &:focus {
+            & + .error-message {
+                visibility: hidden;
+            }
+        }
     }
 }
 
@@ -99,6 +105,9 @@
 
 .form-input:focus {
     outline: none;
+    & + .error-message {
+        visibility: visible;
+    }
 }
 
 .form-label {
@@ -110,9 +119,13 @@
 }
 
 .error-message {
+    visibility: hidden;
     color: var(--electric-orange);
     min-height: 20px;
     font-size: 1.5rem;
+    &:empty {
+        display: none;
+    }
 }
 
 .fas {
@@ -184,6 +197,12 @@
         height: 2px;
         background-color: var(--deep-blue);
     }
+}
+
+.change-user-address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 @media (width <= 768px) {
