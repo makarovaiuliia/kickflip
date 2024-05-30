@@ -34,13 +34,14 @@ export default function ModalSlider({ sliderImages }: ModalSliderProps) {
                     <img src={img} alt="slide_image" />
                 </SwiperSlide>
             ))}
-
-            <button className="swiper-button-prev slider-arrow" type="button">
-                &lt;
-            </button>
-            <button className="swiper-button-next slider-arrow" type="button">
-                &gt;
-            </button>
+            <div className="slider-controler">
+                <button className="swiper-button-prev slider-arrow" type="button">
+                    &lt;
+                </button>
+                <button className="swiper-button-next slider-arrow" type="button">
+                    &gt;
+                </button>
+            </div>
         </Swiper>
     );
 }
