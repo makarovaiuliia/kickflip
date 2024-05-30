@@ -16,6 +16,8 @@ export interface SelectedFilterOptions {
 }
 
 function FilterComponent({ options, setCategories, categories }: FilterComponentProps): JSX.Element {
+    const isAnyFilterActive = Object.values(categories.filter).some((filterArray) => filterArray.length > 0);
+
     const removeCategory = (category: SelectedFilterOptions) => {
         setCategories((prevCategories) => {
             const newFilter = { ...prevCategories.filter };
@@ -51,7 +53,7 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
 
     return (
         <div className="filter-wrapper">
-            {!!Object.keys(categories.filter).length && (
+            {isAnyFilterActive && (
                 <div className="selected">
                     <div className="selected_title">
                         <p>Selected categories</p>
@@ -81,6 +83,7 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
                     </ul>
                 </div>
             )}
+
             <ul className="filter">
                 {Object.keys(options.filter)
                     .filter(isFilterOption)

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { ProductProjected, TransformParams } from '@/types/types';
 import Card from '../card/card';
 import './cardList.css';
@@ -8,16 +10,33 @@ interface CardListProps {
 }
 
 function CardList({ products, setCategories }: CardListProps): JSX.Element {
+    const [searchTerm, setSearchTerm] = useState('');
+
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCategories((prevCategories) => {
             return { ...prevCategories, sort: event.target.value };
         });
     };
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const filteredProducts = products.filter((product) =>
+        product.name['en-US'].toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="card-list-container">
             <div className="card-list-sorting-container">
-                <h2 className="card-list-title">{`The best kicks(${products.length})`}</h2>
+                <h2 className="card-list-title">{`The best kicks (${filteredProducts.length})`}</h2>
+                <input
+                    type="text"
+                    className="card-list-sorting"
+                    placeholder="Search for kicks"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                />
                 <select id="sort-select" className="card-list-sorting" onChange={handleSelect}>
                     <option value="">Sort by</option>
                     <option value="price asc">Price (Low-High)</option>
@@ -27,7 +46,7 @@ function CardList({ products, setCategories }: CardListProps): JSX.Element {
                 </select>
             </div>
             <div className="card-list">
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                     <Card productInfo={product} key={product.id} />
                 ))}
             </div>
