@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react';
-import { ProductProjected } from '@/types/types';
+import { ProductProjected, TransformParams } from '@/types/types';
 import Card from '../card/card';
 import './cardList.css';
-import { useDispatch } from '@/services/store';
-import { getFilteredProducts } from '@/services/sneakersSlice';
 
 interface CardListProps {
     products: ProductProjected[];
+    setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
 }
 
-function CardList({ products }: CardListProps): JSX.Element {
-    const [query, setQuery] = useState<string | null>(null);
-    const dispatch = useDispatch();
-
+function CardList({ products, setCategories }: CardListProps): JSX.Element {
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setQuery(event.target.value);
+        setCategories((prevCategories) => {
+            return { ...prevCategories, sort: event.target.value };
+        });
     };
-
-    useEffect(() => {
-        if (query) {
-            dispatch(getFilteredProducts({ sort: [query] }));
-        }
-    }, [query, dispatch]);
 
     return (
         <div className="card-list-container">

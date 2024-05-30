@@ -1,49 +1,57 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent } from 'react';
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
 import cross from '../../../public/cross.svg';
-import { getFilteredProducts } from '@/services/sneakersSlice';
-import { transformToMap } from '@/utils/utils';
-import { useDispatch } from '@/services/store';
+import { TransformParams, FilterOptions } from '@/types/types';
 
 interface FilterComponentProps {
-    filterOptions: { title: string; options: string[] }[];
+    options: TransformParams;
+    setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
+    categories: TransformParams;
 }
 
 export interface SelectedFilterOptions {
-    attribute: string;
+    attribute: FilterOptions;
     value: string;
 }
 
-function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
-    const [categories, setCategories] = useState<SelectedFilterOptions[]>([]);
-    const dispatch = useDispatch();
-
+function FilterComponent({ options, setCategories, categories }: FilterComponentProps): JSX.Element {
     const removeCategory = (category: SelectedFilterOptions) => {
-        setCategories((prevCategories) =>
-            prevCategories.filter((cat) => !(cat.attribute === category.attribute && cat.value === category.value))
-        );
+        setCategories((prevCategories) => {
+            const newFilter = { ...prevCategories.filter };
+
+            if (newFilter[category.attribute]) {
+                newFilter[category.attribute] = newFilter[category.attribute].filter(
+                    (value) => value !== category.value
+                );
+
+                if (newFilter[category.attribute].length === 0) {
+                    delete newFilter[category.attribute];
+                }
+            }
+
+            return { ...prevCategories, filter: newFilter };
+        });
     };
 
     const handleClick = (event: SyntheticEvent) => {
         const target = event.target as HTMLElement;
-        const attribute = target.closest('button')!.getAttribute('data-attribute')!;
+        const attribute = target.closest('button')!.getAttribute('data-attribute')! as FilterOptions;
         const value = target.closest('button')!.getAttribute('data-value')!;
         removeCategory({ attribute, value });
     };
 
     const handleClearAll = () => {
-        setCategories([]);
+        setCategories({ filter: { color: [], size: [], price: [] }, sort: '' });
     };
 
-    useEffect(() => {
-        const transformed = transformToMap(categories);
-        dispatch(getFilteredProducts(transformed));
-    }, [categories, dispatch]);
+    const isFilterOption = (key: string): key is FilterOptions => {
+        return ['color', 'size', 'price'].includes(key);
+    };
 
     return (
         <div className="filter-wrapper">
-            {!!categories.length && (
+            {!!Object.keys(categories.filter).length && (
                 <div className="selected">
                     <div className="selected_title">
                         <p>Selected categories</p>
@@ -52,32 +60,38 @@ function FilterComponent({ filterOptions }: FilterComponentProps): JSX.Element {
                         </button>
                     </div>
                     <ul className="category_list">
-                        {categories.map((category) => (
-                            <li key={category.value}>
-                                <button
-                                    type="button"
-                                    className="category"
-                                    onClick={handleClick}
-                                    data-attribute={category.attribute}
-                                    data-value={category.value}
-                                >
-                                    <span className="category_title">{category.value}</span>
-                                    <img src={cross} alt="cross" className="category_icon" />
-                                </button>
-                            </li>
-                        ))}
+                        {Object.keys(categories.filter)
+                            .filter(isFilterOption)
+                            .map((category) =>
+                                categories.filter[category].map((value) => (
+                                    <li key={value}>
+                                        <button
+                                            type="button"
+                                            className="category"
+                                            onClick={handleClick}
+                                            data-attribute={category}
+                                            data-value={value}
+                                        >
+                                            <span className="category_title">{value}</span>
+                                            <img src={cross} alt="cross" className="category_icon" />
+                                        </button>
+                                    </li>
+                                ))
+                            )}
                     </ul>
                 </div>
             )}
             <ul className="filter">
-                {filterOptions.map((option) => (
-                    <Accordion
-                        title={option.title}
-                        options={option.options}
-                        key={option.title}
-                        setCategories={setCategories}
-                    />
-                ))}
+                {Object.keys(options.filter)
+                    .filter(isFilterOption)
+                    .map((option) => (
+                        <Accordion
+                            title={option}
+                            options={options.filter[option]}
+                            key={option}
+                            setCategories={setCategories}
+                        />
+                    ))}
             </ul>
         </div>
     );

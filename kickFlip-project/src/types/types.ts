@@ -202,3 +202,16 @@ export interface ProductProjected {
     masterVariant: Product;
     variants: Product[];
 }
+
+export type FilterOptions = 'color' | 'size' | 'price';
+
+export interface TransformParams {
+    filter: Record<FilterOptions, string[]>;
+    sort: string;
+}
+
+export enum SearchQuery {
+    color = 'variants.attributes.color:',
+    size = 'variants.attributes.size:',
+    price = 'variants.price.centAmount:range ',
+}

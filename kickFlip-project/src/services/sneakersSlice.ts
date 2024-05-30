@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ProductProjected } from '@/types/types';
+import { ProductProjected, TransformParams } from '@/types/types';
 import { getCategoriesApi, getProductsFilteredApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { transformCategoryData, CategoryData } from '@/utils/utils';
@@ -16,7 +16,7 @@ export const getCategories = createAsyncThunk('categories/post', async () => {
     return response;
 });
 
-export const getFilteredProducts = createAsyncThunk('filtered/get', async (options?: Record<string, string[]>) => {
+export const getFilteredProducts = createAsyncThunk('filtered/get', async (options?: TransformParams) => {
     const response = await getProductsFilteredApi(options);
     return response;
 });

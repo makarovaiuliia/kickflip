@@ -1,30 +1,37 @@
 import { SyntheticEvent, useState } from 'react';
 import './accordion.css';
 import FilterOption from '../filterOption/filterOption';
-import type { SelectedFilterOptions } from '../filterComponent/filterComponent';
+import { TransformParams, FilterOptions } from '@/types/types';
 
 interface AccordionProps {
     title: string;
     options: string[];
-    setCategories: React.Dispatch<React.SetStateAction<SelectedFilterOptions[]>>;
+    setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
 }
 
 function Accordion({ title, options, setCategories }: AccordionProps): JSX.Element {
     const [isActive, setIsActive] = useState(false);
 
-    const addCategory = (attribute: string, value: string) => {
+    const addCategory = (attribute: FilterOptions, value: string) => {
         setCategories((prevCategories) => {
-            if (!prevCategories.some((cat) => cat.attribute === attribute && cat.value === value)) {
-                return [...prevCategories, { attribute, value }];
+            const newFilter = { ...prevCategories.filter };
+            if (newFilter[attribute]) {
+                if (!newFilter[attribute].includes(value)) {
+                    newFilter[attribute] = [...newFilter[attribute], value];
+                }
+            } else {
+                newFilter[attribute] = [value];
             }
-            return prevCategories;
+
+            return { ...prevCategories, filter: newFilter };
         });
     };
 
     const handleClick = (event: SyntheticEvent) => {
         const target = event.target as HTMLElement;
-        const attribute = title.toLowerCase();
+        const attribute = title.toLowerCase() as FilterOptions;
         const value = target.textContent!;
+
         addCategory(attribute, value);
     };
 

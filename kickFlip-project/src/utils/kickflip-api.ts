@@ -1,16 +1,19 @@
 import {
     CategoriesResponse,
     DiscountResponse,
+    FilterOptions,
     LogInData,
     ProductProjected,
     ProductResponse,
+    SearchQuery,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
     TAddress,
+    TransformParams,
 } from '@/types/types';
 import { getCookie } from './cookie';
-import { createBasicAuthToken, saveTokens, transformData } from './utils';
+import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
 
 const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
@@ -178,18 +181,39 @@ export const getProductsApi = () => {
 
 // price.centAmount:range (5000 to 10000)
 
-export const getProductsFilteredApi = (options?: Record<string, string[]>) => {
+export const getProductsFilteredApi = (options?: TransformParams) => {
     let query = '';
+
     if (options) {
-        query = Object.entries(options)
-            .map(([key, values]) => {
-                if (key === 'sort') {
-                    return `sort=${options[key].toString()}`;
-                }
-                const formattedValues = values.map((value) => `%22${value.toLowerCase()}%22`).join(',');
-                return `filter=variants.attributes.${key}:${formattedValues}`;
-            })
-            .join('&');
+        if (options.filter) {
+            const filters = Object.keys(options.filter)
+                .filter((key): key is FilterOptions => {
+                    const filterKey = key as FilterOptions;
+                    return options.filter[filterKey].length > 0;
+                })
+                .map((key) => {
+                    const filterKey = key as FilterOptions;
+                    const values = options.filter[filterKey]
+                        .map((value) => {
+                            if (filterKey === 'price') {
+                                const adaptedValue = transformPriceRange(value);
+                                return `${adaptedValue.toLowerCase()}`;
+                            }
+                            return `"${value.toLowerCase()}"`;
+                        })
+                        .join(',');
+                    return `${SearchQuery[filterKey]}${values}`;
+                })
+                .join('&filter=');
+
+            if (filters.length > 0) {
+                query += `filter=${filters}`;
+            }
+        }
+
+        if (options.sort) {
+            query += query ? `&sort=${options.sort}` : `sort=${options.sort}`;
+        }
     }
 
     const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
