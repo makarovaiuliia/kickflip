@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { ErrorMessage, SignUpDataForm } from '@/types/types';
+import { ErrorMessage, UpdateUserDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { signUpUser, getUserSelector } from '@/services/userSlice';
+import { updateUserData, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler, ageRestrictionCheck } from '@/utils/utils';
 
@@ -24,14 +24,14 @@ export default function ChangeUserDataForm() {
         handleSubmit,
         reset,
         formState: { errors, isValid },
-    } = useForm<SignUpDataForm>({ mode: 'all' });
+    } = useForm<UpdateUserDataForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
 
-    const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
+    const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
         setUpdateUserDataError('');
         try {
-            await dispatch(signUpUser(data)).unwrap();
+            await dispatch(updateUserData(data)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserDataError);
@@ -102,7 +102,7 @@ export default function ChangeUserDataForm() {
                 <button className="change-user-btn" type="button" onClick={() => handleProtectUpdateFormAbility(false)}>
                     Edit
                 </button>
-                <button className={`change-user-btn ${isValid || !abilityChangeForm ? '' : 'disable'} `} type="submit">
+                <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'} `} type="submit">
                     Update
                 </button>
             </div>
