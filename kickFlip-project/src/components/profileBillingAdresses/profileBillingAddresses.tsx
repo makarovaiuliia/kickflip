@@ -11,7 +11,9 @@ export default function ProfileBillingAddresses(): JSX.Element {
     return (
         <div className="form-addresses-wrapper">
             <h3 className="form-heading">Billing addresses</h3>
-            {billingAddresses?.map((address) => <ChangeUserAddressForm address={address} key={address.id} />)}
+            {billingAddresses?.map((address) => (
+                <ChangeUserAddressForm addressBillingShipping="billingAddress" address={address} key={address.id} />
+            ))}
         </div>
     );
 }

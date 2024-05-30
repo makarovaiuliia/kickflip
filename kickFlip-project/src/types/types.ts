@@ -21,7 +21,7 @@ export enum StateMessage {
     Registered = 'You have been successfully registered',
 }
 export type TUser = {
-    email: string;
+    email?: string;
     firstName?: string;
     lastName?: string;
     dateOfBirth?: string;
@@ -103,6 +103,14 @@ export interface UpdateUserAddressForm {
 export interface UpdatePasswordForm {
     currentPassword: string;
     newPassword: string;
+}
+
+export interface UpdateUserDataFormRequest {
+    id?: string;
+    version?: number;
+    mode?: string;
+    billingShipping: string;
+    requestData?: UpdateUserDataForm;
 }
 
 export interface UpdateUserDataForm {

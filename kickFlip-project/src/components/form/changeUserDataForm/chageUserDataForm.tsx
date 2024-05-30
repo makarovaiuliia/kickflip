@@ -31,7 +31,13 @@ export default function ChangeUserDataForm() {
     const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
         setUpdateUserDataError('');
         try {
-            await dispatch(updateUserAnyData(data)).unwrap();
+            const requestData = {
+                id: user?.id,
+                version: user?.version,
+                mode: 'data',
+                requestData: data,
+            };
+            await dispatch(updateUserAnyData(requestData)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserDataError);

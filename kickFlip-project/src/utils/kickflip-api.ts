@@ -4,7 +4,7 @@ import {
     SignUpDataRequest,
     TAddress,
     UpdatePasswordForm,
-    UpdateUserDataForm,
+    UpdateUserDataFormRequest,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -187,7 +187,15 @@ export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
 };
 
 // Need to check
-export const updateUserAnyDataApi = (data: UpdateUserDataForm) => {
+export const updateUserAnyDataApi = (data: UpdateUserDataFormRequest) => {
+    console.log(data);
+    if (data.mode === 'data') {
+        console.log('request for data');
+        console.log(data.requestData);
+    } else if (data.mode === 'address') {
+        console.log('request for data');
+        console.log(data.requestData);
+    }
     return fetch(`${URL}/${projectKey}/customers/id`, {
         method: 'POST',
         headers: {

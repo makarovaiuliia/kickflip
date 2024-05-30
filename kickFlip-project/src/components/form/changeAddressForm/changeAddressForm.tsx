@@ -1,18 +1,30 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, Country, UpdateUserDataForm, TAddress } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserAnyData } from '@/services/userSlice';
+import { updateUserAnyData, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
+enum AddressTypes {
+    shippingAddress,
+    billingAddress,
+}
+
+type AddressTypeItem = keyof typeof AddressTypes;
+
 type Props = {
     address: TAddress;
+    addressBillingShipping: AddressTypeItem;
 };
 
 export default function ChangeUserAddressForm(props: Props) {
-    const { address } = props;
+    const { address, addressBillingShipping } = props;
+    const { user } = useSelector(getUserSelector);
+
+    const isBilling = addressBillingShipping === 'billingAddress';
 
     const [updateUserAddressError, setUpdateUserAddressError] = useState('');
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
@@ -30,7 +42,14 @@ export default function ChangeUserAddressForm(props: Props) {
     const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
         setUpdateUserAddressError('');
         try {
-            await dispatch(updateUserAnyData(data)).unwrap();
+            const requestData = {
+                id: user?.id,
+                version: user?.version,
+                mode: 'address',
+                billingShipping: addressBillingShipping,
+                requestData: data,
+            };
+            await dispatch(updateUserAnyData(requestData)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserAddressError);
@@ -44,13 +63,6 @@ export default function ChangeUserAddressForm(props: Props) {
     const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
     const AU_GE_ZIP_REGEX: RegExp = /^\d{4}$/;
     const BU_RU_ZIP_REGEX: RegExp = /^\d{6}$/;
-
-    enum AddressTypes {
-        shippingAddress,
-        billingAddress,
-    }
-
-    type AddressTypeItem = keyof typeof AddressTypes;
 
     const matchCountry = (postalCode: string, addressType: AddressTypeItem) => {
         const country = watch(`${addressType}.country`);
@@ -78,73 +90,142 @@ export default function ChangeUserAddressForm(props: Props) {
         },
         postalCode: {
             required: ErrorMessage.REQUIRED_FIELD,
-            validate: (value: string) => matchCountry(value, 'shippingAddress'),
+            validate: (value: string) => matchCountry(value, addressBillingShipping),
         },
     };
 
     return (
         <form className="change-user-address-form" onSubmit={handleSubmit(submit)}>
-            <FormField
-                label="Address"
-                addWrapperClasses={['stretched']}
-                id="address-input"
-                name="shippingAddress.streetName"
-                placeholder="First line of address"
-                defaultValue={address.streetName}
-                register={register}
-                readOnly={abilityChangeForm}
-                errors={errors.shippingAddress?.streetName}
-                validationRules={validationRules.address}
-            />
-            <FormField
-                addWrapperClasses={['stretched']}
-                name="shippingAddress.streetNumber"
-                defaultValue={address.streetNumber}
-                placeholder="Second line of address"
-                readOnly={abilityChangeForm}
-                register={register}
-            />
-            <FormField
-                label="City"
-                id="city-input"
-                name="shippingAddress.city"
-                defaultValue={address.city}
-                placeholder="Your city"
-                register={register}
-                readOnly={abilityChangeForm}
-                errors={errors.shippingAddress?.city}
-                validationRules={validationRules.city}
-            />
-            <FormField
-                fieldTag="select"
-                label="Country"
-                readOnly={abilityChangeForm}
-                selectOptions={[
-                    { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
-                    { value: 'AU', text: 'Austria', selected: address.country === 'AU' },
-                    { value: 'BU', text: 'Belarus', selected: address.country === 'BU' },
-                    { value: 'GE', text: 'Georgia', selected: address.country === 'GE' },
-                    { value: 'RU', text: 'Russia', selected: address.country === 'RU' },
-                ]}
-                id="country-input"
-                defaultValue={address.country}
-                name="shippingAddress.country"
-                register={register}
-                errors={errors.shippingAddress?.country}
-                validationRules={validationRules.сountry}
-            />
-            <FormField
-                label="Postal Code"
-                addWrapperClasses={['stretched']}
-                id="zip-input"
-                name="shippingAddress.postalCode"
-                defaultValue={address.postalCode}
-                placeholder="Enter postal code"
-                readOnly={abilityChangeForm}
-                register={register}
-                errors={errors.shippingAddress?.postalCode}
-                validationRules={validationRules.postalCode}
-            />
+            {!isBilling && (
+                <>
+                    <FormField
+                        label="Address"
+                        addWrapperClasses={['stretched']}
+                        id="address-input"
+                        name="shippingAddress.streetName"
+                        placeholder="First line of address"
+                        defaultValue={address.streetName}
+                        register={register}
+                        readOnly={abilityChangeForm}
+                        errors={errors.shippingAddress?.streetName}
+                        validationRules={validationRules.address}
+                    />
+                    <FormField
+                        addWrapperClasses={['stretched']}
+                        name="shippingAddress.streetNumber"
+                        defaultValue={address.streetNumber}
+                        placeholder="Second line of address"
+                        readOnly={abilityChangeForm}
+                        register={register}
+                    />
+                    <FormField
+                        label="City"
+                        id="city-input"
+                        name="shippingAddress.city"
+                        defaultValue={address.city}
+                        placeholder="Your city"
+                        register={register}
+                        readOnly={abilityChangeForm}
+                        errors={errors.shippingAddress?.city}
+                        validationRules={validationRules.city}
+                    />
+                    <FormField
+                        fieldTag="select"
+                        label="Country"
+                        readOnly={abilityChangeForm}
+                        selectOptions={[
+                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                            { value: 'AU', text: 'Austria', selected: address.country === 'AU' },
+                            { value: 'BU', text: 'Belarus', selected: address.country === 'BU' },
+                            { value: 'GE', text: 'Georgia', selected: address.country === 'GE' },
+                            { value: 'RU', text: 'Russia', selected: address.country === 'RU' },
+                        ]}
+                        id="country-input"
+                        defaultValue={address.country}
+                        name="shippingAddress.country"
+                        register={register}
+                        errors={errors.shippingAddress?.country}
+                        validationRules={validationRules.сountry}
+                    />
+                    <FormField
+                        label="Postal Code"
+                        addWrapperClasses={['stretched']}
+                        id="zip-input"
+                        name="shippingAddress.postalCode"
+                        defaultValue={address.postalCode}
+                        placeholder="Enter postal code"
+                        readOnly={abilityChangeForm}
+                        register={register}
+                        errors={errors.shippingAddress?.postalCode}
+                        validationRules={validationRules.postalCode}
+                    />
+                </>
+            )}
+            {isBilling && (
+                <>
+                    <FormField
+                        label="Address"
+                        addWrapperClasses={['stretched']}
+                        id="address-input-billing"
+                        name="billingAddress.streetName"
+                        placeholder="First line of address"
+                        defaultValue={address.streetName}
+                        register={register}
+                        readOnly={abilityChangeForm}
+                        errors={errors.shippingAddress?.streetName}
+                        validationRules={validationRules.address}
+                    />
+                    <FormField
+                        addWrapperClasses={['stretched']}
+                        name="billingAddress.streetNumber"
+                        defaultValue={address.streetNumber}
+                        placeholder="Second line of address"
+                        readOnly={abilityChangeForm}
+                        register={register}
+                    />
+                    <FormField
+                        label="City"
+                        id="city-input-billing"
+                        name="billingAddress.city"
+                        defaultValue={address.city}
+                        placeholder="Your city"
+                        register={register}
+                        readOnly={abilityChangeForm}
+                        errors={errors.shippingAddress?.city}
+                        validationRules={validationRules.city}
+                    />
+                    <FormField
+                        fieldTag="select"
+                        label="Country"
+                        readOnly={abilityChangeForm}
+                        selectOptions={[
+                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                            { value: 'AU', text: 'Austria', selected: address.country === 'AU' },
+                            { value: 'BU', text: 'Belarus', selected: address.country === 'BU' },
+                            { value: 'GE', text: 'Georgia', selected: address.country === 'GE' },
+                            { value: 'RU', text: 'Russia', selected: address.country === 'RU' },
+                        ]}
+                        id="country-input-billing"
+                        defaultValue={address.country}
+                        name="billingAddress.country"
+                        register={register}
+                        errors={errors.shippingAddress?.country}
+                        validationRules={validationRules.сountry}
+                    />
+                    <FormField
+                        label="Postal Code"
+                        addWrapperClasses={['stretched']}
+                        id="zip-input-billing"
+                        name="billingAddress.postalCode"
+                        defaultValue={address.postalCode}
+                        placeholder="Enter postal code"
+                        readOnly={abilityChangeForm}
+                        register={register}
+                        errors={errors.shippingAddress?.postalCode}
+                        validationRules={validationRules.postalCode}
+                    />
+                </>
+            )}
             <div className="buttons-wrapper">
                 {abilityChangeForm && (
                     <button
