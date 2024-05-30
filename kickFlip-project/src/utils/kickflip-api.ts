@@ -186,23 +186,20 @@ export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
         });
 };
 
-// Need to check
 export const updateUserAnyDataApi = (data: UpdateUserDataFormRequest) => {
-    console.log(data);
+    let dataRequest;
     if (data.mode === 'data') {
-        console.log('request for data');
-        console.log(data.requestData);
+        dataRequest = data.requestData;
     } else if (data.mode === 'address') {
-        console.log('request for data');
-        console.log(data.requestData);
+        dataRequest = data.requestData;
     }
-    return fetch(`${URL}/${projectKey}/customers/id`, {
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataRequest),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {
