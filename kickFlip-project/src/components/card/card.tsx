@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductProjected } from '@/types/types';
 import './card.css';
-import { getImageFromEachColor } from '@/utils/utils';
+import { getImageFromEachColor, processVariants } from '@/utils/utils';
 
 interface CardProps {
     productInfo: ProductProjected;
+    selectedColors: string[];
 }
 
-function Card({ productInfo }: CardProps): JSX.Element {
+function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState(0);
 
@@ -18,7 +19,20 @@ function Card({ productInfo }: CardProps): JSX.Element {
     const discountPrice = productPrices.discounted
         ? productPrices.discounted.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits
         : undefined;
-    const images = getImageFromEachColor(productInfo);
+    const colorMap = processVariants(productInfo.masterVariant, productInfo.variants);
+    const images = getImageFromEachColor(colorMap);
+
+    useEffect(() => {
+        if (selectedColors) {
+            const colorIndex = Object.keys(colorMap).findIndex((color) => {
+                return selectedColors.some((selectedColor) => selectedColor.toLowerCase() === color.toLowerCase());
+            });
+
+            if (colorIndex !== -1) {
+                setActiveImage(colorIndex);
+            }
+        }
+    }, [selectedColors, images, colorMap]);
 
     return (
         <div className="card">

@@ -7,9 +7,10 @@ import './cardList.css';
 interface CardListProps {
     products: ProductProjected[];
     setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
+    categories: TransformParams;
 }
 
-function CardList({ products, setCategories }: CardListProps): JSX.Element {
+function CardList({ products, setCategories, categories }: CardListProps): JSX.Element {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +48,7 @@ function CardList({ products, setCategories }: CardListProps): JSX.Element {
             </div>
             <div className="card-list">
                 {filteredProducts.map((product) => (
-                    <Card productInfo={product} key={product.id} />
+                    <Card productInfo={product} key={product.id} selectedColors={categories.filter.color} />
                 ))}
             </div>
         </div>

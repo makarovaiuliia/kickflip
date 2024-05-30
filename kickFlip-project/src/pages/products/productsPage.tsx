@@ -71,7 +71,7 @@ export default function ProductsPage(): JSX.Element {
             {category && <BreadCrumbs crumbs={breadCrumbs} />}
             <div className="products">
                 <FilterComponent options={filterData} setCategories={setCategories} categories={categories} />
-                <CardList products={products} setCategories={setCategories} />
+                <CardList products={products} setCategories={setCategories} categories={categories} />
             </div>
         </div>
     );

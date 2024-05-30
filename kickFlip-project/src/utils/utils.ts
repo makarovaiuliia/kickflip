@@ -2,7 +2,6 @@ import {
     CategoriesResponse,
     CustomerAddress,
     Product,
-    ProductProjected,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
@@ -130,13 +129,10 @@ export const getAdditionalSize = (sizes: number[]) => {
     return enlargedSizes;
 };
 
-export const getImageFromEachColor = (data: ProductProjected): string[][] => {
-    const { masterVariant, variants } = data;
-
-    const colorImagesMap = processVariants(masterVariant, variants);
+export const getImageFromEachColor = (data: Variants): string[][] => {
     const imageGroups: string[][] = [];
 
-    Object.values(colorImagesMap).forEach((images) => {
+    Object.values(data).forEach((images) => {
         imageGroups.push(images);
     });
 
