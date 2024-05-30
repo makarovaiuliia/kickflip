@@ -197,3 +197,47 @@
 .cart-btn:hover {
     background: var(--deep-blue);
 }
+
+@media (width <= 1060px) {
+    .images-container {
+        flex-direction: column;
+        width: 45svw;
+    }
+    .side-wrapper {
+        order: 1;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .side-img {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media (width <= 768px) {
+    .carousel-wrapper,
+    .details-container {
+        max-width: 100%;
+    }
+    .side-wrapper {
+        display: none;
+    }
+
+    .slider-btn {
+        bottom: 50%;
+    }
+
+    .slider-btn.prev {
+        left: 10px;
+    }
+
+    .size-container {
+        justify-content: center;
+    }
+}
+@media (width <= 500px) {
+    .slider-btn {
+        width: 20px;
+        height: 20px;
+    }
+}

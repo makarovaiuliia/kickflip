@@ -61,3 +61,10 @@
         transform: scale(1);
     }
 }
+
+@media (width <= 768px) {
+    .close-btn {
+        top: 15px;
+        right: 12px;
+    }
+}

@@ -35,4 +35,6 @@ export interface DetailsContainerProps {
     variantProps: VariantImagesProps;
     sizesProps: ProductSizesProps;
     descrProps: ProductDescriptionProps;
+    imgProps: ImgProps;
+    isMobile: boolean;
 }
