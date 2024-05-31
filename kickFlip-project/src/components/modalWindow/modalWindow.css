@@ -8,9 +8,10 @@
     width: 100%;
     top: 0;
     left: 0;
-    transform: scale(0);
     z-index: 1;
-    background-color: var(--border-gray);
+    background-color: rgba(67, 63, 63, 0.8);
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .content-wrapper {
@@ -32,34 +33,7 @@
 }
 
 .modal-overlay.open {
-    transform: scaleY(0.01) scaleX(0);
-    animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
-.modal-overlay.open .content-wrapper {
-    transform: scale(0);
-    animation: zoomIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
-@keyframes unfoldIn {
-    0% {
-        transform: scaleY(0.005) scaleX(0);
-    }
-    50% {
-        transform: scaleY(0.005) scaleX(1);
-    }
-    100% {
-        transform: scaleY(1) scaleX(1);
-    }
-}
-
-@keyframes zoomIn {
-    0% {
-        transform: scale(0);
-    }
-    100% {
-        transform: scale(1);
-    }
+    opacity: 1;
 }
 
 @media (width <= 768px) {
