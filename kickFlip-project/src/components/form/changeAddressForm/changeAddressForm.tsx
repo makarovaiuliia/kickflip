@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ErrorMessage, Country, UpdateUserAddressForm, TAddress } from '@/types/types';
@@ -24,6 +23,7 @@ type Props = {
 
 export default function ChangeUserAddressForm(props: Props) {
     const { address, addressBillingShipping } = props;
+    const addressCountryDefault = address.country;
     const { user } = useSelector(getUserSelector);
     const isBilling = addressBillingShipping === 'billingAddress';
 
@@ -44,13 +44,17 @@ export default function ChangeUserAddressForm(props: Props) {
     } = useForm<UpdateUserAddressForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const submit: SubmitHandler<UpdateUserAddressForm> = async (data: UpdateUserAddressForm) => {
+        const requestData = {
+            id: user?.id,
+            version: user?.version,
+            addressId: address.id,
+            data,
+        };
         setRegistrationError('');
         try {
-            await dispatch(updateUserAddress(data)).unwrap();
-            navigate('/');
+            await dispatch(updateUserAddress(requestData)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setRegistrationError);
@@ -110,15 +114,25 @@ export default function ChangeUserAddressForm(props: Props) {
             required: ErrorMessage.REQUIRED_FIELD,
             validate: (value: string) => matchCountry(value, addressBillingShipping),
         },
+        postalCodeShipping: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            validate: (value: string) => matchCountry(value, 'shippingAddress'),
+        },
+        postalCodeBilling: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            validate: (value: string) => matchCountry(value, 'billingAddress'),
+        },
     };
 
     return (
-        <form className="change-user-address-form" onSubmit={handleSubmit(submit)}>
+        <form
+            className={`change-user-address-form ${!abilityChangeForm ? 'edit' : ''}`}
+            onSubmit={handleSubmit(submit)}
+        >
             {!isBilling && (
                 <>
-                    <h4 className="form-heading">{address.id === user?.defaultShippingAddressId ? 'Default' : ''}</h4>
                     <FormField
-                        label="Address"
+                        label="Shipping Address"
                         addWrapperClasses={['stretched']}
                         id="address-input"
                         name="shippingAddress.streetName"
@@ -152,18 +166,23 @@ export default function ChangeUserAddressForm(props: Props) {
                         fieldTag="select"
                         label="Country"
                         selectOptions={[
-                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
-                            { value: 'AU', text: 'Austria', selected: address.country === 'AU' },
-                            { value: 'BU', text: 'Belarus', selected: address.country === 'BU' },
-                            { value: 'GE', text: 'Georgia', selected: address.country === 'GE' },
-                            { value: 'RU', text: 'Russia', selected: address.country === 'RU' },
+                            {
+                                value: '',
+                                text: 'Select your country...',
+                                defaultValue: addressCountryDefault,
+                                props: [{ key: 'hidden', value: true }],
+                            },
+                            { value: 'AU', text: 'Austria' },
+                            { value: 'BU', text: 'Belarus' },
+                            { value: 'GE', text: 'Georgia' },
+                            { value: 'RU', text: 'Russia' },
                         ]}
                         id="country-input"
                         name="shippingAddress.country"
                         register={register}
                         errors={errors.shippingAddress?.country}
                         validationRules={validationRules.сountry}
-                        readOnly={abilityChangeForm}
+                        defaultValue={addressCountryDefault}
                     />
                     <FormField
                         label="Postal Code"
@@ -173,7 +192,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         placeholder="Enter postal code"
                         register={register}
                         errors={errors.shippingAddress?.postalCode}
-                        validationRules={validationRules.postalCode}
+                        validationRules={validationRules.postalCodeShipping}
                         defaultValue={address.postalCode}
                         readOnly={abilityChangeForm}
                     />
@@ -181,7 +200,6 @@ export default function ChangeUserAddressForm(props: Props) {
             )}
             {isBilling && (
                 <>
-                    <h4 className="form-heading">{address.id === user?.defaultBillingAddressId ? 'Default' : ''}</h4>
                     <FormField
                         label="Billing Address"
                         addWrapperClasses={['stretched']}
@@ -217,18 +235,23 @@ export default function ChangeUserAddressForm(props: Props) {
                         fieldTag="select"
                         label="Country"
                         selectOptions={[
-                            { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
-                            { value: 'AU', text: 'Austria', selected: address.country === 'AU' },
-                            { value: 'BU', text: 'Belarus', selected: address.country === 'BU' },
-                            { value: 'GE', text: 'Georgia', selected: address.country === 'GE' },
-                            { value: 'RU', text: 'Russia', selected: address.country === 'RU' },
+                            {
+                                value: '',
+                                defaultValue: addressCountryDefault,
+                                text: 'Select your country...',
+                                props: [{ key: 'hidden', value: true }],
+                            },
+                            { value: 'AU', text: 'Austria' },
+                            { value: 'BU', text: 'Belarus' },
+                            { value: 'GE', text: 'Georgia' },
+                            { value: 'RU', text: 'Russia' },
                         ]}
                         id="country-input-billing"
                         name="billingAddress.country"
                         register={register}
                         errors={errors.billingAddress?.country}
                         validationRules={validationRules.сountry}
-                        readOnly={abilityChangeForm}
+                        defaultValue={addressCountryDefault}
                     />
                     <FormField
                         label="Postal Code"
@@ -238,7 +261,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         placeholder="Enter postal code"
                         register={register}
                         errors={errors.billingAddress?.postalCode}
-                        validationRules={validationRules.postalCode}
+                        validationRules={validationRules.postalCodeBilling}
                         defaultValue={address.postalCode}
                         readOnly={abilityChangeForm}
                     />

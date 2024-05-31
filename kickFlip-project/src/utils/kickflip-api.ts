@@ -4,9 +4,8 @@ import {
     SignUpDataRequest,
     TAddress,
     UpdatePasswordForm,
-    // UpdateUserProfileDataForm,
     UpdateUserProfileDataFormRequest,
-    UpdateUserAddressForm,
+    UpdateUserAddressFormRequest,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -225,14 +224,38 @@ export const updateUserProfileDataApi = (data: UpdateUserProfileDataFormRequest)
         });
 };
 
-export const updateUserAddressApi = (data: UpdateUserAddressForm) => {
-    return fetch(`${URL}/${projectKey}/customers/${data}`, {
+export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
+    let dataRequest;
+    if (data.data?.billingAddress) {
+        dataRequest = {
+            version: data.version,
+            actions: [
+                {
+                    action: 'changeAddress',
+                    addressId: data.addressId,
+                    address: data.data?.billingAddress,
+                },
+            ],
+        };
+    } else if (data.data?.shippingAddress) {
+        dataRequest = {
+            version: data.version,
+            actions: [
+                {
+                    action: 'changeAddress',
+                    addressId: data.addressId,
+                    address: data.data?.shippingAddress,
+                },
+            ],
+        };
+    }
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataRequest),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {

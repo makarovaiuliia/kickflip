@@ -21,6 +21,7 @@ type OptionProps = {
 };
 
 type Option = {
+    disabled?: boolean | undefined;
     value: string;
     text: string;
     defaultValue?: string;
@@ -35,6 +36,7 @@ interface FormFieldProps<T extends FieldValues> {
     type?: string;
     label?: string;
     readOnly?: boolean;
+    disabled?: boolean;
     id?: string;
     defaultValue?: string;
     name: Path<T>;
@@ -53,6 +55,7 @@ export default function FormField<T extends FieldValues>({
     id,
     defaultValue,
     readOnly,
+    disabled,
     name,
     placeholder,
     register,
@@ -60,7 +63,7 @@ export default function FormField<T extends FieldValues>({
     validationRules,
 }: FormFieldProps<T>) {
     const options = selectOptions?.map((option) => (
-        <option key={option.value} value={option.value} selected={option.selected}>
+        <option key={option.value} disabled={option.disabled} value={option.value} selected={option.selected}>
             {option.text}
         </option>
     ));
@@ -85,7 +88,13 @@ export default function FormField<T extends FieldValues>({
                 />
             )}
             {fieldTag === 'select' && (
-                <select className="form-input" disabled={readOnly} id={id} {...register(name, validationRules)}>
+                <select
+                    className="form-input form-input-select"
+                    defaultValue={defaultValue}
+                    disabled={disabled}
+                    id={id}
+                    {...register(name, validationRules)}
+                >
                     {options}
                 </select>
             )}
@@ -105,5 +114,6 @@ FormField.defaultProps = {
     selectOptions: [],
     placeholder: '',
     readOnly: false,
+    disabled: false,
     defaultValue: null,
 };

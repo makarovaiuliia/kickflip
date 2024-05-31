@@ -104,16 +104,16 @@ export interface UpdateUserAddressForm {
     useShippingAsBilling: boolean;
 }
 
+export interface UpdateUserAddressFormRequest {
+    id?: string;
+    version?: number;
+    addressId?: string;
+    data?: UpdateUserAddressForm;
+}
+
 export interface UpdatePasswordForm {
     currentPassword: string;
     newPassword: string;
-}
-
-export interface UpdateUserDataFormRequest {
-    id?: string;
-    version?: number;
-    mode?: string;
-    billingShipping?: string;
 }
 
 export interface UpdateUserProfileDataFormRequest {

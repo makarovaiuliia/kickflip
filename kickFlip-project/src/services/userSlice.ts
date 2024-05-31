@@ -17,7 +17,7 @@ import {
     TUser,
     UpdatePasswordForm,
     UpdateUserProfileDataFormRequest,
-    UpdateUserAddressForm,
+    UpdateUserAddressFormRequest,
 } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
@@ -57,10 +57,13 @@ export const updateUserProfileData = createAsyncThunk(
     }
 );
 
-export const updateUserAddress = createAsyncThunk('user/updateProfileAddress', async (data: UpdateUserAddressForm) => {
-    const response = await updateUserAddressApi(data);
-    return response;
-});
+export const updateUserAddress = createAsyncThunk(
+    'user/updateProfileAddress',
+    async (data: UpdateUserAddressFormRequest) => {
+        const response = await updateUserAddressApi(data);
+        return response;
+    }
+);
 
 interface InitialState {
     user: TUser | undefined;
@@ -69,9 +72,6 @@ interface InitialState {
     isAuthChecked: boolean;
     registrationMessage: string | undefined;
     updateUserMessage: string | undefined;
-    updateUserDataMessage: string | undefined;
-    updateUserAddressMessage: string | undefined;
-    createUserAddressMessage: string | undefined;
 }
 
 const initialState: InitialState = {
@@ -81,9 +81,6 @@ const initialState: InitialState = {
     isAuthChecked: false,
     registrationMessage: undefined,
     updateUserMessage: undefined,
-    updateUserDataMessage: undefined,
-    updateUserAddressMessage: undefined,
-    createUserAddressMessage: undefined,
 };
 
 const userSlice = createSlice({
@@ -141,6 +138,15 @@ const userSlice = createSlice({
                 state.updateUserMessage = StateMessage.UpdatedProfileData;
             })
             .addCase(updateUserProfileData.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(updateUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfileAddress;
+            })
+            .addCase(updateUserAddress.rejected, (state, action) => {
                 state.error = action.error.message;
             });
     },

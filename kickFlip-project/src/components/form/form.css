@@ -126,12 +126,12 @@
 }
 
 .error-message {
-    visibility: hidden;
+    visibility: visible;
     color: var(--electric-orange);
     min-height: 20px;
     font-size: 1.5rem;
     &:empty {
-        display: none;
+        display: block;
     }
 }
 
@@ -185,6 +185,28 @@
     }
 }
 
+.change-address-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0px;
+    background-color: var(--deep-blue);
+    width: 160px;
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 114%;
+    color: var(--white);
+    transition: all 0.5s;
+    &:hover {
+        background-color: var(--electric-orange);
+    }
+    &.disable {
+        pointer-events: none;
+        background: var(--border-gray);
+    }
+}
+
 .stretched {
     grid-column: 1 / 3;
 }
@@ -212,6 +234,14 @@
     gap: 20px;
     border: 1px solid var(--deep-blue);
     padding: 10px;
+}
+
+.change-user-address-form .form-input-select {
+    pointer-events: none;
+}
+
+.change-user-address-form.edit .form-input-select {
+    pointer-events: all;
 }
 
 @media (width <= 768px) {
