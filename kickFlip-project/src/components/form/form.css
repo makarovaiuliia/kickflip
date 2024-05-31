@@ -126,12 +126,12 @@
 }
 
 .error-message {
-    visibility: visible;
+    visibility: hidden;
     color: var(--electric-orange);
     min-height: 20px;
     font-size: 1.5rem;
     &:empty {
-        display: block;
+        display: none;
     }
 }
 

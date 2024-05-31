@@ -19,6 +19,7 @@ export enum Country {
 
 export enum StateMessage {
     Registered = 'You have been successfully registered',
+    UpdatedProfilePassword = 'Your password has been successfully updated',
     UpdatedProfileData = 'Your data have been successfully updated',
     UpdatedProfileAddress = 'Your address have been successfully updated',
 }

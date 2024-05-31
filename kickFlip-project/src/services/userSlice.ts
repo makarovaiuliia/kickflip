@@ -131,6 +131,15 @@ const userSlice = createSlice({
             .addCase(signUpUser.rejected, (state, action) => {
                 state.error = action.error.message;
             })
+            .addCase(updateUserPassword.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfilePassword;
+            })
+            .addCase(updateUserPassword.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
             .addCase(updateUserProfileData.fulfilled, (state, action) => {
                 state.user = action.payload!;
                 state.isAuth = true;
