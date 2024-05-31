@@ -57,6 +57,13 @@
     }
 }
 
+.form-heading-address {
+    color: var(--electric-orange);
+    &:empty {
+        display: none;
+    }
+}
+
 .input-wrapper {
     width: 100%;
     display: flex;
@@ -203,6 +210,8 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    border: 1px solid var(--deep-blue);
+    padding: 10px;
 }
 
 @media (width <= 768px) {

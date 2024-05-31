@@ -23,6 +23,7 @@ type OptionProps = {
 type Option = {
     value: string;
     text: string;
+    defaultValue?: string;
     selected?: boolean | undefined;
     props?: OptionProps[];
 };
@@ -84,7 +85,7 @@ export default function FormField<T extends FieldValues>({
                 />
             )}
             {fieldTag === 'select' && (
-                <select className="form-input" id={id} {...register(name, validationRules)}>
+                <select className="form-input" disabled={readOnly} id={id} {...register(name, validationRules)}>
                     {options}
                 </select>
             )}

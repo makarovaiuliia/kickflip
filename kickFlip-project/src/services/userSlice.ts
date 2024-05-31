@@ -5,7 +5,8 @@ import {
     loginUserApi,
     signUpUserApi,
     updateUserPasswordApi,
-    updateUserAnyDataApi,
+    updateUserProfileDataApi,
+    updateUserAddressApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
@@ -15,7 +16,8 @@ import {
     StateMessage,
     TUser,
     UpdatePasswordForm,
-    UpdateUserDataFormRequest,
+    UpdateUserProfileDataFormRequest,
+    UpdateUserAddressForm,
 } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
@@ -47,8 +49,16 @@ export const updateUserPassword = createAsyncThunk('user/updatePasword', async (
     return response;
 });
 
-export const updateUserAnyData = createAsyncThunk('user/updateAnyData', async (data: UpdateUserDataFormRequest) => {
-    const response = await updateUserAnyDataApi(data);
+export const updateUserProfileData = createAsyncThunk(
+    'user/updateProfileData',
+    async (data: UpdateUserProfileDataFormRequest) => {
+        const response = await updateUserProfileDataApi(data);
+        return response;
+    }
+);
+
+export const updateUserAddress = createAsyncThunk('user/updateProfileAddress', async (data: UpdateUserAddressForm) => {
+    const response = await updateUserAddressApi(data);
     return response;
 });
 
@@ -58,6 +68,10 @@ interface InitialState {
     error: string | undefined;
     isAuthChecked: boolean;
     registrationMessage: string | undefined;
+    updateUserMessage: string | undefined;
+    updateUserDataMessage: string | undefined;
+    updateUserAddressMessage: string | undefined;
+    createUserAddressMessage: string | undefined;
 }
 
 const initialState: InitialState = {
@@ -66,6 +80,10 @@ const initialState: InitialState = {
     error: undefined,
     isAuthChecked: false,
     registrationMessage: undefined,
+    updateUserMessage: undefined,
+    updateUserDataMessage: undefined,
+    updateUserAddressMessage: undefined,
+    createUserAddressMessage: undefined,
 };
 
 const userSlice = createSlice({
@@ -79,9 +97,11 @@ const userSlice = createSlice({
             state.user = undefined;
             state.isAuth = false;
         },
-
         clearRegistrationMessage: (state) => {
             state.registrationMessage = undefined;
+        },
+        clearUpdateUserMessage: (state) => {
+            state.updateUserMessage = undefined;
         },
     },
     extraReducers: (builder) => {
@@ -113,6 +133,15 @@ const userSlice = createSlice({
             })
             .addCase(signUpUser.rejected, (state, action) => {
                 state.error = action.error.message;
+            })
+            .addCase(updateUserProfileData.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfileData;
+            })
+            .addCase(updateUserProfileData.rejected, (state, action) => {
+                state.error = action.error.message;
             });
     },
 });
@@ -122,6 +151,7 @@ export const getIsAuth = (state: RootState) => state.user.isAuth;
 
 export const { logoutUser } = userSlice.actions;
 export const { clearRegistrationMessage } = userSlice.actions;
+export const { clearUpdateUserMessage } = userSlice.actions;
 
 export default userSlice.reducer;
 

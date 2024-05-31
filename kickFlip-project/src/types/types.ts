@@ -19,6 +19,8 @@ export enum Country {
 
 export enum StateMessage {
     Registered = 'You have been successfully registered',
+    UpdatedProfileData = 'Your data have been successfully updated',
+    UpdatedProfileAddress = 'Your address have been successfully updated',
 }
 export type TUser = {
     email?: string;
@@ -31,6 +33,8 @@ export type TUser = {
     password?: string;
     id?: string;
     version?: number;
+    defaultBillingAddressId?: string;
+    defaultShippingAddressId?: string;
 };
 
 export type TAddress = {
@@ -109,21 +113,20 @@ export interface UpdateUserDataFormRequest {
     id?: string;
     version?: number;
     mode?: string;
-    billingShipping: string;
-    requestData?: UpdateUserDataForm;
+    billingShipping?: string;
 }
 
-export interface UpdateUserDataForm {
+export interface UpdateUserProfileDataFormRequest {
+    id?: string;
+    version?: number;
+    data?: UpdateUserProfileDataForm;
+}
+
+export interface UpdateUserProfileDataForm {
     email?: string;
     lastName?: string;
     firstName?: string;
     dateOfBirth?: Date;
-    shippingAddress?: CustomerAddress;
-    isDefaultShippingAddress?: boolean;
-    isDefaultBillingAddress?: boolean;
-    billingAddress?: CustomerAddress;
-    useBillingAsShipping?: boolean;
-    useShippingAsBilling?: boolean;
 }
 
 export interface SignUpDataRequest extends SignUpData {

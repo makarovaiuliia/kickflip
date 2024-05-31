@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { ErrorMessage, UpdateUserDataForm } from '@/types/types';
+import { ErrorMessage, UpdateUserProfileDataForm } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserAnyData, getUserSelector } from '@/services/userSlice';
+import { updateUserProfileData, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler, ageRestrictionCheck } from '@/utils/utils';
 
@@ -24,20 +24,19 @@ export default function ChangeUserDataForm() {
         handleSubmit,
         reset,
         formState: { errors, isValid },
-    } = useForm<UpdateUserDataForm>({ mode: 'all' });
+    } = useForm<UpdateUserProfileDataForm>({ mode: 'all' });
 
     const dispatch = useDispatch();
 
-    const submit: SubmitHandler<UpdateUserDataForm> = async (data: UpdateUserDataForm) => {
+    const submit: SubmitHandler<UpdateUserProfileDataForm> = async (data: UpdateUserProfileDataForm) => {
+        const requestData = {
+            id: user?.id,
+            version: user?.version,
+            data,
+        };
         setUpdateUserDataError('');
         try {
-            const requestData = {
-                id: user?.id,
-                version: user?.version,
-                mode: 'data',
-                requestData: data,
-            };
-            await dispatch(updateUserAnyData(requestData)).unwrap();
+            await dispatch(updateUserProfileData(requestData)).unwrap();
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdateUserDataError);

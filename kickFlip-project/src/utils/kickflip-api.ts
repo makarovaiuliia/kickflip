@@ -4,7 +4,9 @@ import {
     SignUpDataRequest,
     TAddress,
     UpdatePasswordForm,
-    UpdateUserDataFormRequest,
+    // UpdateUserProfileDataForm,
+    UpdateUserProfileDataFormRequest,
+    UpdateUserAddressForm,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -186,13 +188,28 @@ export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
         });
 };
 
-export const updateUserAnyDataApi = (data: UpdateUserDataFormRequest) => {
-    let dataRequest;
-    if (data.mode === 'data') {
-        dataRequest = data.requestData;
-    } else if (data.mode === 'address') {
-        dataRequest = data.requestData;
-    }
+export const updateUserProfileDataApi = (data: UpdateUserProfileDataFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'changeEmail',
+                email: data.data?.email,
+            },
+            {
+                action: 'setFirstName',
+                firstName: data.data?.firstName,
+            },
+            {
+                action: 'setLastName',
+                lastName: data.data?.lastName,
+            },
+            {
+                action: 'setDateOfBirth',
+                dateOfBirth: data.data?.dateOfBirth,
+            },
+        ],
+    };
     return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
         method: 'POST',
         headers: {
@@ -200,6 +217,22 @@ export const updateUserAnyDataApi = (data: UpdateUserDataFormRequest) => {
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
         body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const updateUserAddressApi = (data: UpdateUserAddressForm) => {
+    return fetch(`${URL}/${projectKey}/customers/${data}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(data),
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((result) => {

@@ -46,6 +46,33 @@
     }
 }
 
+.successful-update-message {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 0;
+    padding: 10px 20px;
+    border: 1px solid var(--deep-blue);
+    border-left: none;
+    background-color: var(--smoke-grey);
+    color: var(--deep-blue);
+    font-size: 1.5rem;
+    transition:
+        transform 0.5s ease-in-out,
+        opacity 0.5s ease-in-out;
+    opacity: 0;
+    transform: translateX(-100%);
+}
+
+.successful-update-message.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.successful-update-message.hide {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+
 @media (width <= 900px) {
     .profile {
         display: flex;
