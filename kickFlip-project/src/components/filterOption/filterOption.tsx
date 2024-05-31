@@ -11,6 +11,9 @@ function FilterOption({ attribute, value, handleClick }: FilterOptionProps): JSX
     return (
         <li className="accordion-content-item" key={attribute}>
             <button type="button" className="accordion-content-button" onClick={handleClick} data-attribute={attribute}>
+                {attribute === 'color' && (
+                    <span className="accordion-content-button-color" style={{ backgroundColor: value }} />
+                )}
                 {value}
             </button>
         </li>
