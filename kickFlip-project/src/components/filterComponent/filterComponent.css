@@ -14,7 +14,7 @@
     display: flex;
     gap: 1rem;
     align-items: center;
-    border: 0.5px solid var(--deep-blue);
+    background-color: var(--smoke-grey);
     border-radius: 0.5rem;
     padding: 0.8rem;
     font-size: 1.3rem;
