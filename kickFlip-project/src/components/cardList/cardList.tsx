@@ -27,6 +27,10 @@ function CardList({ products, setCategories, categories }: CardListProps): JSX.E
         product.name['en-US'].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    if (products.length === 0) {
+        return <p className="card-list-title">No kicks match these filters. Try modifying your search</p>;
+    }
+
     return (
         <div className="card-list-container">
             <div className="card-list-sorting-container">

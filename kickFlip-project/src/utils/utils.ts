@@ -163,11 +163,6 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
     return categoryData;
 };
 
-// export function transformPriceRange(priceRange: string): string {
-//     const [min, max] = priceRange.split('-').map((value) => parseInt(value, 10) * 100);
-//     return `(${min} to ${max})`;
-// }
-
 export const transformPriceRange = (priceRange: string): string => {
     const [min, max] = priceRange
         .replace('$', '')
