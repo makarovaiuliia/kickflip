@@ -1,27 +1,25 @@
-import { PriceValue, Variants } from './types';
+import { Price, Variants } from './types';
 
-export interface SideImgProps {
-    sideImagesSrc: string[];
-    mainImageSrc: string;
+export interface ImgProps {
+    imagesSrc: string[];
     setIndex: (index: number) => void;
-    setImage: (image: string) => void;
-}
-
-export interface MainImgProps {
-    imageSrc: string;
+    activeIndex: number;
+    openModal?: (isOpen: boolean) => void;
 }
 
 export interface VariantImagesProps {
     images: Variants;
-    index: number;
-    setImage: (image: string) => void;
     setImages: (images: string[]) => void;
     currentImages: string[];
 }
 
+export interface ProductPricesProps {
+    priceData: Price;
+}
+
 export interface ProductInfoProps {
     name: string;
-    priceData: PriceValue;
+    priceData: Price;
 }
 
 export interface ProductDescriptionProps {
@@ -37,4 +35,6 @@ export interface DetailsContainerProps {
     variantProps: VariantImagesProps;
     sizesProps: ProductSizesProps;
     descrProps: ProductDescriptionProps;
+    imgProps: ImgProps;
+    isMobile: boolean;
 }

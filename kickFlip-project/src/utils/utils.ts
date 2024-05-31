@@ -163,6 +163,16 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
     return categoryData;
 };
 
+export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
+    let overflowStyle: string;
+    if (shoulBeHide) {
+        overflowStyle = 'hidden';
+    } else {
+        overflowStyle = '';
+    }
+    document.body.style.overflow = overflowStyle;
+}
+
 export const transformPriceRange = (priceRange: string): string => {
     const [min, max] = priceRange
         .replace('$', '')
