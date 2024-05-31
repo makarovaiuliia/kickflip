@@ -1,6 +1,5 @@
 import {
     CategoriesResponse,
-    DiscountResponse,
     FilterOptions,
     LogInData,
     ProductProjected,
@@ -165,22 +164,6 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsApi = () => {
-    return fetch(`${URL}/${projectKey}/products?limit=500`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-    })
-        .then((res) => checkResponse<ServerResponse<ProductResponse>>(res))
-        .then((result) => {
-            if (result) return result;
-            return Promise.reject(result);
-        });
-};
-
-// price.centAmount:range (5000 to 10000)
-
 export const getProductsFilteredApi = (options?: TransformParams) => {
     let query = '';
 
@@ -226,20 +209,6 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
         },
     })
         .then((res) => checkResponse<ServerResponse<ProductProjected>>(res))
-        .then((result) => {
-            if (result) return result;
-            return Promise.reject(result);
-        });
-};
-
-export const getDiscountsApi = () => {
-    return fetch(`${URL}/${projectKey}/product-discounts`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-    })
-        .then((res) => checkResponse<ServerResponse<DiscountResponse>>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);

@@ -6,11 +6,6 @@ import { transformCategoryData, CategoryData } from '@/utils/utils';
 
 /* eslint-disable no-param-reassign */
 
-// export const getProducts = createAsyncThunk('products/get', async () => {
-//     const response = await getProductsApi();
-//     return response;
-// });
-
 export const getCategories = createAsyncThunk('categories/post', async () => {
     const response = await getCategoriesApi();
     return response;

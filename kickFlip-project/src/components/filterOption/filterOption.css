@@ -7,16 +7,3 @@
     text-transform: capitalize;
     color: inherit;
 }
-
-.accordion-content-button:disabled {
-    cursor: not-allowed;
-}
-
-.accordion-content-button-active {
-    border: 0.5px solid var(--electric-orange);
-}
-
-.selected_title {
-    display: flex;
-    justify-content: space-between;
-}

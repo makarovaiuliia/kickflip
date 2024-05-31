@@ -8,7 +8,7 @@ import { getAllCategories, getAllSneakers, getFilteredProducts } from '@/service
 import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
-import { filterData } from '@/components/filterComponent/filterComponentData';
+import filterData from '@/components/filterComponent/filterComponentData';
 import { ProductProjected, TransformParams } from '@/types/types';
 
 export default function ProductsPage(): JSX.Element {

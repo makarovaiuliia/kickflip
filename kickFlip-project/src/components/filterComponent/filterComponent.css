@@ -42,6 +42,7 @@
 .selected_title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .selected_text {
