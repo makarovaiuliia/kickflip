@@ -19,5 +19,5 @@
     inline-size: 1.3rem;
     block-size: 1.3rem;
     border-radius: 1.3rem;
-    border: 0.5px solid #000;
+    border: 0.5px solid var(--deep-blue);
 }
