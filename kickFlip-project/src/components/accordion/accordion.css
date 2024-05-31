@@ -1,0 +1,28 @@
+.accordion {
+    width: 100%;
+    padding: 2rem 0;
+    font-size: 1.6rem;
+    border-top: 0.5px solid var(--deep-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.6rem;
+    height: fit-content;
+}
+
+.accordion:last-child {
+    border-bottom: 0.5px solid var(--deep-blue);
+}
+
+.accordion_title {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: var(--second-family);
+}
+
+.accordion-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}

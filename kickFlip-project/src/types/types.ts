@@ -191,3 +191,29 @@ export interface CategoriesResponse {
 export type Variants = {
     [key: string]: string[];
 };
+
+export interface ProductProjected {
+    id: string;
+    key: string;
+    name: Text;
+    description: Text;
+    categories: CategoryInfo[];
+    slug: Text;
+    masterVariant: Product;
+    variants: Product[];
+}
+
+export type FilterOptions = 'color' | 'size' | 'price';
+
+export interface TransformParams {
+    filter: Record<FilterOptions, string[]>;
+    sort: string;
+    search: string;
+}
+
+export enum SearchQuery {
+    color = 'variants.attributes.color:',
+    size = 'variants.attributes.size:',
+    price = 'variants.price.centAmount:range ',
+    search = 'text.en-US',
+}
