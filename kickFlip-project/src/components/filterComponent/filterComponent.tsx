@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
 import cross from '../../../public/cross.svg';
@@ -51,8 +51,27 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
         return ['color', 'size', 'price'].includes(key);
     };
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+        event.preventDefault();
+        setCategories((prevCategories) => {
+            return { ...prevCategories, search: searchTerm.toLowerCase() };
+        });
+    };
+
     return (
         <div className="filter-wrapper">
+            <form onSubmit={handleSearch} className="filter-search-form">
+                <input
+                    type="text"
+                    className="filter-search"
+                    placeholder="Search"
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                    value={searchTerm}
+                />
+                <button type="submit" className="filter-search-button" aria-label="Search" />
+            </form>
             {isAnyFilterActive && (
                 <div className="selected">
                     <div className="selected_title">
@@ -83,7 +102,6 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
                     </ul>
                 </div>
             )}
-
             <ul className="filter">
                 {Object.keys(options.filter)
                     .filter(isFilterOption)

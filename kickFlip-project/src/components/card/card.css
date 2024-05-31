@@ -73,11 +73,11 @@
 
 .card_price {
     color: var(--electric-orange);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 .card_price_old {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     text-decoration: line-through;
     opacity: 0.5;
 }

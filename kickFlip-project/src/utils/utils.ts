@@ -171,7 +171,7 @@ export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
         overflowStyle = '';
     }
     document.body.style.overflow = overflowStyle;
-}
+};
 
 export const transformPriceRange = (priceRange: string): string => {
     const [min, max] = priceRange

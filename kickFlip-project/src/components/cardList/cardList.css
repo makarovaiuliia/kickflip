@@ -10,12 +10,6 @@
     align-items: center;
 }
 
-.card-list-sorting-container {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-}
-
 .card-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -32,10 +26,15 @@
 }
 
 .card-list-sorting {
-    padding: 4px 16px;
-    border: 1px solid var(--deep-blue);
+    padding: 1rem 1.6rem;
+    border: 1px solid var(--border-gray);
     color: var(--deep-blue);
-    min-width: 10rem;
+    width: 20rem;
+    font-family: var(--font-family);
+}
+
+.search {
+    width: 100%;
 }
 
 .card-list-search-button {
@@ -45,12 +44,8 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-}
-
-form {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    position: absolute;
+    right: 1rem;
 }
 
 @media (width < 800px) {
