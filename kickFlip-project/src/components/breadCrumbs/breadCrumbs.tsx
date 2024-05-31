@@ -1,6 +1,5 @@
 import React from 'react';
 import './breadCrumbs.css';
-import { Link } from 'react-router-dom';
 
 export type CrumbType = {
     label: string;
@@ -16,9 +15,9 @@ function BreadCrumbs({ crumbs }: BreadcrumbsProps): JSX.Element {
         <React.Fragment key={crumb.label}>
             {crumb.url ? (
                 <li className="crumb-section">
-                    <Link to={crumb.url} className="crumb-link">
+                    <a href={crumb.url} className="crumb-link">
                         {crumb.label}
-                    </Link>
+                    </a>
                     <span className="crumb-separator" />
                 </li>
             ) : (

@@ -4,7 +4,6 @@
     gap: 10px;
     color: var(--deep-blue);
     font-family: var(--second-family);
-    width: 100%;
 }
 
 .image-link {
@@ -16,7 +15,6 @@
     object-fit: cover;
     object-position: center;
     width: clamp(10rem, 5.0762rem + 20.7317vw, 25.625rem); /* от 125 до 335 (380-1440) */
-    width: 100%;
     aspect-ratio: 1/1;
     cursor: pointer;
 }

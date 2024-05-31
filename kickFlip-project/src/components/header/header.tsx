@@ -141,7 +141,6 @@ export default function Header() {
                         type="button"
                         className={`navigation-toggle-button ${isOpen && 'open'}`}
                         onClick={() => setMenuIsOpen(!isOpen)}
-                        aria-label="Toggle navigation menu"
                     >
                         <span className="navigation-toggle-bar" />
                     </button>
