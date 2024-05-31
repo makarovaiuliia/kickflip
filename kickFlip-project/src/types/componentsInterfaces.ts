@@ -4,6 +4,7 @@ export interface ImgProps {
     imagesSrc: string[];
     setIndex: (index: number) => void;
     activeIndex: number;
+    openModal?: (isOpen: boolean) => void;
 }
 
 export interface VariantImagesProps {
@@ -34,4 +35,6 @@ export interface DetailsContainerProps {
     variantProps: VariantImagesProps;
     sizesProps: ProductSizesProps;
     descrProps: ProductDescriptionProps;
+    imgProps: ImgProps;
+    isMobile: boolean;
 }
