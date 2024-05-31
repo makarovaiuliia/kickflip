@@ -44,7 +44,7 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
     };
 
     const handleClearAll = () => {
-        setCategories({ filter: { color: [], size: [], price: [] }, sort: '' });
+        setCategories({ filter: { color: [], size: [], price: [] }, sort: '', search: '' });
     };
 
     const isFilterOption = (key: string): key is FilterOptions => {

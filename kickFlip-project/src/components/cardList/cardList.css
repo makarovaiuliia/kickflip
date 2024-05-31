@@ -31,6 +31,21 @@
     min-width: 10rem;
 }
 
+.card-list-search-button {
+    inline-size: 2rem;
+    block-size: 2rem;
+    background-image: url('../../../public/search.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 @media (width < 800px) {
     .card-list {
         grid-template-columns: repeat(2, 1fr);

@@ -208,10 +208,12 @@ export type FilterOptions = 'color' | 'size' | 'price';
 export interface TransformParams {
     filter: Record<FilterOptions, string[]>;
     sort: string;
+    search: string;
 }
 
 export enum SearchQuery {
     color = 'variants.attributes.color:',
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
+    search = 'text.en-US',
 }

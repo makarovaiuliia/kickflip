@@ -197,6 +197,12 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
         if (options.sort) {
             query += query ? `&sort=${options.sort}` : `sort=${options.sort}`;
         }
+
+        if (options.search) {
+            query += query
+                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
+                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+        }
     }
 
     const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;

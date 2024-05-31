@@ -18,6 +18,7 @@ export default function ProductsPage(): JSX.Element {
     const [categories, setCategories] = useState<TransformParams>({
         filter: { color: [], size: [], price: [] },
         sort: '',
+        search: '',
     });
 
     const allSneakers = useSelector(getAllSneakers);

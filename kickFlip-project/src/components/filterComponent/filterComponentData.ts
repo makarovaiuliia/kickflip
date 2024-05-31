@@ -7,6 +7,7 @@ const filterData: TransformParams = {
         price: ['$ 50-70', '$ 70-90', '$ 90-100', '$ 100-140', '$ 140-200', '$ 200-300'],
     },
     sort: '',
+    search: '',
 };
 
 export default filterData;
