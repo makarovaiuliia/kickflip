@@ -4,9 +4,16 @@
     gap: 1rem;
 }
 
-.card-list-sorting-container {
+.card-list-info-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.card-list-sorting-container {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
 }
 
 .card-list {
@@ -43,7 +50,7 @@
 form {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 @media (width < 800px) {
