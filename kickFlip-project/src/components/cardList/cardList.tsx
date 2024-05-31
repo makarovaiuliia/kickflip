@@ -34,7 +34,7 @@ function CardList({ products, setCategories, categories }: CardListProps): JSX.E
                 <input
                     type="text"
                     className="card-list-sorting"
-                    placeholder="Search for kicks"
+                    placeholder="Search"
                     value={searchTerm}
                     onChange={handleSearch}
                 />
