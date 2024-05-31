@@ -9,7 +9,7 @@
     top: 0;
     left: 0;
     z-index: 1;
-    background-color: rgba(67, 63, 63, 0.8);
+    background-color: rgb(67 63 63 / 80%);
     opacity: 0;
     transition: opacity 0.2s;
 }
