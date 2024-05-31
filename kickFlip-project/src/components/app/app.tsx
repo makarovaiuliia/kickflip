@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getCategories, getFilteredProducts } from '@/services/sneakersSlice';
+import { getCategories, getProducts } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -38,7 +38,7 @@ function App() {
                 await dispatch(getAnonymousToken()).unwrap();
             }
 
-            await dispatch(getFilteredProducts()).unwrap();
+            await dispatch(getProducts()).unwrap();
             dispatch(getCategories());
         };
 

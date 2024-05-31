@@ -2,6 +2,7 @@ import {
     CategoriesResponse,
     CustomerAddress,
     Product,
+    ProductResponse,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
@@ -129,10 +130,13 @@ export const getAdditionalSize = (sizes: number[]) => {
     return enlargedSizes;
 };
 
-export const getImageFromEachColor = (data: Variants): string[][] => {
+export const getImageFromEachColor = (data: ProductResponse): string[][] => {
+    const { masterVariant, variants } = data.masterData.current;
+
+    const colorImagesMap = processVariants(masterVariant, variants);
     const imageGroups: string[][] = [];
 
-    Object.values(data).forEach((images) => {
+    Object.values(colorImagesMap).forEach((images) => {
         imageGroups.push(images);
     });
 
@@ -171,14 +175,4 @@ export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
         overflowStyle = '';
     }
     document.body.style.overflow = overflowStyle;
-}
-
-export const transformPriceRange = (priceRange: string): string => {
-    const [min, max] = priceRange
-        .replace('$', '')
-        .trim()
-        .split('-')
-        .map((value) => parseInt(value, 10) * 100);
-
-    return `(${min} to ${max})`;
 };

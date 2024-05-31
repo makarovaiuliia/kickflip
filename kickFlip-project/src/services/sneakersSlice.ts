@@ -1,23 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ProductProjected, TransformParams } from '@/types/types';
-import { getCategoriesApi, getProductsFilteredApi } from '@/utils/kickflip-api';
+import { ProductResponse } from '@/types/types';
+import { getCategoriesApi, getProductsApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { transformCategoryData, CategoryData } from '@/utils/utils';
 
 /* eslint-disable no-param-reassign */
+
+export const getProducts = createAsyncThunk('products/get', async () => {
+    const response = await getProductsApi();
+    return response;
+});
 
 export const getCategories = createAsyncThunk('categories/post', async () => {
     const response = await getCategoriesApi();
     return response;
 });
 
-export const getFilteredProducts = createAsyncThunk('filtered/get', async (options?: TransformParams) => {
-    const response = await getProductsFilteredApi(options);
-    return response;
-});
-
 interface InitialState {
-    allSneakers: ProductProjected[];
+    allSneakers: ProductResponse[];
     categories: CategoryData;
 }
 
@@ -31,13 +31,12 @@ const sneakersSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder
-            .addCase(getCategories.fulfilled, (state, action) => {
-                state.categories = transformCategoryData(action.payload);
-            })
-            .addCase(getFilteredProducts.fulfilled, (state, action) => {
-                state.allSneakers = action.payload.results;
-            });
+        builder.addCase(getProducts.fulfilled, (state, action) => {
+            state.allSneakers = action.payload.results;
+        });
+        builder.addCase(getCategories.fulfilled, (state, action) => {
+            state.categories = transformCategoryData(action.payload);
+        });
     },
 });
 
