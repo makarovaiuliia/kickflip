@@ -6,6 +6,7 @@ import {
     UpdatePasswordForm,
     UpdateUserProfileDataFormRequest,
     UpdateUserAddressFormRequest,
+    AddNewAddressFormRequest,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -258,6 +259,99 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
         body: JSON.stringify(dataRequest),
     })
         .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const addNewUserAddressFeatchersApi = (resultData: TUserResponse, data: AddNewAddressFormRequest) => {
+    const targetAdress = resultData.addresses[resultData.addresses.length - 1];
+    let dataRequest;
+    if (data.data?.addToBillingShipping === 'shipping') {
+        dataRequest = {
+            version: data.version! + 1,
+            actions: [
+                {
+                    action: 'addShippingAddressId',
+                    addressId: targetAdress.id,
+                },
+            ],
+        };
+    } else if (data.data?.addToBillingShipping === 'billing') {
+        dataRequest = {
+            version: data.version! + 1,
+            actions: [
+                {
+                    action: 'addSBillingAddressId',
+                    addressId: targetAdress.id,
+                },
+            ],
+        };
+    }
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    }).then((res) => checkResponse<TUserResponse>(res));
+};
+
+export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'addAddress',
+                address: data.data?.newAddress,
+            },
+        ],
+    };
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((res) => {
+            const targetAdress = res.addresses[res.addresses.length - 1];
+            let dataRequestN;
+            if (data.data?.addToBillingShipping === 'shipping') {
+                dataRequestN = {
+                    version: data.version! + 1,
+                    actions: [
+                        {
+                            action: 'addShippingAddressId',
+                            addressId: targetAdress.id,
+                        },
+                    ],
+                };
+            } else if (data.data?.addToBillingShipping === 'billing') {
+                dataRequestN = {
+                    version: data.version! + 1,
+                    actions: [
+                        {
+                            action: 'addBillingAddressId',
+                            addressId: targetAdress.id,
+                        },
+                    ],
+                };
+            }
+            return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    Authorization: `Bearer ${getCookie('accessToken')}`,
+                },
+                body: JSON.stringify(dataRequestN),
+            });
+        })
+        .then((resul) => checkResponse<TUserResponse>(resul))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);

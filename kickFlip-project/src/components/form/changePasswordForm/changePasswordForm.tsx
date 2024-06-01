@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage, UpdatePasswordForm } from '@/types/types';
 import { useDispatch } from '@/services/store';
@@ -13,6 +14,7 @@ import '../form.css';
 export default function ChangePasswordForm() {
     const { user } = useSelector(getUserSelector);
     const [updatePaswordError, setUpdatePaswordError] = useState('');
+    const navigate = useNavigate();
 
     const {
         register,
@@ -33,6 +35,7 @@ export default function ChangePasswordForm() {
         setUpdatePaswordError('');
         try {
             await dispatch(updateUserPassword(requestData)).unwrap();
+            navigate('/profile');
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setUpdatePaswordError);

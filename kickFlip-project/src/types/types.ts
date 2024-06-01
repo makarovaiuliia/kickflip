@@ -22,6 +22,7 @@ export enum StateMessage {
     UpdatedProfilePassword = 'Your password has been successfully updated',
     UpdatedProfileData = 'Your data have been successfully updated',
     UpdatedProfileAddress = 'Your address have been successfully updated',
+    AddedProfileAddress = 'Your address have been successfully added',
 }
 export type TUser = {
     email?: string;
@@ -94,6 +95,22 @@ export interface SignUpDataForm extends SignUpData {
     billingAddress: CustomerAddress;
     useBillingAsShipping: boolean;
     useShippingAsBilling: boolean;
+}
+
+export interface AddNewAddressForm {
+    newAddress: CustomerAddress;
+    isDefaultAddress: boolean;
+    addToBillingShipping?: string;
+    addToBilling?: boolean;
+    addToShipping?: boolean;
+}
+
+export interface AddNewAddressFormRequest {
+    id?: string;
+    version?: number;
+    adresses?: TAddress[];
+    addressId?: string;
+    data?: AddNewAddressForm;
 }
 
 export interface UpdateUserAddressForm {

@@ -131,6 +131,7 @@ export default function ChangeUserAddressForm(props: Props) {
         >
             {!isBilling && (
                 <>
+                    <h3 className="form-heading">{address.id === user?.defaultShippingAddressId ? 'Default' : ''}</h3>
                     <FormField
                         label="Shipping Address"
                         addWrapperClasses={['stretched']}
@@ -200,6 +201,7 @@ export default function ChangeUserAddressForm(props: Props) {
             )}
             {isBilling && (
                 <>
+                    <h3 className="form-heading">{address.id === user?.defaultBillingAddressId ? 'Default' : ''}</h3>
                     <FormField
                         label="Billing Address"
                         addWrapperClasses={['stretched']}

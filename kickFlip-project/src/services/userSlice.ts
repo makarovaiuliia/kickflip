@@ -7,6 +7,7 @@ import {
     updateUserPasswordApi,
     updateUserProfileDataApi,
     updateUserAddressApi,
+    addNewUserAddressApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
@@ -18,6 +19,7 @@ import {
     UpdatePasswordForm,
     UpdateUserProfileDataFormRequest,
     UpdateUserAddressFormRequest,
+    AddNewAddressFormRequest,
 } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
@@ -61,6 +63,14 @@ export const updateUserAddress = createAsyncThunk(
     'user/updateProfileAddress',
     async (data: UpdateUserAddressFormRequest) => {
         const response = await updateUserAddressApi(data);
+        return response;
+    }
+);
+
+export const addNewUserAddress = createAsyncThunk(
+    'user/addNewProfileAddress',
+    async (data: AddNewAddressFormRequest) => {
+        const response = await addNewUserAddressApi(data);
         return response;
     }
 );
@@ -156,6 +166,15 @@ const userSlice = createSlice({
                 state.updateUserMessage = StateMessage.UpdatedProfileAddress;
             })
             .addCase(updateUserAddress.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(addNewUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.AddedProfileAddress;
+            })
+            .addCase(addNewUserAddress.rejected, (state, action) => {
                 state.error = action.error.message;
             });
     },

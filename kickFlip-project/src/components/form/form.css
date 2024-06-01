@@ -228,7 +228,8 @@
     }
 }
 
-.change-user-address-form {
+.change-user-address-form,
+.new-user-address-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
