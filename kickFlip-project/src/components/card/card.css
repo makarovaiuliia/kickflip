@@ -39,7 +39,7 @@
 }
 
 .card_image-mini {
-    width: clamp(2rem, -1.5rem + 8.3333vw, 5.125rem); /* от 20 до 50 (380-1440) */
+    width: clamp(2.7rem, -1.5rem + 8.3333vw, 5.125rem); /* от 27 до 50 (380-1440) */
     aspect-ratio: 1/1;
     cursor: pointer;
     background-position: center;

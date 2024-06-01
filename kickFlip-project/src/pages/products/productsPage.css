@@ -27,13 +27,13 @@
     width: 100%;
 }
 
+.filterIsHidden {
+    display: flex;
+}
+
 @media (width < 500px) {
     .categories {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(3, 1fr);
-    }
-
-    .products {
-        grid-template-columns: 1fr 2fr;
     }
 }

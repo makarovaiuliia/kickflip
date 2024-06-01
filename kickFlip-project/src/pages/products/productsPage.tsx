@@ -10,6 +10,7 @@ import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
 import filterData from '@/components/filterComponent/filterComponentData';
 import { ProductProjected, TransformParams } from '@/types/types';
+import ModalWindow from '@/components/modalWindow/modalWindow';
 
 export default function ProductsPage(): JSX.Element {
     const dispatch = useDispatch();
@@ -20,10 +21,21 @@ export default function ProductsPage(): JSX.Element {
         sort: '',
         search: '',
     });
+    const [filterIsActive, setFilterIsActive] = useState<boolean>(false);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
 
     const allSneakers = useSelector(getAllSneakers);
     const productCategories = useSelector(getAllCategories);
     const { category } = useParams<{ category: string }>();
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 900);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         if (!productCategories || !category) {
@@ -70,9 +82,29 @@ export default function ProductsPage(): JSX.Element {
                 ))}
             </div>
             {category && <BreadCrumbs crumbs={breadCrumbs} />}
-            <div className="products">
-                <FilterComponent options={filterData} setCategories={setCategories} categories={categories} />
-                <CardList products={products} setCategories={setCategories} categories={categories} />
+            <div className={filterIsActive ? 'products' : 'products filterIsHidden'}>
+                {isMobile && filterIsActive && (
+                    <ModalWindow
+                        content={
+                            <FilterComponent
+                                options={filterData}
+                                setCategories={setCategories}
+                                categories={categories}
+                            />
+                        }
+                        open={filterIsActive}
+                        closeModal={() => setFilterIsActive(false)}
+                    />
+                )}
+                {!isMobile && filterIsActive && (
+                    <FilterComponent options={filterData} setCategories={setCategories} categories={categories} />
+                )}
+                <CardList
+                    products={products}
+                    setCategories={setCategories}
+                    categories={categories}
+                    setFilterIsActive={setFilterIsActive}
+                />
             </div>
         </div>
     );
