@@ -11,9 +11,14 @@ import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
 export default function NewAddressForm() {
+    const navigate = useNavigate();
     const { user } = useSelector(getUserSelector);
     const [registrationError, setRegistrationError] = useState('');
-    const navigate = useNavigate();
+    const [abilityCreateNewAddress, setAbilityCreateNewAddress] = useState(true);
+
+    const handletCreateNewAddress = (abilityChange: boolean) => {
+        setAbilityCreateNewAddress(abilityChange);
+    };
 
     const {
         register,
@@ -79,87 +84,111 @@ export default function NewAddressForm() {
         }
     }, [watchBillingCountry, trigger]);
     return (
-        <form className="new-user-address-form" onSubmit={handleSubmit(submit)}>
-            <FormField
-                label="Address"
-                addWrapperClasses={['stretched']}
-                id="new-address-input"
-                name="newAddress.streetName"
-                placeholder="First line of address"
-                register={register}
-                errors={errors.newAddress?.streetName}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
-            />
-            <FormField
-                addWrapperClasses={['stretched']}
-                name="newAddress.streetNumber"
-                placeholder="Second line of address"
-                register={register}
-            />
-            <FormField
-                label="City"
-                id="new-city-input"
-                name="newAddress.city"
-                placeholder="Your city"
-                register={register}
-                errors={errors.newAddress?.city}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
-                    minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
-                }}
-            />
-            <FormField
-                fieldTag="select"
-                label="Country"
-                selectOptions={[
-                    { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
-                    { value: 'AU', text: 'Austria' },
-                    { value: 'BU', text: 'Belarus' },
-                    { value: 'GE', text: 'Georgia' },
-                    { value: 'RU', text: 'Russia' },
-                ]}
-                id="new-country-input"
-                name="newAddress.country"
-                register={register}
-                errors={errors.newAddress?.country}
-                validationRules={{
-                    required: true,
-                }}
-            />
-            <FormField
-                label="Postal Code"
-                addWrapperClasses={['stretched']}
-                id="new-zip-input"
-                name="newAddress.postalCode"
-                placeholder="Enter postal code"
-                register={register}
-                errors={errors.newAddress?.postalCode}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    validate: (value) => matchCountry(value, 'newAddress'),
-                }}
-            />
-            <div className="checkbox-wrapper">
-                <input type="radio" value="shipping" checked {...register('addToBillingShipping')} />
-                <span>Shipping address</span>
-            </div>
-            <div className="checkbox-wrapper">
-                <input type="radio" value="billing" {...register('addToBillingShipping')} />
-                <span>Billing address</span>
-            </div>
-            <div className="checkbox-wrapper">
-                <input type="checkbox" {...register('isDefaultAddress')} />
-                <span>Make this address default</span>
-            </div>
-            <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
-                Save
-            </button>
+        <>
+            <form
+                className={`new-user-address-form ${abilityCreateNewAddress ? 'hide' : ''}`}
+                onSubmit={handleSubmit(submit)}
+            >
+                <FormField
+                    label="Address"
+                    addWrapperClasses={['stretched']}
+                    id="new-address-input"
+                    name="newAddress.streetName"
+                    placeholder="First line of address"
+                    register={register}
+                    errors={errors.newAddress?.streetName}
+                    validationRules={{
+                        required: ErrorMessage.REQUIRED_FIELD,
+                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                    }}
+                />
+                <FormField
+                    addWrapperClasses={['stretched']}
+                    name="newAddress.streetNumber"
+                    placeholder="Second line of address"
+                    register={register}
+                />
+                <FormField
+                    label="City"
+                    id="new-city-input"
+                    name="newAddress.city"
+                    placeholder="Your city"
+                    register={register}
+                    errors={errors.newAddress?.city}
+                    validationRules={{
+                        required: ErrorMessage.REQUIRED_FIELD,
+                        pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
+                        minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
+                    }}
+                />
+                <FormField
+                    fieldTag="select"
+                    label="Country"
+                    selectOptions={[
+                        { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
+                        { value: 'AU', text: 'Austria' },
+                        { value: 'BU', text: 'Belarus' },
+                        { value: 'GE', text: 'Georgia' },
+                        { value: 'RU', text: 'Russia' },
+                    ]}
+                    id="new-country-input"
+                    name="newAddress.country"
+                    register={register}
+                    errors={errors.newAddress?.country}
+                    validationRules={{
+                        required: true,
+                    }}
+                />
+                <FormField
+                    label="Postal Code"
+                    addWrapperClasses={['stretched']}
+                    id="new-zip-input"
+                    name="newAddress.postalCode"
+                    placeholder="Enter postal code"
+                    register={register}
+                    errors={errors.newAddress?.postalCode}
+                    validationRules={{
+                        required: ErrorMessage.REQUIRED_FIELD,
+                        validate: (value) => matchCountry(value, 'newAddress'),
+                    }}
+                />
+                <div className="checkboxes-wrapper">
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('addToShipping')} />
+                        <span>Shipping address</span>
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('isDefaultShippingAddress')} />
+                        <span>Make this address default</span>
+                    </div>
+                </div>
+                <div className="checkboxes-wrapper">
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('addToBilling')} />
+                        <span>Billing address</span>
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" {...register('isDefaultBillingAddress')} />
+                        <span>Make this address default</span>
+                    </div>
+                </div>
 
-            <span className="error-message stretched">{registrationError}</span>
-        </form>
+                <button className={`change-user-btn ${isValid ? '' : 'disable'}`} type="submit">
+                    Save
+                </button>
+
+                <span className="error-message stretched">{registrationError}</span>
+            </form>
+            {abilityCreateNewAddress && (
+                <button className="change-user-btn" type="button" onClick={() => handletCreateNewAddress(false)}>
+                    Add Address
+                </button>
+            )}
+            {!abilityCreateNewAddress && (
+                <button className="change-user-btn" type="button" onClick={() => handletCreateNewAddress(true)}>
+                    Cancel
+                </button>
+            )}
+        </>
     );
 }

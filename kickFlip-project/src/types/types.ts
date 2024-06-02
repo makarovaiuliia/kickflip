@@ -101,6 +101,8 @@ export interface SignUpDataForm extends SignUpData {
 export interface AddNewAddressForm {
     newAddress: CustomerAddress;
     isDefaultAddress: boolean;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
     addToBillingShipping?: string;
     addToBilling?: boolean;
     addToShipping?: boolean;

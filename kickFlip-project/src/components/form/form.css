@@ -240,6 +240,9 @@
     gap: 20px;
     border: 1px solid var(--deep-blue);
     padding: 10px;
+    &.hide {
+        display: none;
+    }
 }
 
 .change-user-address-form .form-input-select {

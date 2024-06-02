@@ -316,17 +316,12 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
                 version: data.version! + 1,
                 actions: [],
             };
-            if (data.data?.addToBillingShipping === 'shipping' && data.data.isDefaultAddress === false) {
+            if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === false) {
                 dataRequestN.actions.push({
                     action: 'addShippingAddressId',
                     addressId: targetAdress.id!,
                 });
-            } else if (data.data?.addToBillingShipping === 'billing' && data.data.isDefaultAddress === false) {
-                dataRequestN.actions.push({
-                    action: 'addBillingAddressId',
-                    addressId: targetAdress.id!,
-                });
-            } else if (data.data?.addToBillingShipping === 'shipping' && data.data.isDefaultAddress === true) {
+            } else if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultShippingAddress',
                     addressId: targetAdress.id!,
@@ -335,7 +330,13 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
                     action: 'addShippingAddressId',
                     addressId: targetAdress.id!,
                 });
-            } else if (data.data?.addToBillingShipping === 'billing' && data.data.isDefaultAddress === true) {
+            }
+            if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === false) {
+                dataRequestN.actions.push({
+                    action: 'addBillingAddressId',
+                    addressId: targetAdress.id!,
+                });
+            } else if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultBillingAddress',
                     addressId: targetAdress.id!,
