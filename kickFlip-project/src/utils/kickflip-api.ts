@@ -8,6 +8,7 @@ import {
     UpdateUserAddressFormRequest,
     AddNewAddressFormRequest,
     NewAddressAction,
+    UpdateAddressAction,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData } from './utils';
@@ -227,29 +228,64 @@ export const updateUserProfileDataApi = (data: UpdateUserProfileDataFormRequest)
 };
 
 export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
-    let dataRequest;
+    const dataRequest: UpdateAddressAction = {
+        version: data.version!,
+        actions: [],
+    };
     if (data.data?.billingAddress) {
-        dataRequest = {
-            version: data.version,
-            actions: [
-                {
-                    action: 'changeAddress',
-                    addressId: data.addressId,
-                    address: data.data?.billingAddress,
-                },
-            ],
-        };
+        dataRequest.actions.push({
+            action: 'changeAddress',
+            addressId: data.addressId,
+            address: data.data?.billingAddress,
+        });
     } else if (data.data?.shippingAddress) {
-        dataRequest = {
-            version: data.version,
-            actions: [
-                {
-                    action: 'changeAddress',
-                    addressId: data.addressId,
-                    address: data.data?.shippingAddress,
-                },
-            ],
-        };
+        dataRequest.actions.push({
+            action: 'changeAddress',
+            addressId: data.addressId,
+            address: data.data?.shippingAddress,
+        });
+    }
+    if (data.defaultCheckedBilling !== data.data?.isBillingAddress) {
+        if (data.data?.isBillingAddress === true) {
+            dataRequest.actions.push({
+                action: 'addBillingAddressId',
+                addressId: data.addressId,
+            });
+        } else {
+            dataRequest.actions.push({
+                action: 'removeBillingAddressId',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
+        if (data.data?.isDefaultBillingAddress === true) {
+            dataRequest.actions.push({
+                action: 'setDefaultBillingAddress',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultCheckedShipping !== data.data?.isShippingAddress) {
+        if (data.data?.isShippingAddress === true) {
+            dataRequest.actions.push({
+                action: 'addShippingAddressId',
+                addressId: data.addressId,
+            });
+        } else {
+            dataRequest.actions.push({
+                action: 'removeShippingAddressId',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
+        if (data.data?.isDefaultShippingAddress === true) {
+            dataRequest.actions.push({
+                action: 'setDefaultShippingAddress',
+                addressId: data.addressId,
+            });
+        }
     }
     return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
         method: 'POST',

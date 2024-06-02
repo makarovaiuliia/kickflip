@@ -121,8 +121,8 @@ export interface UpdateUserAddressForm {
     isDefaultShippingAddress: boolean;
     isDefaultBillingAddress: boolean;
     billingAddress: CustomerAddress;
-    useBillingAsShipping: boolean;
-    useShippingAsBilling: boolean;
+    isShippingAddress: boolean;
+    isBillingAddress: boolean;
 }
 
 export interface UpdateUserAddressFormRequest {
@@ -130,6 +130,10 @@ export interface UpdateUserAddressFormRequest {
     version?: number;
     addressId?: string;
     data?: UpdateUserAddressForm;
+    defaultCheckedBilling?: boolean;
+    defaultcheckedBillingDefault?: boolean;
+    defaultCheckedShipping?: boolean;
+    defaultCheckedShippingDefault?: boolean;
 }
 
 export interface UpdatePasswordForm {
@@ -148,6 +152,17 @@ export interface UpdateUserProfileDataForm {
     lastName?: string;
     firstName?: string;
     dateOfBirth?: Date;
+}
+
+export interface UpdateAddressAction {
+    version: number;
+    actions: Array<UpdateAddressActionsRequest>;
+}
+
+export interface UpdateAddressActionsRequest {
+    action: string;
+    addressId?: string;
+    address?: CustomerAddress;
 }
 
 export interface NewAddressAction {

@@ -96,6 +96,14 @@
     font-size: 1.4rem;
 }
 
+.checkboxes-wrapper {
+    display: flex;
+    flex-direction: column;
+    &.hide {
+        display: none;
+    }
+}
+
 .form-input {
     border: 1px solid var(--border-gray);
     color: var(--deep-blue);

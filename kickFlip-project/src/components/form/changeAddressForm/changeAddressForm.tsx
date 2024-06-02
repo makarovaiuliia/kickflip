@@ -27,9 +27,18 @@ export default function ChangeUserAddressForm(props: Props) {
     const { user } = useSelector(getUserSelector);
     const isBilling = addressBillingShipping === 'billingAddress';
 
+    const defaultCheckedBilling = user?.billingAddressIds?.includes(address.id!);
+    const defaultcheckedBillingDefault = address.id === user?.defaultBillingAddressId;
+    const defaultCheckedShipping = user?.shippingAddressIds?.includes(address.id!);
+    const defaultCheckedShippingDefault = address.id === user?.defaultShippingAddressId;
+
     const [updateUserAddressError, setRegistrationError] = useState('');
     const [deleteUserAddressError, setDeleteError] = useState('');
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
+    const [checkedBilling, setCheckedBilling] = useState(defaultCheckedBilling);
+    const [checkedBillingDefault, setCheckedBillingDefault] = useState(defaultcheckedBillingDefault);
+    const [checkedShipping, setCheckedShipping] = useState(defaultCheckedShipping);
+    const [checkedShippingDefault, setCheckedShippingDefault] = useState(defaultCheckedShippingDefault);
 
     const handleProtectUpdateFormAbility = (abilityChange: boolean) => {
         setAbilityChangeForm(abilityChange);
@@ -77,6 +86,10 @@ export default function ChangeUserAddressForm(props: Props) {
             id: user?.id,
             version: user?.version,
             addressId: address.id,
+            defaultCheckedBilling,
+            defaultcheckedBillingDefault,
+            defaultCheckedShipping,
+            defaultCheckedShippingDefault,
             data,
         };
         setRegistrationError('');
@@ -97,6 +110,7 @@ export default function ChangeUserAddressForm(props: Props) {
         setRegistrationError('');
         try {
             await dispatch(deleteUserAddress(requestData)).unwrap();
+            handleProtectUpdateFormAbility(true);
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setDeleteError);
@@ -317,6 +331,46 @@ export default function ChangeUserAddressForm(props: Props) {
                     />
                 </>
             )}
+            <div className={`checkboxes-wrapper ${abilityChangeForm ? 'hide' : ''}`}>
+                <div className="checkbox-wrapper">
+                    <input
+                        type="checkbox"
+                        checked={checkedShipping}
+                        {...register('isShippingAddress')}
+                        onChange={(e) => setCheckedShipping(e.target.checked)}
+                    />
+                    <span>Shipping address</span>
+                </div>
+                <div className="checkbox-wrapper">
+                    <input
+                        type="checkbox"
+                        checked={checkedShippingDefault}
+                        {...register('isDefaultShippingAddress')}
+                        onChange={(e) => setCheckedShippingDefault(e.target.checked)}
+                    />
+                    <span>Make this shipping address default</span>
+                </div>
+            </div>
+            <div className={`checkboxes-wrapper ${abilityChangeForm ? 'hide' : ''}`}>
+                <div className="checkbox-wrapper">
+                    <input
+                        type="checkbox"
+                        checked={checkedBilling}
+                        {...register('isBillingAddress')}
+                        onChange={(e) => setCheckedBilling(e.target.checked)}
+                    />
+                    <span>Billing address</span>
+                </div>
+                <div className="checkbox-wrapper">
+                    <input
+                        type="checkbox"
+                        checked={checkedBillingDefault}
+                        {...register('isDefaultBillingAddress')}
+                        onChange={(e) => setCheckedBillingDefault(e.target.checked)}
+                    />
+                    <span>Make this billing address default</span>
+                </div>
+            </div>
             <div className="buttons-wrapper">
                 {abilityChangeForm && (
                     <button
@@ -336,7 +390,11 @@ export default function ChangeUserAddressForm(props: Props) {
                         Cancel
                     </button>
                 )}
-                <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'}`} type="submit">
+                <button
+                    className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'}`}
+                    type="submit"
+                    onClick={() => handleProtectUpdateFormAbility(true)}
+                >
                     Update
                 </button>
                 <button className="change-user-btn" type="button" onClick={deleteAddress}>
