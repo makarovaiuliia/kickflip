@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, Country, UpdateUserAddressForm, TAddress } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserAddress, getUserSelector } from '@/services/userSlice';
+import { updateUserAddress, deleteUserAddress, getUserSelector } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -28,6 +28,7 @@ export default function ChangeUserAddressForm(props: Props) {
     const isBilling = addressBillingShipping === 'billingAddress';
 
     const [updateUserAddressError, setRegistrationError] = useState('');
+    const [deleteUserAddressError, setDeleteError] = useState('');
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
 
     const handleProtectUpdateFormAbility = (abilityChange: boolean) => {
@@ -58,6 +59,21 @@ export default function ChangeUserAddressForm(props: Props) {
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setRegistrationError);
+        }
+    };
+
+    const deleteAddress = async () => {
+        const requestData = {
+            id: user?.id,
+            version: user?.version,
+            addressId: address.id,
+        };
+        setRegistrationError('');
+        try {
+            await dispatch(deleteUserAddress(requestData)).unwrap();
+            reset();
+        } catch (error) {
+            responsesErrorsHandler(error, setDeleteError);
         }
     };
 
@@ -291,12 +307,12 @@ export default function ChangeUserAddressForm(props: Props) {
                 <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'}`} type="submit">
                     Update
                 </button>
-                <button className="change-user-btn" type="button">
+                <button className="change-user-btn" type="button" onClick={deleteAddress}>
                     Delete
                 </button>
             </div>
 
-            <span className="error-message stretched">{updateUserAddressError}</span>
+            <span className="error-message stretched">{updateUserAddressError || deleteUserAddressError}</span>
         </form>
     );
 }

@@ -22,6 +22,7 @@ export enum StateMessage {
     UpdatedProfilePassword = 'Your password has been successfully updated',
     UpdatedProfileData = 'Your data have been successfully updated',
     UpdatedProfileAddress = 'Your address have been successfully updated',
+    DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
 }
 export type TUser = {

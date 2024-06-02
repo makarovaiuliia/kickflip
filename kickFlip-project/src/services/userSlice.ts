@@ -7,6 +7,7 @@ import {
     updateUserPasswordApi,
     updateUserProfileDataApi,
     updateUserAddressApi,
+    deleteUserAddressApi,
     addNewUserAddressApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
@@ -63,6 +64,14 @@ export const updateUserAddress = createAsyncThunk(
     'user/updateProfileAddress',
     async (data: UpdateUserAddressFormRequest) => {
         const response = await updateUserAddressApi(data);
+        return response;
+    }
+);
+
+export const deleteUserAddress = createAsyncThunk(
+    'user/deleteProfileAddress',
+    async (data: UpdateUserAddressFormRequest) => {
+        const response = await deleteUserAddressApi(data);
         return response;
     }
 );
@@ -166,6 +175,15 @@ const userSlice = createSlice({
                 state.updateUserMessage = StateMessage.UpdatedProfileAddress;
             })
             .addCase(updateUserAddress.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(deleteUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.DeletedProfileAddress;
+            })
+            .addCase(deleteUserAddress.rejected, (state, action) => {
                 state.error = action.error.message;
             })
             .addCase(addNewUserAddress.fulfilled, (state, action) => {

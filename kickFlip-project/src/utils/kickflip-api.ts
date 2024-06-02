@@ -265,6 +265,31 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
         });
 };
 
+export const deleteUserAddressApi = (data: UpdateUserAddressFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'removeAddress',
+                addressId: data.addressId,
+            },
+        ],
+    };
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
 export const addNewUserAddressFeatchersApi = (resultData: TUserResponse, data: AddNewAddressFormRequest) => {
     const targetAdress = resultData.addresses[resultData.addresses.length - 1];
     let dataRequest;
