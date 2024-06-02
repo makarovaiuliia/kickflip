@@ -301,7 +301,6 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
             },
         ],
     };
-    console.log(data.data);
     return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
         method: 'POST',
         headers: {

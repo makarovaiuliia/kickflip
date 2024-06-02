@@ -57,7 +57,19 @@
     }
 }
 
-.form-heading-address {
+.change-address-form-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    &:empty {
+        display: none;
+    }
+}
+
+.form-heading-address,
+.form-heading-colored {
     color: var(--electric-orange);
     &:empty {
         display: none;
@@ -219,13 +231,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    &:first-of-type:after {
-        content: '';
-        display: flex;
-        width: 100%;
-        height: 2px;
-        background-color: var(--deep-blue);
-    }
 }
 
 .change-user-address-form,

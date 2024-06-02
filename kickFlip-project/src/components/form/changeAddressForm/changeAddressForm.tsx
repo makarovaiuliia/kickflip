@@ -35,6 +35,32 @@ export default function ChangeUserAddressForm(props: Props) {
         setAbilityChangeForm(abilityChange);
     };
 
+    const checkAddresHeading = () => {
+        if (user?.billingAddressIds?.includes(address.id!) && user?.shippingAddressIds?.includes(address.id!)) {
+            return 'Billing and shipping address';
+        }
+        if (user?.billingAddressIds?.includes(address.id!) && !user?.shippingAddressIds?.includes(address.id!)) {
+            return 'Billing address';
+        }
+        if (!user?.billingAddressIds?.includes(address.id!) && user?.shippingAddressIds?.includes(address.id!)) {
+            return 'Shipping address';
+        }
+        return '';
+    };
+
+    const checkDefaultHeading = () => {
+        if (address.id === user?.defaultShippingAddressId && address.id === user?.defaultBillingAddressId) {
+            return '  Default all';
+        }
+        if (
+            (address.id === user?.defaultShippingAddressId && address.id !== user?.defaultBillingAddressId) ||
+            (address.id !== user?.defaultShippingAddressId && address.id === user?.defaultBillingAddressId)
+        ) {
+            return '  Default';
+        }
+        return '';
+    };
+
     const {
         register,
         handleSubmit,
@@ -147,7 +173,10 @@ export default function ChangeUserAddressForm(props: Props) {
         >
             {!isBilling && (
                 <>
-                    <h3 className="form-heading">{address.id === user?.defaultShippingAddressId ? 'Default' : ''}</h3>
+                    <h3 className="form-heading change-address-form-heading">
+                        <span className="form-heading-colored">{checkAddresHeading()}</span>
+                        <span>{checkDefaultHeading()}</span>
+                    </h3>
                     <FormField
                         label="Shipping Address"
                         addWrapperClasses={['stretched']}
@@ -217,7 +246,10 @@ export default function ChangeUserAddressForm(props: Props) {
             )}
             {isBilling && (
                 <>
-                    <h3 className="form-heading">{address.id === user?.defaultBillingAddressId ? 'Default' : ''}</h3>
+                    <h3 className="form-heading change-address-form-heading">
+                        <span className="form-heading-colored">{checkAddresHeading()}</span>
+                        <span>{checkDefaultHeading()}</span>
+                    </h3>
                     <FormField
                         label="Billing Address"
                         addWrapperClasses={['stretched']}
