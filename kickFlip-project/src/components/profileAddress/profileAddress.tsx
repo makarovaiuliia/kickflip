@@ -1,5 +1,6 @@
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
-
+import { getUserSelector } from '@/services/userSlice';
 import './profileAddress.css';
 import ProfileShippingAddresses from '../profileShippingAdresses/profileShippingAdresses';
 import ProfileBillingAddresses from '../profileBillingAdresses/profileBillingAddresses';
@@ -7,6 +8,8 @@ import NewAddressForm from '../form/newAddressForm/newAddressForm';
 
 export default function ProfileAddress(): JSX.Element {
     const [components, setComponents] = useState([] as Array<string>);
+    const { user } = useSelector(getUserSelector);
+    console.log(user);
 
     const result = components.map((item, index) => {
         return <NewAddressForm key={`${`${item}-${index}`}`} />;

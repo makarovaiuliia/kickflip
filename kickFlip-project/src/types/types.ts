@@ -148,6 +148,16 @@ export interface UpdateUserProfileDataForm {
     dateOfBirth?: Date;
 }
 
+export interface NewAddressAction {
+    version: number;
+    actions: Array<NewAddressActionsRequest>;
+}
+
+export interface NewAddressActionsRequest {
+    action: string;
+    addressId: string;
+}
+
 export interface SignUpDataRequest extends SignUpData {
     defaultShippingAddress?: number;
     defaultBillingAddress?: number;
