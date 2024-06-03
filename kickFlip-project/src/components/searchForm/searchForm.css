@@ -16,7 +16,7 @@
 .filter-search-button {
     inline-size: 2rem;
     block-size: 2rem;
-    background-image: url('../../../public/search.svg');
+    background-image: url('/search.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

@@ -38,7 +38,7 @@
 .card-list-hide-filter {
     height: 1.5rem;
     width: 1.5rem;
-    background-image: url('../../../public/filter.svg');
+    background-image: url('/filter.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
