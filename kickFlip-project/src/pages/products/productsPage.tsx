@@ -21,7 +21,7 @@ export default function ProductsPage(): JSX.Element {
         sort: '',
         search: '',
     });
-    const [filterIsActive, setFilterIsActive] = useState<boolean>(false);
+    const [filterIsActive, setFilterIsActive] = useState<boolean>(true);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
 
     const allSneakers = useSelector(getAllSneakers);
@@ -35,6 +35,12 @@ export default function ProductsPage(): JSX.Element {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        if (window.innerWidth < 900) {
+            setFilterIsActive(false);
+        }
     }, []);
 
     useEffect(() => {
