@@ -19,6 +19,20 @@
     column-gap: 16px;
 }
 
+.change-password-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.change-user-data-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
 .form-title {
     font-family: var(--font-family);
     font-size: 3.6rem;
@@ -28,6 +42,40 @@
     width: 100%;
 }
 
+.form-subtitle {
+    font-family: var(--font-family);
+    font-size: 2.8rem;
+    font-weight: 600;
+}
+
+.form-heading {
+    font-family: var(--font-family);
+    font-size: 2rem;
+    font-weight: 600;
+    &:empty {
+        display: none;
+    }
+}
+
+.change-address-form-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    &:empty {
+        display: none;
+    }
+}
+
+.form-heading-address,
+.form-heading-colored {
+    color: var(--electric-orange);
+    &:empty {
+        display: none;
+    }
+}
+
 .input-wrapper {
     width: 100%;
     display: flex;
@@ -35,10 +83,25 @@
     gap: 8px;
 }
 
+.buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
 .checkbox-wrapper {
     display: flex;
     gap: 8px;
     font-size: 1.4rem;
+}
+
+.checkboxes-wrapper {
+    display: flex;
+    flex-direction: column;
+    &.hide {
+        display: none;
+    }
 }
 
 .form-input {
@@ -50,6 +113,17 @@
     font-size: 2rem;
     line-height: 150%;
     padding: 1.3rem 1.6rem;
+    transition: all 0.5s;
+    &:read-only {
+        border: 1px solid transparent;
+        border-bottom: 1px solid var(--border-gray);
+        padding-left: 0;
+        &:focus {
+            & + .error-message {
+                visibility: hidden;
+            }
+        }
+    }
 }
 
 .form-input::placeholder {
@@ -58,6 +132,9 @@
 
 .form-input:focus {
     outline: none;
+    & + .error-message {
+        visibility: visible;
+    }
 }
 
 .form-label {
@@ -69,6 +146,7 @@
 }
 
 .error-message {
+    visibility: visible;
     color: var(--electric-orange);
     min-height: 20px;
     font-size: 1.5rem;
@@ -102,12 +180,82 @@
     background: var(--border-gray);
 }
 
+.change-user-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0px;
+    background-color: var(--deep-blue);
+    width: 160px;
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 114%;
+    color: var(--white);
+    transition: all 0.5s;
+    &:hover {
+        background-color: var(--electric-orange);
+    }
+    &.disable {
+        pointer-events: none;
+        background: var(--border-gray);
+    }
+}
+
+.change-address-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0px;
+    background-color: var(--deep-blue);
+    width: 160px;
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 114%;
+    color: var(--white);
+    transition: all 0.5s;
+    &:hover {
+        background-color: var(--electric-orange);
+    }
+    &.disable {
+        pointer-events: none;
+        background: var(--border-gray);
+    }
+}
+
 .stretched {
     grid-column: 1 / 3;
 }
 
 .stretched.error-message {
     text-align: center;
+}
+
+.form-addresses-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.change-user-address-form,
+.new-user-address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid var(--deep-blue);
+    padding: 10px;
+    &.hide {
+        display: none;
+    }
+}
+
+.change-user-address-form .form-input-select {
+    pointer-events: none;
+}
+
+.change-user-address-form.edit .form-input-select {
+    pointer-events: all;
 }
 
 @media (width <= 768px) {

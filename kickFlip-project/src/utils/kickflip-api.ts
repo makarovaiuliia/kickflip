@@ -10,6 +10,12 @@ import {
     SignUpDataRequest,
     TAddress,
     TransformParams,
+    UpdatePasswordForm,
+    UpdateUserProfileDataFormRequest,
+    UpdateUserAddressFormRequest,
+    AddNewAddressFormRequest,
+    NewAddressAction,
+    UpdateAddressAction,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
@@ -113,6 +119,34 @@ export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
 };
 
 export type TUserResponse = {
+    customer: TCustomerResponse;
+    id: string;
+    version: number;
+    versionModifiedAt: string;
+    lastMessageSequenceNumber: number;
+    createdAt: string;
+    lastModifiedAt: string;
+    lastModifiedBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    createdBy: {
+        clientId: string;
+        isPlatformClient: boolean;
+    };
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    addresses: Array<TAddress>;
+    shippingAddressIds: Array<string>;
+    billingAddressIds: Array<string>;
+    isEmailVerified: boolean;
+    stores: Array<string>;
+    authenticationMode: string;
+};
+
+export type TCustomerResponse = {
     id: string;
     version: number;
     versionModifiedAt: string;
@@ -151,6 +185,230 @@ export const signUpUserApi = (data: SignUpDataForm) => {
         body: JSON.stringify(signUpData),
     })
         .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const updateUserPasswordApi = (data: UpdatePasswordForm) => {
+    return fetch(`${URL}/${projectKey}/customers/password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(data),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const updateUserProfileDataApi = (data: UpdateUserProfileDataFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'changeEmail',
+                email: data.data?.email,
+            },
+            {
+                action: 'setFirstName',
+                firstName: data.data?.firstName,
+            },
+            {
+                action: 'setLastName',
+                lastName: data.data?.lastName,
+            },
+            {
+                action: 'setDateOfBirth',
+                dateOfBirth: data.data?.dateOfBirth,
+            },
+        ],
+    };
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
+    const dataRequest: UpdateAddressAction = {
+        version: data.version!,
+        actions: [],
+    };
+    if (data.data?.billingAddress) {
+        dataRequest.actions.push({
+            action: 'changeAddress',
+            addressId: data.addressId,
+            address: data.data?.billingAddress,
+        });
+    } else if (data.data?.shippingAddress) {
+        dataRequest.actions.push({
+            action: 'changeAddress',
+            addressId: data.addressId,
+            address: data.data?.shippingAddress,
+        });
+    }
+    if (data.defaultCheckedBilling !== data.data?.isBillingAddress) {
+        if (data.data?.isBillingAddress === true) {
+            dataRequest.actions.push({
+                action: 'addBillingAddressId',
+                addressId: data.addressId,
+            });
+        } else {
+            dataRequest.actions.push({
+                action: 'removeBillingAddressId',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
+        if (data.data?.isDefaultBillingAddress === true) {
+            dataRequest.actions.push({
+                action: 'setDefaultBillingAddress',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultCheckedShipping !== data.data?.isShippingAddress) {
+        if (data.data?.isShippingAddress === true) {
+            dataRequest.actions.push({
+                action: 'addShippingAddressId',
+                addressId: data.addressId,
+            });
+        } else {
+            dataRequest.actions.push({
+                action: 'removeShippingAddressId',
+                addressId: data.addressId,
+            });
+        }
+    }
+    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
+        if (data.data?.isDefaultShippingAddress === true) {
+            dataRequest.actions.push({
+                action: 'setDefaultShippingAddress',
+                addressId: data.addressId,
+            });
+        }
+    }
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const deleteUserAddressApi = (data: UpdateUserAddressFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'removeAddress',
+                addressId: data.addressId,
+            },
+        ],
+    };
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
+    const dataRequest = {
+        version: data.version,
+        actions: [
+            {
+                action: 'addAddress',
+                address: data.data?.newAddress,
+            },
+        ],
+    };
+    return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(dataRequest),
+    })
+        .then((res) => checkResponse<TUserResponse>(res))
+        .then((res) => {
+            const targetAdress = res.addresses[res.addresses.length - 1];
+            const dataRequestN: NewAddressAction = {
+                version: data.version! + 1,
+                actions: [],
+            };
+            if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === false) {
+                dataRequestN.actions.push({
+                    action: 'addShippingAddressId',
+                    addressId: targetAdress.id!,
+                });
+            } else if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === true) {
+                dataRequestN.actions.push({
+                    action: 'setDefaultShippingAddress',
+                    addressId: targetAdress.id!,
+                });
+                dataRequestN.actions.push({
+                    action: 'addShippingAddressId',
+                    addressId: targetAdress.id!,
+                });
+            }
+            if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === false) {
+                dataRequestN.actions.push({
+                    action: 'addBillingAddressId',
+                    addressId: targetAdress.id!,
+                });
+            } else if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === true) {
+                dataRequestN.actions.push({
+                    action: 'setDefaultBillingAddress',
+                    addressId: targetAdress.id!,
+                });
+                dataRequestN.actions.push({
+                    action: 'addBillingAddressId',
+                    addressId: targetAdress.id!,
+                });
+            }
+            return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    Authorization: `Bearer ${getCookie('accessToken')}`,
+                },
+                body: JSON.stringify(dataRequestN),
+            });
+        })
+        .then((resul) => checkResponse<TUserResponse>(resul))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);

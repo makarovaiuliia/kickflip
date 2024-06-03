@@ -19,13 +19,31 @@ export enum Country {
 
 export enum StateMessage {
     Registered = 'You have been successfully registered',
+    UpdatedProfilePassword = 'Your password has been successfully updated',
+    UpdatedProfileData = 'Your data have been successfully updated',
+    UpdatedProfileAddress = 'Your address have been successfully updated',
+    DeletedProfileAddress = 'Your address have been successfully deleted',
+    AddedProfileAddress = 'Your address have been successfully added',
 }
+
 export type TUser = {
-    email: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    dateOfBirth?: string;
+    addresses?: Array<TAddress>;
+    billingAddressIds?: Array<string>;
+    shippingAddressIds?: Array<string>;
+    password?: string;
+    id?: string;
+    version?: number;
+    defaultBillingAddressId?: string;
+    defaultShippingAddressId?: string;
 };
 
 export type TAddress = {
     country: string;
+    id?: string;
     title?: string;
     salutation?: string;
     firstName?: string;
@@ -79,6 +97,83 @@ export interface SignUpDataForm extends SignUpData {
     billingAddress: CustomerAddress;
     useBillingAsShipping: boolean;
     useShippingAsBilling: boolean;
+}
+
+export interface AddNewAddressForm {
+    newAddress: CustomerAddress;
+    isDefaultAddress: boolean;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
+    addToBillingShipping?: string;
+    addToBilling?: boolean;
+    addToShipping?: boolean;
+}
+
+export interface AddNewAddressFormRequest {
+    id?: string;
+    version?: number;
+    adresses?: TAddress[];
+    addressId?: string;
+    data?: AddNewAddressForm;
+}
+
+export interface UpdateUserAddressForm {
+    shippingAddress: CustomerAddress;
+    isDefaultShippingAddress: boolean;
+    isDefaultBillingAddress: boolean;
+    billingAddress: CustomerAddress;
+    isShippingAddress: boolean;
+    isBillingAddress: boolean;
+}
+
+export interface UpdateUserAddressFormRequest {
+    id?: string;
+    version?: number;
+    addressId?: string;
+    data?: UpdateUserAddressForm;
+    defaultCheckedBilling?: boolean;
+    defaultcheckedBillingDefault?: boolean;
+    defaultCheckedShipping?: boolean;
+    defaultCheckedShippingDefault?: boolean;
+}
+
+export interface UpdatePasswordForm {
+    currentPassword: string;
+    newPassword: string;
+}
+
+export interface UpdateUserProfileDataFormRequest {
+    id?: string;
+    version?: number;
+    data?: UpdateUserProfileDataForm;
+}
+
+export interface UpdateUserProfileDataForm {
+    email?: string;
+    lastName?: string;
+    firstName?: string;
+    dateOfBirth?: Date;
+}
+
+export interface UpdateAddressAction {
+    version: number;
+    actions: Array<UpdateAddressActionsRequest>;
+}
+
+export interface UpdateAddressActionsRequest {
+    action: string;
+    addressId?: string;
+    address?: CustomerAddress;
+}
+
+export interface NewAddressAction {
+    version: number;
+    actions: Array<NewAddressActionsRequest>;
+}
+
+export interface NewAddressActionsRequest {
+    action: string;
+    addressId: string;
 }
 
 export interface SignUpDataRequest extends SignUpData {

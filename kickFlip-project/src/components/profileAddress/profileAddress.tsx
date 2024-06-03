@@ -1,10 +1,13 @@
 import './profileAddress.css';
+import ProfileAddresses from '../profileAdresses/profileAddresses';
+import NewAddressForm from '../form/newAddressForm/newAddressForm';
 
 export default function ProfileAddress(): JSX.Element {
     return (
         <>
-            <h2>Address will be here.</h2>
-            <p>Here user can see all his addresses. Also user and change them.</p>
+            <h2 className="form-subtitle">Change address</h2>
+            <ProfileAddresses />
+            <NewAddressForm />
         </>
     );
 }

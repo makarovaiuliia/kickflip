@@ -76,8 +76,8 @@ function App() {
                     }
                 >
                     <Route path="account" element={<ProfileAccount />} />
-                    <Route path="orders" element={<ProfileAddress />} />
-                    <Route path="address" element={<ProfileOrders />} />
+                    <Route path="orders" element={<ProfileOrders />} />
+                    <Route path="address" element={<ProfileAddress />} />
                     <Route path="password" element={<ProfilePassword />} />
                 </Route>
                 <Route

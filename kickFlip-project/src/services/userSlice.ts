@@ -1,8 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAnonymousTokenApi, getUserApi, loginUserApi, signUpUserApi } from '@/utils/kickflip-api';
+import {
+    getAnonymousTokenApi,
+    getUserApi,
+    loginUserApi,
+    signUpUserApi,
+    updateUserPasswordApi,
+    updateUserProfileDataApi,
+    updateUserAddressApi,
+    deleteUserAddressApi,
+    addNewUserAddressApi,
+} from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
-import { LogInData, SignUpDataForm, StateMessage, TUser } from '@/types/types';
+import {
+    LogInData,
+    SignUpDataForm,
+    StateMessage,
+    TUser,
+    UpdatePasswordForm,
+    UpdateUserProfileDataFormRequest,
+    UpdateUserAddressFormRequest,
+    AddNewAddressFormRequest,
+} from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -28,12 +47,50 @@ export const signUpUser = createAsyncThunk('user/register', async (data: SignUpD
     return response;
 });
 
+export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
+    const response = await updateUserPasswordApi(data);
+    return response;
+});
+
+export const updateUserProfileData = createAsyncThunk(
+    'user/updateProfileData',
+    async (data: UpdateUserProfileDataFormRequest) => {
+        const response = await updateUserProfileDataApi(data);
+        return response;
+    }
+);
+
+export const updateUserAddress = createAsyncThunk(
+    'user/updateProfileAddress',
+    async (data: UpdateUserAddressFormRequest) => {
+        const response = await updateUserAddressApi(data);
+        return response;
+    }
+);
+
+export const deleteUserAddress = createAsyncThunk(
+    'user/deleteProfileAddress',
+    async (data: UpdateUserAddressFormRequest) => {
+        const response = await deleteUserAddressApi(data);
+        return response;
+    }
+);
+
+export const addNewUserAddress = createAsyncThunk(
+    'user/addNewProfileAddress',
+    async (data: AddNewAddressFormRequest) => {
+        const response = await addNewUserAddressApi(data);
+        return response;
+    }
+);
+
 interface InitialState {
     user: TUser | undefined;
     isAuth: boolean;
     error: string | undefined;
     isAuthChecked: boolean;
     registrationMessage: string | undefined;
+    updateUserMessage: string | undefined;
 }
 
 const initialState: InitialState = {
@@ -42,6 +99,7 @@ const initialState: InitialState = {
     error: undefined,
     isAuthChecked: false,
     registrationMessage: undefined,
+    updateUserMessage: undefined,
 };
 
 const userSlice = createSlice({
@@ -55,9 +113,11 @@ const userSlice = createSlice({
             state.user = undefined;
             state.isAuth = false;
         },
-
         clearRegistrationMessage: (state) => {
             state.registrationMessage = undefined;
+        },
+        clearUpdateUserMessage: (state) => {
+            state.updateUserMessage = undefined;
         },
     },
     extraReducers: (builder) => {
@@ -82,12 +142,57 @@ const userSlice = createSlice({
                 state.isAuthChecked = true;
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
-                state.user = action.payload!;
+                state.user = action.payload.customer;
                 state.isAuth = true;
                 state.isAuthChecked = true;
                 state.registrationMessage = StateMessage.Registered;
             })
             .addCase(signUpUser.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(updateUserPassword.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfilePassword;
+            })
+            .addCase(updateUserPassword.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(updateUserProfileData.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfileData;
+            })
+            .addCase(updateUserProfileData.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(updateUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.UpdatedProfileAddress;
+            })
+            .addCase(updateUserAddress.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(deleteUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.DeletedProfileAddress;
+            })
+            .addCase(deleteUserAddress.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
+            .addCase(addNewUserAddress.fulfilled, (state, action) => {
+                state.user = action.payload!;
+                state.isAuth = true;
+                state.isAuthChecked = true;
+                state.updateUserMessage = StateMessage.AddedProfileAddress;
+            })
+            .addCase(addNewUserAddress.rejected, (state, action) => {
                 state.error = action.error.message;
             });
     },
@@ -98,6 +203,7 @@ export const getIsAuth = (state: RootState) => state.user.isAuth;
 
 export const { logoutUser } = userSlice.actions;
 export const { clearRegistrationMessage } = userSlice.actions;
+export const { clearUpdateUserMessage } = userSlice.actions;
 
 export default userSlice.reducer;
 
