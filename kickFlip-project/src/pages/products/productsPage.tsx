@@ -12,32 +12,30 @@ import filterData from '@/components/filterComponent/filterComponentData';
 import { ProductProjected, TransformParams } from '@/types/types';
 import ModalWindow from '@/components/modalWindow/modalWindow';
 
-interface ProductPageProps {
-    isOutlet: boolean;
-}
-
-export default function ProductsPage({ isOutlet }: ProductPageProps): JSX.Element {
+export default function ProductsPage(): JSX.Element {
     const dispatch = useDispatch();
 
+    const { section, category } = useParams<{ category: string; section: string }>();
+
     const [products, setProducts] = useState<ProductProjected[]>([]);
-    const initialTransformParams: TransformParams = isOutlet
-        ? {
-              filter: { color: [], size: [], price: [], discount: [''] },
-              sort: '',
-              search: '',
-          }
-        : {
-              filter: { color: [], size: [], price: [], discount: [] },
-              sort: '',
-              search: '',
-          };
+    const initialTransformParams: TransformParams =
+        section === 'outlet'
+            ? {
+                  filter: { color: [], size: [], price: [], discount: [''] },
+                  sort: '',
+                  search: '',
+              }
+            : {
+                  filter: { color: [], size: [], price: [], discount: [] },
+                  sort: '',
+                  search: '',
+              };
     const [categories, setCategories] = useState<TransformParams>(initialTransformParams);
     const [filterIsActive, setFilterIsActive] = useState<boolean>(true);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
 
     const allSneakers = useSelector(getAllSneakers);
     const productCategories = useSelector(getAllCategories);
-    const { category } = useParams<{ category: string }>();
 
     useEffect(() => {
         const handleResize = () => {
@@ -82,11 +80,11 @@ export default function ProductsPage({ isOutlet }: ProductPageProps): JSX.Elemen
                   url: '/',
               },
               {
-                  label: 'Sneakers',
-                  url: '/products',
+                  label: section!,
+                  url: `/${section}`,
               },
               {
-                  label: category,
+                  label: category!,
                   url: '',
               },
           ]
@@ -96,7 +94,7 @@ export default function ProductsPage({ isOutlet }: ProductPageProps): JSX.Elemen
                   url: '/',
               },
               {
-                  label: isOutlet ? 'Outlet' : 'Sneakers',
+                  label: section!,
                   url: '',
               },
           ];

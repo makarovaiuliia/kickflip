@@ -154,7 +154,7 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
     const categoryData: CategoryData = {};
     responseData.results.forEach((category) => {
         categoryData[category.key] = {
-            url: `../products/${category.slug['en-US']}`,
+            url: `${category.slug['en-US']}`,
             sectionName: category.name['en-US'],
             id: category.id,
             imageUrl: categoryImageData[category.key],

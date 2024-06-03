@@ -9,7 +9,12 @@ import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import './productPage.css';
 
 export default function ProductPage() {
-    const { id, slug, category } = useParams<{ id: string; slug: string; category: string }>();
+    const { section, id, slug, category } = useParams<{
+        id: string;
+        slug: string;
+        category: string;
+        section: string;
+    }>();
 
     const [productData, setProductData] = useState<ProductResponse | null>(null);
     const [productError, setProductErrorError] = useState('');
@@ -37,12 +42,12 @@ export default function ProductPage() {
             url: '/products',
         },
         {
-            label: 'Sneakers',
-            url: '/products',
+            label: section!,
+            url: `/${section}`,
         },
         {
             label: category!,
-            url: `/products/${category}`,
+            url: `/${section}/${category}`,
         },
         {
             label: slug!,

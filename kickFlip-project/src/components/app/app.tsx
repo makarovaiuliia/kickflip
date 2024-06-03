@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from '@/services/store';
 import { getAnonymousToken, getUser } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
@@ -21,45 +21,52 @@ import ProfileAddress from '../profileAddress/profileAddress';
 import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
 import ProductPage from '@/pages/product/productPage';
+import Loader from '../loader/loader';
 
 function App() {
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = getCookie('accessToken');
-            if (token) {
-                try {
-                    await dispatch(getUser()).unwrap();
-                } catch (error) {
+            try {
+                const token = getCookie('accessToken');
+                if (token) {
+                    try {
+                        await dispatch(getUser()).unwrap();
+                    } catch (error) {
+                        await dispatch(getAnonymousToken()).unwrap();
+                    }
+                } else {
                     await dispatch(getAnonymousToken()).unwrap();
                 }
-            } else {
-                await dispatch(getAnonymousToken()).unwrap();
+                await dispatch(
+                    getFilteredProducts({
+                        filter: { color: [], size: [], price: [], discount: [] },
+                        sort: '',
+                        search: '',
+                    })
+                ).unwrap();
+                await dispatch(getCategories()).unwrap();
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
             }
-
-            await dispatch(
-                getFilteredProducts({
-                    filter: { color: [], size: [], price: [], discount: [] },
-                    sort: '',
-                    search: '',
-                })
-            ).unwrap();
-
-            dispatch(getCategories());
         };
 
         fetchData();
     }, [dispatch]);
 
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
-                <Route path="outlet" element={<ProductsPage isOutlet />} />
-                <Route path="products" element={<ProductsPage isOutlet={false} />} />
-                <Route path="products/:category/:id/:slug" element={<ProductPage />} />
-                <Route path="products/:category" element={<ProductsPage isOutlet={false} />} />
+                <Route path="/:section" element={<ProductsPage />} />
+                <Route path="/:section/:category/:id/:slug" element={<ProductPage />} />
+                <Route path="/:section/:category" element={<ProductsPage />} />
                 <Route
                     path="profile/*"
                     element={
