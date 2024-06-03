@@ -34,7 +34,7 @@ export default function HomePage(): JSX.Element {
                 <ul className="section-list">
                     <li className="section-list-categories">
                         <Link to="/products">
-                            <p className="section-subtitle">Products</p>
+                            <p className="section-subtitle">Catalog</p>
                         </Link>
                     </li>
                     <li className="section-list-categories">
