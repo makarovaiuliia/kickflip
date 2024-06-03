@@ -72,3 +72,22 @@
     justify-content: space-evenly;
     width: 100%;
 }
+
+@media (width < 900px) {
+    .section {
+        gap: 40px;
+    }
+
+    .section-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+    }
+}
