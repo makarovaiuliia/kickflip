@@ -39,7 +39,7 @@ export default function ProductPage() {
     const breadCrumbs: CrumbType[] = [
         {
             label: 'Main',
-            url: '/products',
+            url: '/',
         },
         {
             label: section!,
