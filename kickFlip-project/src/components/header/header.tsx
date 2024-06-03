@@ -59,7 +59,7 @@ export default function Header() {
                                 to="/products"
                                 onClick={closeMenu}
                             >
-                                Sneakers
+                                Catalog
                             </NavLink>
                         </div>
                     </nav>
