@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage, Country, AddNewAddressForm } from '@/types/types';
 import '../form.css';
@@ -11,7 +10,6 @@ import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
 export default function NewAddressForm() {
-    const navigate = useNavigate();
     const { user } = useSelector(getUserSelector);
     const [registrationError, setRegistrationError] = useState('');
     const [abilityCreateNewAddress, setAbilityCreateNewAddress] = useState(true);
@@ -41,7 +39,6 @@ export default function NewAddressForm() {
         setRegistrationError('');
         try {
             await dispatch(addNewUserAddress(requestData)).unwrap();
-            navigate('/profile');
             reset();
         } catch (error) {
             responsesErrorsHandler(error, setRegistrationError);
