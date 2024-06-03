@@ -57,9 +57,11 @@ export default function ProductPage() {
 
     return (
         <div className="main-wrapper product-page-wrapper">
-            <BreadCrumbs crumbs={breadCrumbs} />
             {productData ? (
-                <Product productData={productData} />
+                <>
+                    <BreadCrumbs crumbs={breadCrumbs} />
+                    <Product productData={productData} />
+                </>
             ) : productError ? (
                 <div>{productError}</div>
             ) : (
