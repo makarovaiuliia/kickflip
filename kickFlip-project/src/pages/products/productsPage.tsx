@@ -37,19 +37,11 @@ export default function ProductsPage(): JSX.Element {
     const productCategories = useSelector(getAllCategories);
 
     useEffect(() => {
-        const transformParams: TransformParams =
-            section === 'outlet'
-                ? {
-                      filter: { color: [], size: [], price: [], discount: [''] },
-                      sort: '',
-                      search: '',
-                  }
-                : {
-                      filter: { color: [], size: [], price: [], discount: [] },
-                      sort: '',
-                      search: '',
-                  };
-        setCategories(transformParams);
+        setCategories((prevCategories) => {
+            const newFilter = { ...prevCategories.filter };
+            newFilter.discount = section === 'outlet' ? [''] : [];
+            return { ...prevCategories, filter: newFilter };
+        });
     }, [section]);
 
     useEffect(() => {

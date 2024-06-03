@@ -61,6 +61,15 @@ export default function Header() {
                             >
                                 Catalog
                             </NavLink>
+                            <NavLink
+                                className={({ isActive }) =>
+                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                                }
+                                to="/outlet"
+                                onClick={closeMenu}
+                            >
+                                Outlet
+                            </NavLink>
                         </div>
                     </nav>
                     <nav className="services-nav">
