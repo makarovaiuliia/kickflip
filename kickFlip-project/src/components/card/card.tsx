@@ -1,30 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ProductResponse } from '@/types/types';
+import { ProductProjected } from '@/types/types';
 import './card.css';
-import { getImageFromEachColor } from '@/utils/utils';
+import { getImageFromEachColor, processVariants } from '@/utils/utils';
 
 interface CardProps {
-    productInfo: ProductResponse;
+    productInfo: ProductProjected;
+    selectedColors: string[];
 }
 
-function Card({ productInfo }: CardProps): JSX.Element {
-    const productData = productInfo.masterData.current;
-    const { masterVariant, name, slug } = productData;
-
+function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
+    const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState(0);
 
     const productPrices = masterVariant.prices[0];
-
     const price = productPrices.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits;
     const discountPrice = productPrices.discounted
         ? productPrices.discounted.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits
         : undefined;
-    const images = getImageFromEachColor(productInfo);
+    const colorMap = useMemo(() => processVariants(productInfo.masterVariant, productInfo.variants), [productInfo]);
+    const images = getImageFromEachColor(colorMap);
+
+    useEffect(() => {
+        if (selectedColors) {
+            const colorIndex = Object.keys(colorMap).findIndex((color) => {
+                return selectedColors.some((selectedColor) => selectedColor.toLowerCase() === color.toLowerCase());
+            });
+
+            if (colorIndex !== -1) {
+                setActiveImage(colorIndex);
+            }
+        }
+    }, [selectedColors, colorMap]);
 
     return (
         <div className="card">
-            <Link to={`${productInfo.id}/${slug['en-US']}`} className="image-link">
+            <Link to={`/products/${productInfo.id}/${slug['en-US']}`} className="image-link">
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
                 <img
                     src={images[activeImage][Math.random() < 0.5 ? 1 : 2]}
@@ -37,7 +48,7 @@ function Card({ productInfo }: CardProps): JSX.Element {
                     <button
                         type="button"
                         onClick={() => setActiveImage(index)}
-                        key={image[0]}
+                        key={`image url: ${image[0]}`}
                         className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         style={{
                             backgroundImage: `url(${image[0]})`,

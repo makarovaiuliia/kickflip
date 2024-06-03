@@ -1,0 +1,31 @@
+.filter-search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+}
+
+.filter-search {
+    padding: 1rem 1.6rem;
+    border: 1px solid var(--border-gray);
+    color: var(--deep-blue);
+    width: 100%;
+    font-size: 1.3rem;
+}
+
+.filter-search-button {
+    inline-size: 2rem;
+    block-size: 2rem;
+    background-image: url('../../../public/search.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    right: 1rem;
+}
+
+@media (width < 900px) {
+    .filter-search-form {
+        width: 100%;
+    }
+}

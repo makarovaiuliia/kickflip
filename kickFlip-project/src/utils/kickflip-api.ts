@@ -1,15 +1,18 @@
 import {
     CategoriesResponse,
-    DiscountResponse,
+    FilterOptions,
     LogInData,
+    ProductProjected,
     ProductResponse,
+    SearchQuery,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
     TAddress,
+    TransformParams,
 } from '@/types/types';
 import { getCookie } from './cookie';
-import { createBasicAuthToken, saveTokens, transformData } from './utils';
+import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
 
 const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
@@ -161,28 +164,57 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsApi = () => {
-    return fetch(`${URL}/${projectKey}/products?limit=500`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-    })
-        .then((res) => checkResponse<ServerResponse<ProductResponse>>(res))
-        .then((result) => {
-            if (result) return result;
-            return Promise.reject(result);
-        });
-};
+export const getProductsFilteredApi = (options?: TransformParams) => {
+    let query = '';
 
-export const getDiscountsApi = () => {
-    return fetch(`${URL}/${projectKey}/product-discounts`, {
+    if (options) {
+        if (options.filter) {
+            const filters = Object.keys(options.filter)
+                .filter((key): key is FilterOptions => {
+                    const filterKey = key as FilterOptions;
+                    return options.filter[filterKey].length > 0;
+                })
+                .map((key) => {
+                    const filterKey = key as FilterOptions;
+                    const values = options.filter[filterKey]
+                        .map((value) => {
+                            if (filterKey === 'price') {
+                                const adaptedValue = transformPriceRange(value);
+                                return `${adaptedValue.toLowerCase()}`;
+                            }
+                            return `"${value.toLowerCase()}"`;
+                        })
+                        .join(',');
+                    return `${SearchQuery[filterKey]}${values}`;
+                })
+                .join('&filter=');
+
+            if (filters.length > 0) {
+                query += `filter=${filters}`;
+            }
+        }
+
+        if (options.sort) {
+            query += query ? `&sort=${options.sort}` : `sort=${options.sort}`;
+        }
+
+        if (options.search) {
+            query += query
+                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
+                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+        }
+    }
+
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+
+    return fetch(fetchUrl, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
         },
     })
-        .then((res) => checkResponse<ServerResponse<DiscountResponse>>(res))
+        .then((res) => checkResponse<ServerResponse<ProductProjected>>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
