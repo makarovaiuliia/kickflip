@@ -38,7 +38,13 @@ function App() {
                 await dispatch(getAnonymousToken()).unwrap();
             }
 
-            await dispatch(getFilteredProducts()).unwrap();
+            await dispatch(
+                getFilteredProducts({
+                    filter: { color: [], size: [], price: [] },
+                    sort: '',
+                    search: '',
+                })
+            ).unwrap();
             dispatch(getCategories());
         };
 
@@ -52,7 +58,7 @@ function App() {
 
                 <Route path="products" element={<ProductsPage />} />
 
-                <Route path="products/:id/:slug" element={<ProductPage />} />
+                <Route path="products/:category/:id/:slug" element={<ProductPage />} />
 
                 <Route path="products/:category" element={<ProductsPage />} />
 
