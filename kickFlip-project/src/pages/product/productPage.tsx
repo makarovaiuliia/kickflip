@@ -5,17 +5,25 @@ import { responsesErrorsHandler } from '@/utils/utils';
 import { ProductResponse } from '@/types/types';
 import Product from '@/components/product/product';
 import Loader from '@/components/loader/loader';
+import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
+import './productPage.css';
 
 export default function ProductPage() {
-    const productId = useParams<{ id: string }>();
+    const { section, id, slug, category } = useParams<{
+        id: string;
+        slug: string;
+        category: string;
+        section: string;
+    }>();
+
     const [productData, setProductData] = useState<ProductResponse | null>(null);
     const [productError, setProductErrorError] = useState('');
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                if (productId.id) {
-                    const data = await getProductById(productId.id);
+                if (id) {
+                    const data = await getProductById(id);
                     setProductData(data);
                 }
             } catch (error) {
@@ -26,10 +34,30 @@ export default function ProductPage() {
         };
 
         fetchProduct();
-    }, [productId]);
+    }, [id]);
+
+    const breadCrumbs: CrumbType[] = [
+        {
+            label: 'Main',
+            url: '/',
+        },
+        {
+            label: section!,
+            url: `/${section}`,
+        },
+        {
+            label: category!,
+            url: `/${section}/${category}`,
+        },
+        {
+            label: slug!,
+            url: '',
+        },
+    ];
 
     return (
-        <div className="main-wrapper">
+        <div className="main-wrapper product-page-wrapper">
+            <BreadCrumbs crumbs={breadCrumbs} />
             {productData ? (
                 <Product productData={productData} />
             ) : productError ? (

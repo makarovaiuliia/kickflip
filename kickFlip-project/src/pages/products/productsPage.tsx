@@ -15,18 +15,27 @@ import ModalWindow from '@/components/modalWindow/modalWindow';
 export default function ProductsPage(): JSX.Element {
     const dispatch = useDispatch();
 
+    const { section, category } = useParams<{ category: string; section: string }>();
+
     const [products, setProducts] = useState<ProductProjected[]>([]);
-    const [categories, setCategories] = useState<TransformParams>({
-        filter: { color: [], size: [], price: [] },
-        sort: '',
-        search: '',
-    });
+    const initialTransformParams: TransformParams =
+        section === 'outlet'
+            ? {
+                  filter: { color: [], size: [], price: [], discount: [''] },
+                  sort: '',
+                  search: '',
+              }
+            : {
+                  filter: { color: [], size: [], price: [], discount: [] },
+                  sort: '',
+                  search: '',
+              };
+    const [categories, setCategories] = useState<TransformParams>(initialTransformParams);
     const [filterIsActive, setFilterIsActive] = useState<boolean>(true);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
 
     const allSneakers = useSelector(getAllSneakers);
     const productCategories = useSelector(getAllCategories);
-    const { category } = useParams<{ category: string }>();
 
     useEffect(() => {
         const handleResize = () => {
@@ -67,15 +76,28 @@ export default function ProductsPage(): JSX.Element {
     const breadCrumbs: CrumbType[] = category
         ? [
               {
-                  label: 'Sneakers',
-                  url: '../products',
+                  label: 'Main',
+                  url: '/',
               },
               {
-                  label: category,
+                  label: section!,
+                  url: `/${section}`,
+              },
+              {
+                  label: category!,
                   url: '',
               },
           ]
-        : [];
+        : [
+              {
+                  label: 'Main',
+                  url: '/',
+              },
+              {
+                  label: section!,
+                  url: '',
+              },
+          ];
 
     return (
         <div className="main-wrapper products-wrapper">
@@ -87,7 +109,7 @@ export default function ProductsPage(): JSX.Element {
                     />
                 ))}
             </div>
-            {category && <BreadCrumbs crumbs={breadCrumbs} />}
+            <BreadCrumbs crumbs={breadCrumbs} />
             <div className={filterIsActive ? 'products' : 'products filterIsHidden'}>
                 {isMobile && filterIsActive && (
                     <ModalWindow

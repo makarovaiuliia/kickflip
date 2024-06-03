@@ -36,7 +36,7 @@ function SelectedCategories({ setCategories, categories }: SelectedCategoriesPro
     };
 
     const handleClearAll = () => {
-        setCategories({ filter: { color: [], size: [], price: [] }, sort: '', search: '' });
+        setCategories({ filter: { color: [], size: [], price: [], discount: [] }, sort: '', search: '' });
     };
 
     const isFilterOption = (key: string): key is FilterOptions => {
