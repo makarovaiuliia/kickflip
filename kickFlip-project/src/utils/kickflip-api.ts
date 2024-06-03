@@ -1,8 +1,15 @@
 import {
+    CategoriesResponse,
+    FilterOptions,
     LogInData,
+    ProductProjected,
+    ProductResponse,
+    SearchQuery,
+    ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
     TAddress,
+    TransformParams,
     UpdatePasswordForm,
     UpdateUserProfileDataFormRequest,
     UpdateUserAddressFormRequest,
@@ -11,7 +18,7 @@ import {
     UpdateAddressAction,
 } from '@/types/types';
 import { getCookie } from './cookie';
-import { createBasicAuthToken, saveTokens, transformData } from './utils';
+import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
 
 const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
@@ -47,7 +54,7 @@ export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit
         const res = await fetch(url, options);
         return await checkResponse<T>(res);
     } catch (err) {
-        if ((err as { message: string }).message === 'invalid_grant') {
+        if ((err as { message: string }).message === 'invalid_token') {
             const refreshData = await refreshToken();
             const updatedOptions = { ...options };
             if (updatedOptions.headers) {
@@ -69,30 +76,40 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
-export const loginUserApi = (data: LogInData): Promise<TAuthResponse> =>
-    fetch(
-        `${authUrl}/oauth/${projectKey}/customers/token?grant_type=password&username=${data.email}&password=${data.password}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Basic ${basicToken}`,
-            },
-        }
-    )
+export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
+    const loginBody = {
+        username: data.email,
+        password: data.password,
+        grant_type: 'password',
+    };
+
+    return fetch(`${authUrl}/oauth/${projectKey}/customers/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${basicToken}`,
+        },
+        body: new URLSearchParams(Object.entries(loginBody)).toString(),
+    })
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
         });
+};
 
 export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
-    return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token?grant_type=client_credentials`, {
+    const body = {
+        grant_type: 'client_credentials',
+    };
+
+    return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8',
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${basicToken}`,
         },
+        body: new URLSearchParams(Object.entries(body)).toString(),
     })
         .then((res) => checkResponse<TAuthResponse>(res))
         .then((result) => {
@@ -404,3 +421,88 @@ export const getUserApi = () =>
             authorization: `Bearer ${getCookie('accessToken')}`,
         } as HeadersInit,
     });
+
+export const getProductsFilteredApi = (options?: TransformParams) => {
+    let query = '';
+
+    if (options) {
+        if (options.filter) {
+            const filters = Object.keys(options.filter)
+                .filter((key): key is FilterOptions => {
+                    const filterKey = key as FilterOptions;
+                    return options.filter[filterKey].length > 0;
+                })
+                .map((key) => {
+                    const filterKey = key as FilterOptions;
+                    const values = options.filter[filterKey]
+                        .map((value) => {
+                            if (filterKey === 'price') {
+                                const adaptedValue = transformPriceRange(value);
+                                return `${adaptedValue.toLowerCase()}`;
+                            }
+                            if (filterKey === 'discount') {
+                                return 'exists';
+                            }
+                            return `"${value.toLowerCase()}"`;
+                        })
+                        .join(',');
+                    return `${SearchQuery[filterKey]}${values}`;
+                })
+                .join('&filter=');
+
+            if (filters.length > 0) {
+                query += `filter=${filters}`;
+            }
+        }
+
+        if (options.sort) {
+            query += query ? `&sort=${options.sort}` : `sort=${options.sort}`;
+        }
+
+        if (options.search) {
+            query += query
+                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
+                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+        }
+    }
+
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+
+    return fetch(fetchUrl, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<ProductProjected>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const getCategoriesApi = () => {
+    return fetch(`${URL}/${projectKey}/categories`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    })
+        .then((res) => checkResponse<ServerResponse<CategoriesResponse>>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
+export const getProductById = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/products/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+
+    const data = checkResponse<ProductResponse>(response);
+    return data;
+};

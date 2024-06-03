@@ -1,12 +1,17 @@
 import {
+    CategoriesResponse,
     CustomerAddress,
     Product,
-    ProductResponse,
+    ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
+    Variants,
+    ProductResponse,
     ErrorMessage,
 } from '@/types/types';
+
 import { setCookie } from './cookie';
+import categoryImageData from '@/data/categoryData';
 
 export const transformData = (data: SignUpDataForm): SignUpDataRequest => {
     const addresses: CustomerAddress[] = [];
@@ -73,7 +78,7 @@ export const createBasicAuthToken = (clientId: string, clientSecret: string): st
     return btoa(token);
 };
 
-const processVariants = (masterVariant: Product, variants: Product[]): { [key: string]: string[] } => {
+export const processVariants = (masterVariant: Product, variants: Product[]): Variants => {
     const colorImagesMap: { [key: string]: string[] } = {};
 
     const processVariant = (variant: Product) => {
@@ -83,9 +88,12 @@ const processVariants = (masterVariant: Product, variants: Product[]): { [key: s
             if (!colorImagesMap[color]) {
                 colorImagesMap[color] = [];
             }
-            variant.images.forEach((image) => {
-                colorImagesMap[color].push(image.url);
-            });
+
+            if (variant.images.length) {
+                variant.images.forEach((image) => {
+                    colorImagesMap[color].push(image.url);
+                });
+            }
         }
     };
 
@@ -95,13 +103,38 @@ const processVariants = (masterVariant: Product, variants: Product[]): { [key: s
     return colorImagesMap;
 };
 
-export const getImageFromEachColor = (data: ProductResponse): string[][] => {
-    const { masterVariant, variants } = data.masterData.current;
+export const getProductsSizes = (masterVariant: Product, variants: Product[]) => {
+    const sizes: Set<number> = new Set();
 
-    const colorImagesMap = processVariants(masterVariant, variants);
+    const getVariantsSizes = (variant: Product) => {
+        const sizeAttribute = variant.attributes.find((attr) => attr.name === 'size');
+        if (sizeAttribute && typeof sizeAttribute.value === 'number') sizes.add(sizeAttribute.value);
+    };
+
+    getVariantsSizes(masterVariant);
+    variants.forEach(getVariantsSizes);
+    return sizes;
+};
+
+export const getAdditionalSize = (sizes: number[]) => {
+    const enlargedSizes = [...sizes];
+    if (sizes.length < 10) {
+        const additionalCount = 10 - sizes.length;
+        let lastSize = sizes[sizes.length - 1];
+
+        for (let i = 0; i < additionalCount; i += 1) {
+            lastSize += 0.5;
+            enlargedSizes.push(lastSize);
+        }
+    }
+
+    return enlargedSizes;
+};
+
+export const getImageFromEachColor = (data: Variants): string[][] => {
     const imageGroups: string[][] = [];
 
-    Object.values(colorImagesMap).forEach((images) => {
+    Object.values(data).forEach((images) => {
         imageGroups.push(images);
     });
 
@@ -113,4 +146,47 @@ export const ageRestrictionCheck = (birthDay: Date) => {
     const currentDate = new Date();
     const age = currentDate.getFullYear() - birthDate.getFullYear();
     return age >= 13 ? true : ErrorMessage.TOO_YOUNG_ERROR;
+
+export interface Category {
+    imageUrl: string;
+    url: string;
+    sectionName: string;
+    id: string;
+}
+
+export interface CategoryData {
+    [key: string]: Category;
+}
+
+export const transformCategoryData = (responseData: ServerResponse<CategoriesResponse>): CategoryData => {
+    const categoryData: CategoryData = {};
+    responseData.results.forEach((category) => {
+        categoryData[category.key] = {
+            url: `${category.slug['en-US']}`,
+            sectionName: category.name['en-US'],
+            id: category.id,
+            imageUrl: categoryImageData[category.key],
+        };
+    });
+    return categoryData;
+};
+
+export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
+    let overflowStyle: string;
+    if (shoulBeHide) {
+        overflowStyle = 'hidden';
+    } else {
+        overflowStyle = '';
+    }
+    document.body.style.overflow = overflowStyle;
+};
+
+export const transformPriceRange = (priceRange: string): string => {
+    const [min, max] = priceRange
+        .replace('$', '')
+        .trim()
+        .split('-')
+        .map((value) => parseInt(value, 10) * 100);
+
+    return `(${min} to ${max})`;
 };

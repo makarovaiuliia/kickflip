@@ -10,3 +10,36 @@
     font-size: 3.6rem;
     font-weight: 600;
 }
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 0 4rem;
+    align-self: self-start;
+    position: relative;
+    width: 100%;
+}
+
+.filterIsHidden {
+    display: flex;
+}
+
+@media (width < 900px) {
+    .products {
+        display: flex;
+    }
+}
+
+@media (width < 600px) {
+    .categories {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}

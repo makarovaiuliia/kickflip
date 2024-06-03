@@ -198,10 +198,10 @@ export interface ProductResponse {
 }
 
 export interface ProductData {
-    name: ProductText;
-    description: ProductText;
-    categories: Category[];
-    slug: ProductText;
+    name: Text;
+    description: Text;
+    categories: CategoryInfo[];
+    slug: Text;
     masterVariant: Product;
     variants: Product[];
 }
@@ -215,11 +215,11 @@ export interface Product {
     attributes: Attributes[];
 }
 
-export interface ProductText {
+export interface Text {
     'en-US': string;
 }
 
-export interface Category {
+export interface CategoryInfo {
     typeId: string;
     id: string;
 }
@@ -228,6 +228,9 @@ export interface Price {
     id: string;
     value: PriceValue;
     key: string;
+    discounted: {
+        value: PriceValue;
+    };
 }
 
 export interface PriceValue {
@@ -248,4 +251,65 @@ export interface Image {
 export interface Attributes {
     name: string;
     value: string | number;
+}
+
+export interface ServerResponse<T> {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: T[];
+}
+
+export interface DiscountResponse {
+    id: string;
+    value: DiscountValue;
+    predicate: string;
+    name: Text;
+    description: Text;
+    active: boolean;
+}
+
+interface DiscountValue {
+    type: string;
+    permyriad: number;
+}
+
+export interface CategoriesResponse {
+    id: string;
+    key: string;
+    name: Text;
+    slug: Text;
+    description: Text;
+}
+
+export type Variants = {
+    [key: string]: string[];
+};
+
+export interface ProductProjected {
+    id: string;
+    key: string;
+    name: Text;
+    description: Text;
+    categories: CategoryInfo[];
+    slug: Text;
+    masterVariant: Product;
+    variants: Product[];
+}
+
+export type FilterOptions = 'color' | 'size' | 'price' | 'discount';
+
+export interface TransformParams {
+    filter: Record<FilterOptions, string[]>;
+    sort: string;
+    search: string;
+}
+
+export enum SearchQuery {
+    color = 'variants.attributes.color:',
+    size = 'variants.attributes.size:',
+    price = 'variants.price.centAmount:range ',
+    search = 'text.en-US',
+    discount = 'variants.prices.discounted:',
 }

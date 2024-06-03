@@ -1,12 +1,10 @@
-.temp {
-    /* border: 1px solid var(--electric-orange); */
-}
-
 .card {
     display: flex;
     flex-direction: column;
     gap: 10px;
     color: var(--deep-blue);
+    font-family: var(--second-family);
+    width: 100%;
 }
 
 .image-link {
@@ -18,6 +16,7 @@
     object-fit: cover;
     object-position: center;
     width: clamp(10rem, 5.0762rem + 20.7317vw, 25.625rem); /* от 125 до 335 (380-1440) */
+    width: 100%;
     aspect-ratio: 1/1;
     cursor: pointer;
 }
@@ -37,11 +36,10 @@
 .card_variant-list {
     display: flex;
     gap: 0.3rem;
-    overflow-y: scroll;
 }
 
 .card_image-mini {
-    width: clamp(2rem, -1.5rem + 8.3333vw, 5.125rem); /* от 20 до 50 (380-1440) */
+    width: clamp(2.7rem, -1.5rem + 8.3333vw, 5.125rem); /* от 27 до 50 (380-1440) */
     aspect-ratio: 1/1;
     cursor: pointer;
     background-position: center;
@@ -54,7 +52,7 @@
 }
 
 .card_title {
-    font-family: var(--font-family);
+    font-family: var(--second-family);
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 24px;
@@ -62,8 +60,32 @@
     margin: 0;
 }
 
+.card_description {
+    font-family: var(--font-family);
+    margin-top: -0.8rem;
+    opacity: 0.7;
+}
+
+.card_discounted {
+    display: flex;
+    gap: 1rem;
+}
+
 .card_price {
     color: var(--electric-orange);
-    font-size: 1.25rem;
-    font-family: var(--third-family);
+    font-size: 1.5rem;
+}
+
+.card_price_old {
+    font-size: 1.5rem;
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+@media (width < 800px) {
+    .card_image {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        gap: 8px 20px;
+    }
 }

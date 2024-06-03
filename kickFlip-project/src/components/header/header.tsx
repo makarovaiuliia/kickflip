@@ -50,7 +50,7 @@ export default function Header() {
                                 to="/"
                                 onClick={closeMenu}
                             >
-                                Home
+                                Main
                             </NavLink>
                             <NavLink
                                 className={({ isActive }) =>
@@ -59,7 +59,16 @@ export default function Header() {
                                 to="/products"
                                 onClick={closeMenu}
                             >
-                                Products
+                                Catalog
+                            </NavLink>
+                            <NavLink
+                                className={({ isActive }) =>
+                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                                }
+                                to="/outlet"
+                                onClick={closeMenu}
+                            >
+                                Outlet
                             </NavLink>
                         </div>
                     </nav>
@@ -141,6 +150,7 @@ export default function Header() {
                         type="button"
                         className={`navigation-toggle-button ${isOpen && 'open'}`}
                         onClick={() => setMenuIsOpen(!isOpen)}
+                        aria-label="Toggle navigation menu"
                     >
                         <span className="navigation-toggle-bar" />
                     </button>
