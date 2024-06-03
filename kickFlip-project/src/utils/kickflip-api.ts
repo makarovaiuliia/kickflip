@@ -182,6 +182,9 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
                                 const adaptedValue = transformPriceRange(value);
                                 return `${adaptedValue.toLowerCase()}`;
                             }
+                            if (filterKey === 'discount') {
+                                return 'exists';
+                            }
                             return `"${value.toLowerCase()}"`;
                         })
                         .join(',');

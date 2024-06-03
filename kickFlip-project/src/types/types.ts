@@ -203,7 +203,7 @@ export interface ProductProjected {
     variants: Product[];
 }
 
-export type FilterOptions = 'color' | 'size' | 'price';
+export type FilterOptions = 'color' | 'size' | 'price' | 'discount';
 
 export interface TransformParams {
     filter: Record<FilterOptions, string[]>;
@@ -216,4 +216,5 @@ export enum SearchQuery {
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
     search = 'text.en-US',
+    discount = 'variants.prices.discounted:',
 }

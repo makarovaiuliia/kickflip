@@ -40,11 +40,12 @@ function App() {
 
             await dispatch(
                 getFilteredProducts({
-                    filter: { color: [], size: [], price: [] },
+                    filter: { color: [], size: [], price: [], discount: [] },
                     sort: '',
                     search: '',
                 })
             ).unwrap();
+
             dispatch(getCategories());
         };
 
@@ -55,13 +56,10 @@ function App() {
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
-
-                <Route path="products" element={<ProductsPage />} />
-
+                <Route path="outlet" element={<ProductsPage isOutlet />} />
+                <Route path="products" element={<ProductsPage isOutlet={false} />} />
                 <Route path="products/:category/:id/:slug" element={<ProductPage />} />
-
-                <Route path="products/:category" element={<ProductsPage />} />
-
+                <Route path="products/:category" element={<ProductsPage isOutlet={false} />} />
                 <Route
                     path="profile/*"
                     element={
