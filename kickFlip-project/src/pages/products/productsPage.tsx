@@ -96,7 +96,7 @@ export default function ProductsPage({ isOutlet }: ProductPageProps): JSX.Elemen
                   url: '/',
               },
               {
-                  label: 'Sneakers',
+                  label: isOutlet ? 'Outlet' : 'Sneakers',
                   url: '',
               },
           ];

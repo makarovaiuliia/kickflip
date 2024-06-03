@@ -30,7 +30,7 @@ function Accordion({ title, options, setCategories }: AccordionProps): JSX.Eleme
     const handleClick = (event: SyntheticEvent) => {
         const target = event.target as HTMLElement;
         const attribute = title.toLowerCase() as FilterOptions;
-        const value = target.textContent!;
+        const value = target.closest('button')!.textContent!;
 
         addCategory(attribute, value);
     };
