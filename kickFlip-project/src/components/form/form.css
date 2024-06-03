@@ -116,7 +116,7 @@
     transition: all 0.5s;
     &:read-only {
         border: 1px solid transparent;
-        border-top: 1px solid var(--border-gray);
+        border-bottom: 1px solid var(--border-gray);
         padding-left: 0;
         &:focus {
             & + .error-message {
@@ -146,13 +146,10 @@
 }
 
 .error-message {
-    visibility: hidden;
+    visibility: visible;
     color: var(--electric-orange);
     min-height: 20px;
     font-size: 1.5rem;
-    &:empty {
-        display: none;
-    }
 }
 
 .fas {

@@ -5,6 +5,7 @@
 .profile-wrapper {
     flex-direction: column;
     gap: 40px;
+    max-width: 1440px;
 }
 
 .profile {

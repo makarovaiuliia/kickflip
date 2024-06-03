@@ -25,6 +25,7 @@ export enum StateMessage {
     DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
 }
+
 export type TUser = {
     email?: string;
     firstName?: string;

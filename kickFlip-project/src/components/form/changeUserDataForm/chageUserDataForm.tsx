@@ -37,15 +37,20 @@ export default function ChangeUserDataForm() {
         setUpdateUserDataError('');
         try {
             await dispatch(updateUserProfileData(requestData)).unwrap();
-            reset();
         } catch (error) {
+            reset();
             responsesErrorsHandler(error, setUpdateUserDataError);
         }
     };
 
+    const EMAIL_REGEXP: RegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const ONLY_LETTER_REGEX: RegExp = /^[A-Za-z]+$/;
 
     const validationRules = {
+        email: {
+            required: ErrorMessage.REQUIRED_FIELD,
+            pattern: { value: EMAIL_REGEXP, message: ErrorMessage.EMAIL_ERROR },
+        },
         names: {
             required: ErrorMessage.REQUIRED_FIELD,
             pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
@@ -64,10 +69,11 @@ export default function ChangeUserDataForm() {
                 id="email-input"
                 name="email"
                 placeholder="Enter your e-mail"
-                defaultValue={user?.email}
+                defaultValue={`${abilityChangeForm === true ? user?.email : ''}`}
                 readOnly={abilityChangeForm}
                 register={register}
                 errors={errors.email}
+                validationRules={validationRules.email}
             />
             <FormField
                 label="First name:"
@@ -118,12 +124,21 @@ export default function ChangeUserDataForm() {
                     <button
                         className="change-user-btn"
                         type="button"
-                        onClick={() => handleProtectUpdateFormAbility(true)}
+                        onClick={() => {
+                            handleProtectUpdateFormAbility(true);
+                            reset();
+                        }}
                     >
                         Cancel
                     </button>
                 )}
-                <button className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'} `} type="submit">
+                <button
+                    className={`change-user-btn ${isValid && !abilityChangeForm ? '' : 'disable'} `}
+                    type="submit"
+                    onClick={() => {
+                        handleProtectUpdateFormAbility(true);
+                    }}
+                >
                     Update
                 </button>
             </div>

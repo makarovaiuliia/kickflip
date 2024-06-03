@@ -39,6 +39,7 @@ interface FormFieldProps<T extends FieldValues> {
     disabled?: boolean;
     id?: string;
     defaultValue?: string;
+    value?: string;
     name: Path<T>;
     placeholder?: string;
     register: UseFormRegister<T>;
@@ -54,6 +55,7 @@ export default function FormField<T extends FieldValues>({
     label,
     id,
     defaultValue,
+    value,
     readOnly,
     disabled,
     name,
@@ -83,6 +85,7 @@ export default function FormField<T extends FieldValues>({
                     spellCheck="false"
                     id={id}
                     defaultValue={defaultValue}
+                    value={value}
                     readOnly={readOnly}
                     {...register(name, validationRules)}
                 />
@@ -116,4 +119,5 @@ FormField.defaultProps = {
     readOnly: false,
     disabled: false,
     defaultValue: null,
+    value: null,
 };

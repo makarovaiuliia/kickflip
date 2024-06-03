@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage, UpdatePasswordForm } from '@/types/types';
 import { useDispatch } from '@/services/store';
-import { updateUserPassword, getUserSelector } from '@/services/userSlice';
+import { updateUserPassword, getUserSelector, loginUser, getUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -32,11 +32,17 @@ export default function ChangePasswordForm() {
             currentPassword: data.currentPassword,
             newPassword: data.newPassword,
         };
+        const requestLogInData = {
+            email: user!.email!,
+            password: data.newPassword,
+        };
         setUpdatePaswordError('');
         try {
             await dispatch(updateUserPassword(requestData)).unwrap();
             navigate('/profile');
             reset();
+            await dispatch(loginUser(requestLogInData)).unwrap();
+            await dispatch(getUser());
         } catch (error) {
             responsesErrorsHandler(error, setUpdatePaswordError);
         }
@@ -48,24 +54,19 @@ export default function ChangePasswordForm() {
         <form className="change-password-form" onSubmit={handleSubmit(submit)}>
             <FormField
                 type="password"
-                label="Current Password"
+                label="Current Password:"
                 id="current-password-input"
                 name="currentPassword"
-                placeholder="Enter your First Name"
+                placeholder="Enter your current password"
                 register={register}
                 errors={errors.currentPassword}
-                validationRules={{
-                    required: ErrorMessage.REQUIRED_FIELD,
-                    pattern: { value: PASSWORD_REGEX, message: ErrorMessage.PASSWORD_ERROR_REGEX },
-                    minLength: { value: 8, message: ErrorMessage.PASSWORD_ERROR_LENGTH },
-                }}
             />
             <FormField
                 type="password"
                 label="New Password:"
                 id="new-password-input"
                 name="newPassword"
-                placeholder="Enter your password"
+                placeholder="Enter your new password"
                 register={register}
                 errors={errors.newPassword}
                 validationRules={{
@@ -79,7 +80,6 @@ export default function ChangePasswordForm() {
                     Update
                 </button>
             </div>
-
             <span className="error-message stretched">{updatePaswordError}</span>
         </form>
     );

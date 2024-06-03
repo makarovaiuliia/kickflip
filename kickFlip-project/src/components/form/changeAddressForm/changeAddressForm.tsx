@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage, Country, UpdateUserAddressForm, TAddress } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { updateUserAddress, deleteUserAddress, getUserSelector } from '@/services/userSlice';
+import { updateUserAddress, deleteUserAddress, getUserSelector, getUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -95,9 +95,10 @@ export default function ChangeUserAddressForm(props: Props) {
         setRegistrationError('');
         try {
             await dispatch(updateUserAddress(requestData)).unwrap();
-            reset();
+            await dispatch(getUser());
         } catch (error) {
             responsesErrorsHandler(error, setRegistrationError);
+            reset();
         }
     };
 
@@ -112,6 +113,7 @@ export default function ChangeUserAddressForm(props: Props) {
             await dispatch(deleteUserAddress(requestData)).unwrap();
             handleProtectUpdateFormAbility(true);
             reset();
+            await dispatch(getUser());
         } catch (error) {
             responsesErrorsHandler(error, setDeleteError);
         }
@@ -192,7 +194,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         <span>{checkDefaultHeading()}</span>
                     </h3>
                     <FormField
-                        label="Shipping Address"
+                        label="Address:"
                         addWrapperClasses={['stretched']}
                         id="address-input"
                         name="shippingAddress.streetName"
@@ -212,7 +214,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         readOnly={abilityChangeForm}
                     />
                     <FormField
-                        label="City"
+                        label="City:"
                         id="city-input"
                         name="shippingAddress.city"
                         placeholder="Your city"
@@ -224,7 +226,7 @@ export default function ChangeUserAddressForm(props: Props) {
                     />
                     <FormField
                         fieldTag="select"
-                        label="Country"
+                        label="Country:"
                         selectOptions={[
                             {
                                 value: '',
@@ -232,10 +234,10 @@ export default function ChangeUserAddressForm(props: Props) {
                                 defaultValue: addressCountryDefault,
                                 props: [{ key: 'hidden', value: true }],
                             },
-                            { value: 'AU', text: 'Austria' },
-                            { value: 'BU', text: 'Belarus' },
-                            { value: 'GE', text: 'Georgia' },
-                            { value: 'RU', text: 'Russia' },
+                            { value: 'AU', text: 'Austria', defaultValue: addressCountryDefault },
+                            { value: 'BU', text: 'Belarus', defaultValue: addressCountryDefault },
+                            { value: 'GE', text: 'Georgia', defaultValue: addressCountryDefault },
+                            { value: 'RU', text: 'Russia', defaultValue: addressCountryDefault },
                         ]}
                         id="country-input"
                         name="shippingAddress.country"
@@ -245,7 +247,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         defaultValue={addressCountryDefault}
                     />
                     <FormField
-                        label="Postal Code"
+                        label="Postal Code:"
                         addWrapperClasses={['stretched']}
                         id="zip-input"
                         name="shippingAddress.postalCode"
@@ -265,7 +267,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         <span>{checkDefaultHeading()}</span>
                     </h3>
                     <FormField
-                        label="Billing Address"
+                        label="Address:"
                         addWrapperClasses={['stretched']}
                         id="address-input-billing"
                         name="billingAddress.streetName"
@@ -285,7 +287,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         readOnly={abilityChangeForm}
                     />
                     <FormField
-                        label="City"
+                        label="City:"
                         id="city-input-billing"
                         name="billingAddress.city"
                         placeholder="Your city"
@@ -297,7 +299,7 @@ export default function ChangeUserAddressForm(props: Props) {
                     />
                     <FormField
                         fieldTag="select"
-                        label="Country"
+                        label="Country:"
                         selectOptions={[
                             {
                                 value: '',
@@ -305,10 +307,10 @@ export default function ChangeUserAddressForm(props: Props) {
                                 text: 'Select your country...',
                                 props: [{ key: 'hidden', value: true }],
                             },
-                            { value: 'AU', text: 'Austria' },
-                            { value: 'BU', text: 'Belarus' },
-                            { value: 'GE', text: 'Georgia' },
-                            { value: 'RU', text: 'Russia' },
+                            { value: 'AU', text: 'Austria', defaultValue: addressCountryDefault },
+                            { value: 'BU', text: 'Belarus', defaultValue: addressCountryDefault },
+                            { value: 'GE', text: 'Georgia', defaultValue: addressCountryDefault },
+                            { value: 'RU', text: 'Russia', defaultValue: addressCountryDefault },
                         ]}
                         id="country-input-billing"
                         name="billingAddress.country"
@@ -318,7 +320,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         defaultValue={addressCountryDefault}
                     />
                     <FormField
-                        label="Postal Code"
+                        label="Postal Code:"
                         addWrapperClasses={['stretched']}
                         id="zip-input-billing"
                         name="billingAddress.postalCode"
@@ -385,7 +387,10 @@ export default function ChangeUserAddressForm(props: Props) {
                     <button
                         className="change-user-btn"
                         type="button"
-                        onClick={() => handleProtectUpdateFormAbility(true)}
+                        onClick={() => {
+                            handleProtectUpdateFormAbility(true);
+                            reset();
+                        }}
                     >
                         Cancel
                     </button>
