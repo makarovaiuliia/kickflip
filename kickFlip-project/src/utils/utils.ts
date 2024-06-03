@@ -6,7 +6,6 @@ import {
     SignUpDataForm,
     SignUpDataRequest,
     Variants,
-    ProductResponse,
     ErrorMessage,
 } from '@/types/types';
 
@@ -146,6 +145,7 @@ export const ageRestrictionCheck = (birthDay: Date) => {
     const currentDate = new Date();
     const age = currentDate.getFullYear() - birthDate.getFullYear();
     return age >= 13 ? true : ErrorMessage.TOO_YOUNG_ERROR;
+};
 
 export interface Category {
     imageUrl: string;
