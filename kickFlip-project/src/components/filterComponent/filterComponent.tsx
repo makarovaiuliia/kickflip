@@ -1,13 +1,15 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent } from 'react';
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
 import cross from '../../../public/cross.svg';
 import { TransformParams, FilterOptions } from '@/types/types';
+import SearchForm from '../searchForm/searchForm';
 
 interface FilterComponentProps {
     options: TransformParams;
     setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
     categories: TransformParams;
+    isMobile: boolean;
 }
 
 export interface SelectedFilterOptions {
@@ -15,7 +17,7 @@ export interface SelectedFilterOptions {
     value: string;
 }
 
-function FilterComponent({ options, setCategories, categories }: FilterComponentProps): JSX.Element {
+function FilterComponent({ options, setCategories, categories, isMobile }: FilterComponentProps): JSX.Element {
     const isAnyFilterActive = Object.values(categories.filter).some((filterArray) => filterArray.length > 0);
 
     const removeCategory = (category: SelectedFilterOptions) => {
@@ -51,27 +53,9 @@ function FilterComponent({ options, setCategories, categories }: FilterComponent
         return ['color', 'size', 'price'].includes(key);
     };
 
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleSearch = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
-        event.preventDefault();
-        setCategories((prevCategories) => {
-            return { ...prevCategories, search: searchTerm.toLowerCase() };
-        });
-    };
-
     return (
         <div className="filter-wrapper">
-            <form onSubmit={handleSearch} className="filter-search-form">
-                <input
-                    type="text"
-                    className="filter-search"
-                    placeholder="Search"
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    value={searchTerm}
-                />
-                <button type="submit" className="filter-search-button" aria-label="Search" />
-            </form>
+            {!isMobile && <SearchForm setCategories={setCategories} />}
             {isAnyFilterActive && (
                 <div className="selected">
                     <div className="selected_title">

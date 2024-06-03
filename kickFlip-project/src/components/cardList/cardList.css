@@ -27,8 +27,7 @@
     width: 100%;
 }
 
-.card-list-sorting,
-.card-list-hide-filter {
+.card-list-sorting {
     padding: 1rem 1.6rem;
     border: 1px solid var(--border-gray);
     color: var(--deep-blue);
@@ -39,11 +38,16 @@
 .card-list-options-container {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .card-list-hide-filter {
-    text-transform: none;
-    text-align: left;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-image: url('../../../public/filter.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .card-list-hide-filter:hover {
@@ -62,15 +66,14 @@
         width: 100%;
     }
 
-    .card-list-options-container {
-        gap: 1rem;
-    }
-
     .card-list-hide-filter {
-        width: 100%;
         padding: 1rem 1.6rem;
         border: 1px solid var(--border-gray);
-        text-align: left;
+        width: 100%;
+    }
+
+    .card-list-options-container {
+        gap: 1rem;
     }
 
     .card-list-sorting {

@@ -96,6 +96,7 @@ export default function ProductsPage(): JSX.Element {
                                 options={filterData}
                                 setCategories={setCategories}
                                 categories={categories}
+                                isMobile={isMobile}
                             />
                         }
                         open={filterIsActive}
@@ -103,13 +104,19 @@ export default function ProductsPage(): JSX.Element {
                     />
                 )}
                 {!isMobile && filterIsActive && (
-                    <FilterComponent options={filterData} setCategories={setCategories} categories={categories} />
+                    <FilterComponent
+                        options={filterData}
+                        setCategories={setCategories}
+                        categories={categories}
+                        isMobile={isMobile}
+                    />
                 )}
                 <CardList
                     products={products}
                     setCategories={setCategories}
                     categories={categories}
                     setFilterIsActive={setFilterIsActive}
+                    isMobile={isMobile}
                 />
             </div>
         </div>
