@@ -1,9 +1,8 @@
-import { SyntheticEvent } from 'react';
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
-import cross from '../../../public/cross.svg';
 import { TransformParams, FilterOptions } from '@/types/types';
 import SearchForm from '../searchForm/searchForm';
+import SelectedCategories from '../selectedCategories/selectedCategories';
 
 interface FilterComponentProps {
     options: TransformParams;
@@ -20,35 +19,6 @@ export interface SelectedFilterOptions {
 function FilterComponent({ options, setCategories, categories, isMobile }: FilterComponentProps): JSX.Element {
     const isAnyFilterActive = Object.values(categories.filter).some((filterArray) => filterArray.length > 0);
 
-    const removeCategory = (category: SelectedFilterOptions) => {
-        setCategories((prevCategories) => {
-            const newFilter = { ...prevCategories.filter };
-
-            if (newFilter[category.attribute]) {
-                newFilter[category.attribute] = newFilter[category.attribute].filter(
-                    (value) => value !== category.value
-                );
-
-                if (newFilter[category.attribute].length === 0) {
-                    delete newFilter[category.attribute];
-                }
-            }
-
-            return { ...prevCategories, filter: newFilter };
-        });
-    };
-
-    const handleClick = (event: SyntheticEvent) => {
-        const target = event.target as HTMLElement;
-        const attribute = target.closest('button')!.getAttribute('data-attribute')! as FilterOptions;
-        const value = target.closest('button')!.getAttribute('data-value')!;
-        removeCategory({ attribute, value });
-    };
-
-    const handleClearAll = () => {
-        setCategories({ filter: { color: [], size: [], price: [] }, sort: '', search: '' });
-    };
-
     const isFilterOption = (key: string): key is FilterOptions => {
         return ['color', 'size', 'price'].includes(key);
     };
@@ -56,36 +26,7 @@ function FilterComponent({ options, setCategories, categories, isMobile }: Filte
     return (
         <div className="filter-wrapper">
             {!isMobile && <SearchForm setCategories={setCategories} />}
-            {isAnyFilterActive && (
-                <div className="selected">
-                    <div className="selected_title">
-                        <p>Selected categories</p>
-                        <button type="button" className="selected_text" onClick={handleClearAll}>
-                            Clear all
-                        </button>
-                    </div>
-                    <ul className="category_list">
-                        {Object.keys(categories.filter)
-                            .filter(isFilterOption)
-                            .map((category) =>
-                                categories.filter[category].map((value) => (
-                                    <li key={value}>
-                                        <button
-                                            type="button"
-                                            className="category"
-                                            onClick={handleClick}
-                                            data-attribute={category}
-                                            data-value={value}
-                                        >
-                                            <span className="category_title">{value}</span>
-                                            <img src={cross} alt="cross" className="category_icon" />
-                                        </button>
-                                    </li>
-                                ))
-                            )}
-                    </ul>
-                </div>
-            )}
+            {isAnyFilterActive && <SelectedCategories categories={categories} setCategories={setCategories} />}
             <ul className="filter">
                 {Object.keys(options.filter)
                     .filter(isFilterOption)
