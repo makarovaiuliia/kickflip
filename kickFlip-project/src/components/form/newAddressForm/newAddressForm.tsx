@@ -90,7 +90,7 @@ export default function NewAddressForm() {
                 onSubmit={handleSubmit(submit)}
             >
                 <FormField
-                    label="Address"
+                    label="Address:"
                     addWrapperClasses={['stretched']}
                     id="new-address-input"
                     name="newAddress.streetName"
@@ -109,7 +109,7 @@ export default function NewAddressForm() {
                     register={register}
                 />
                 <FormField
-                    label="City"
+                    label="City:"
                     id="new-city-input"
                     name="newAddress.city"
                     placeholder="Your city"
@@ -123,7 +123,7 @@ export default function NewAddressForm() {
                 />
                 <FormField
                     fieldTag="select"
-                    label="Country"
+                    label="Country:"
                     selectOptions={[
                         { value: '', text: 'Select your country...', props: [{ key: 'hidden', value: true }] },
                         { value: 'AU', text: 'Austria' },
@@ -140,7 +140,7 @@ export default function NewAddressForm() {
                     }}
                 />
                 <FormField
-                    label="Postal Code"
+                    label="Postal Code:"
                     addWrapperClasses={['stretched']}
                     id="new-zip-input"
                     name="newAddress.postalCode"
@@ -159,7 +159,7 @@ export default function NewAddressForm() {
                     </div>
                     <div className="checkbox-wrapper">
                         <input type="checkbox" {...register('isDefaultShippingAddress')} />
-                        <span>Make this address default</span>
+                        <span>Make this shipping address default</span>
                     </div>
                 </div>
                 <div className="checkboxes-wrapper">
@@ -169,7 +169,7 @@ export default function NewAddressForm() {
                     </div>
                     <div className="checkbox-wrapper">
                         <input type="checkbox" {...register('isDefaultBillingAddress')} />
-                        <span>Make this address default</span>
+                        <span>Make this billing address default</span>
                     </div>
                 </div>
 
