@@ -26,12 +26,12 @@ function CardList({ products, setCategories, categories, setFilterIsActive, isMo
                     {isMobile && <SearchForm setCategories={setCategories} />}
                     <button
                         type="button"
-                        onClick={() => {
-                            setFilterIsActive((prevState) => !prevState);
-                        }}
-                        className="card-list-hide-filter"
+                        onClick={() => setFilterIsActive((prevState) => !prevState)}
+                        className={isMobile ? 'card-list-hide-filter-mobile' : 'card-list-hide-filter'}
                         aria-label="show/hide filters"
-                    />
+                    >
+                        {isMobile && 'Show/hide Filters'}
+                    </button>
                     <select id="sort-select" className="card-list-sorting" onChange={handleSelect}>
                         <option value="">Sort by</option>
                         <option value="price asc">Price (Low-High)</option>

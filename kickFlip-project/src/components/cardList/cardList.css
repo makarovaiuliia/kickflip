@@ -44,6 +44,15 @@
     background-size: contain;
 }
 
+.card-list-hide-filter-mobile {
+    padding: 1rem 1.6rem;
+    border: 1px solid var(--border-gray);
+    color: var(--deep-blue);
+    width: 100%;
+    text-align: start;
+    text-transform: none;
+}
+
 .card-list-hide-filter:hover {
     opacity: 0.6;
 }
@@ -62,7 +71,6 @@
 
     .card-list-info-container,
     .card-list-options-container,
-    .card-list-hide-filter,
     .card-list-sorting {
         width: 100%;
     }
