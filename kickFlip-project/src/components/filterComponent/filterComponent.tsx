@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import Accordion from '../accordion/accordion';
 import './filterComponent.css';
 import { TransformParams, FilterOptions } from '@/types/types';
@@ -17,7 +19,15 @@ export interface SelectedFilterOptions {
 }
 
 function FilterComponent({ options, setCategories, categories, isMobile }: FilterComponentProps): JSX.Element {
-    const isAnyFilterActive = Object.values(categories.filter).some((filterArray) => filterArray.length > 0);
+    const { section } = useParams<{ section: string }>();
+
+    const isAnyFilterActive = Object.values(categories.filter).some((filterArray, index) => {
+        const filterKey = Object.keys(categories.filter)[index];
+        if (filterKey === 'discount' && section === 'outlet') {
+            return filterArray.some((value) => value !== '');
+        }
+        return filterArray.length > 0;
+    });
 
     const isFilterOption = (key: string): key is FilterOptions => {
         return ['color', 'size', 'price'].includes(key);

@@ -1,8 +1,12 @@
 import { SyntheticEvent } from 'react';
 import './selectedCategories.css';
-import cross from '../../../public/cross.svg';
+import { useParams } from 'react-router-dom';
 import { TransformParams, FilterOptions } from '@/types/types';
 import type { SelectedFilterOptions } from '../filterComponent/filterComponent';
+
+/* eslint-disable import/no-absolute-path */
+import cross from '/cross.svg';
+/* eslint-enable import/no-absolute-path */
 
 interface SelectedCategoriesProps {
     setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
@@ -10,6 +14,7 @@ interface SelectedCategoriesProps {
 }
 
 function SelectedCategories({ setCategories, categories }: SelectedCategoriesProps): JSX.Element {
+    const { section } = useParams<{ section: string }>();
     const removeCategory = (category: SelectedFilterOptions) => {
         setCategories((prevCategories) => {
             const newFilter = { ...prevCategories.filter };
@@ -36,7 +41,11 @@ function SelectedCategories({ setCategories, categories }: SelectedCategoriesPro
     };
 
     const handleClearAll = () => {
-        setCategories({ filter: { color: [], size: [], price: [], discount: [] }, sort: '', search: '' });
+        setCategories({
+            filter: { color: [], size: [], price: [], discount: section === 'outlet' ? [''] : [] },
+            sort: '',
+            search: '',
+        });
     };
 
     const isFilterOption = (key: string): key is FilterOptions => {
