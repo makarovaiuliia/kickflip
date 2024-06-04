@@ -28,8 +28,6 @@ export default function ProfilePage(): JSX.Element {
 
     return (
         <div className="main-wrapper profile-wrapper">
-            <h1 className="home-title profile-page-title">My account</h1>
-
             <div className="profile">
                 <div className="profile-nav">
                     <NavLink className="profile-nav-links" to="account">
