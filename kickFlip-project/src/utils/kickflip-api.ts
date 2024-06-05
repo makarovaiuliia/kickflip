@@ -422,7 +422,7 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsFilteredApi = (options?: TransformParams) => {
+export const getProductsFilteredApi = (options: TransformParams, page: number) => {
     let query = '';
 
     if (options) {
@@ -464,9 +464,15 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
                 ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
                 : `${SearchQuery.search}=${options.search}&fuzzy=true`;
         }
+
+        if (options.category) {
+            query += query
+                ? `&${SearchQuery.category}"${options.category}"`
+                : `${SearchQuery.category}"${options.category}"`;
+        }
     }
 
-    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${page}`;
 
     return fetch(fetchUrl, {
         method: 'GET',
