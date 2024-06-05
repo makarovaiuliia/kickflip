@@ -1,0 +1,4 @@
+.product-page-wrapper {
+    flex-direction: column;
+    gap: 2rem;
+}

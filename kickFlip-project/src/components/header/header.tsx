@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, Link, useNavigate, useMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -25,13 +25,20 @@ export default function Header() {
         closeMenu();
     };
 
+    const navigate = useNavigate();
+    const match = useMatch('/profile');
+
+    useEffect(() => {
+        if (match) navigate('profile/account');
+    }, [match, navigate]);
+
     return (
         <header className="header">
             <div className="header-wrapper">
                 <div className="logo">
-                    <NavLink className="logo-link" to="/" onClick={closeMenu}>
+                    <Link className="logo-link" to="/" onClick={closeMenu}>
                         <img src={logo} alt="Kickflip" />
-                    </NavLink>
+                    </Link>
                 </div>
                 <div className={`navigation ${isOpen && 'open'}`}>
                     <nav className="categories-nav">
@@ -43,7 +50,7 @@ export default function Header() {
                                 to="/"
                                 onClick={closeMenu}
                             >
-                                Home
+                                Main
                             </NavLink>
                             <NavLink
                                 className={({ isActive }) =>
@@ -52,7 +59,16 @@ export default function Header() {
                                 to="/products"
                                 onClick={closeMenu}
                             >
-                                Products
+                                Catalog
+                            </NavLink>
+                            <NavLink
+                                className={({ isActive }) =>
+                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                                }
+                                to="/outlet"
+                                onClick={closeMenu}
+                            >
+                                Outlet
                             </NavLink>
                         </div>
                     </nav>
@@ -134,6 +150,7 @@ export default function Header() {
                         type="button"
                         className={`navigation-toggle-button ${isOpen && 'open'}`}
                         onClick={() => setMenuIsOpen(!isOpen)}
+                        aria-label="Toggle navigation menu"
                     >
                         <span className="navigation-toggle-bar" />
                     </button>

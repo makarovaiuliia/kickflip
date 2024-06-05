@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { ErrorMessage, Country, SignUpDataForm } from '@/types/types';
+import { ErrorMessage, Country, SignUpDataForm, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch } from '@/services/store';
-import { signUpUser } from '@/services/userSlice';
+import { loginUser, signUpUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
 
@@ -29,8 +29,14 @@ export default function RegistrationForm() {
 
     const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
         setRegistrationError('');
+        const loginData: LogInData = {
+            email: data.email,
+            password: data.password,
+        };
+
         try {
             await dispatch(signUpUser(data)).unwrap();
+            await dispatch(loginUser(loginData));
             navigate('/');
             reset();
         } catch (error) {

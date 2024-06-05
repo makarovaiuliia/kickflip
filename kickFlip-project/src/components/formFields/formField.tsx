@@ -21,8 +21,11 @@ type OptionProps = {
 };
 
 type Option = {
+    disabled?: boolean | undefined;
     value: string;
     text: string;
+    defaultValue?: string;
+    selected?: boolean | undefined;
     props?: OptionProps[];
 };
 
@@ -32,7 +35,11 @@ interface FormFieldProps<T extends FieldValues> {
     addWrapperClasses?: string[];
     type?: string;
     label?: string;
+    readOnly?: boolean;
+    disabled?: boolean;
     id?: string;
+    defaultValue?: string;
+    value?: string;
     name: Path<T>;
     placeholder?: string;
     register: UseFormRegister<T>;
@@ -47,6 +54,10 @@ export default function FormField<T extends FieldValues>({
     type,
     label,
     id,
+    defaultValue,
+    value,
+    readOnly,
+    disabled,
     name,
     placeholder,
     register,
@@ -54,7 +65,7 @@ export default function FormField<T extends FieldValues>({
     validationRules,
 }: FormFieldProps<T>) {
     const options = selectOptions?.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option key={option.value} disabled={option.disabled} value={option.value} selected={option.selected}>
             {option.text}
         </option>
     ));
@@ -73,11 +84,20 @@ export default function FormField<T extends FieldValues>({
                     placeholder={placeholder}
                     spellCheck="false"
                     id={id}
+                    defaultValue={defaultValue}
+                    value={value}
+                    readOnly={readOnly}
                     {...register(name, validationRules)}
                 />
             )}
             {fieldTag === 'select' && (
-                <select className="form-input" id={id} {...register(name, validationRules)}>
+                <select
+                    className="form-input form-input-select"
+                    defaultValue={defaultValue}
+                    disabled={disabled}
+                    id={id}
+                    {...register(name, validationRules)}
+                >
                     {options}
                 </select>
             )}
@@ -96,4 +116,8 @@ FormField.defaultProps = {
     fieldTag: 'input',
     selectOptions: [],
     placeholder: '',
+    readOnly: false,
+    disabled: false,
+    defaultValue: null,
+    value: null,
 };
