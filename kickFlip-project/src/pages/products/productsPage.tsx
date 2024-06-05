@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import './productsPage.css';
-import { useSelector, useDispatch } from '@/services/store';
-import { getAllCategories, getAllSneakers, getFilteredProducts } from '@/services/sneakersSlice';
+import { useSelector } from '@/services/store';
+import { getAllCategories } from '@/services/sneakersSlice';
 import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
@@ -11,12 +11,9 @@ import filterData from '@/components/filterComponent/filterComponentData';
 import { TransformParams } from '@/types/types';
 import ModalWindow from '@/components/modalWindow/modalWindow';
 import initialTransformParams from '@/data/initialTransformParams';
-import CardList from '@/components/cardList/cardList';
+import InfiniteScrollList from '@/components/infiniteScrollList/infiniteScrollList';
 
 export default function ProductsPage(): JSX.Element {
-    const products = useSelector(getAllSneakers);
-
-    const dispatch = useDispatch();
     const { section, category } = useParams<{ category: string; section: string }>();
     const transformParams: TransformParams =
         section === 'outlet'
@@ -72,10 +69,6 @@ export default function ProductsPage(): JSX.Element {
             });
         }
     }, [category, productCategories]);
-
-    useEffect(() => {
-        dispatch(getFilteredProducts({ options: categories, page: 0 }));
-    }, [categories, dispatch]);
 
     const breadCrumbs: CrumbType[] = category
         ? [
@@ -137,19 +130,12 @@ export default function ProductsPage(): JSX.Element {
                         isMobile={isMobile}
                     />
                 )}
-                <CardList
+                <InfiniteScrollList
                     categories={categories}
                     setCategories={setCategories}
                     isMobile={isMobile}
                     setFilterIsActive={setFilterIsActive}
-                    products={products}
                 />
-                {/* <InfiniteScrollList
-                    categories={categories}
-                    setCategories={setCategories}
-                    isMobile={isMobile}
-                    setFilterIsActive={setFilterIsActive}
-                /> */}
             </div>
         </div>
     );
