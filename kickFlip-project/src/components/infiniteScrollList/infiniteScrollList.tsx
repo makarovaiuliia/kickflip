@@ -3,9 +3,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import CardList from '@/components/cardList/cardList';
 import './infiniteScrollList.css';
-import { useDispatch } from '@/services/store';
-import { getFilteredProducts } from '@/services/sneakersSlice';
-import { ProductProjected, TransformParams } from '@/types/types';
+import { useDispatch, useSelector } from '@/services/store';
+import { getAllSneakers, getFilteredProducts, removeAllSneakers } from '@/services/sneakersSlice';
+import { TransformParams } from '@/types/types';
 
 interface InfiniteScrollListProps {
     setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
@@ -20,17 +20,17 @@ export default function InfiniteScrollList({
     isMobile,
     setFilterIsActive,
 }: InfiniteScrollListProps): JSX.Element {
-    const [items, setItems] = useState<ProductProjected[]>([]);
+    const dispatch = useDispatch();
+    const products = useSelector(getAllSneakers);
+
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
 
-    const dispatch = useDispatch();
-
     useEffect(() => {
+        dispatch(removeAllSneakers());
         dispatch(getFilteredProducts({ options: categories, page: 0 }))
             .unwrap()
-            .then((response) => {
-                setItems(response.results);
+            .then(() => {
                 setHasMore(true);
                 setPage(1);
             });
@@ -45,7 +45,6 @@ export default function InfiniteScrollList({
                     setHasMore(false);
                 } else {
                     setPage((prevPage) => prevPage + 1);
-                    setItems((prevItems) => [...prevItems, ...sneakers]);
                 }
             })
             .catch(() => {
@@ -57,11 +56,11 @@ export default function InfiniteScrollList({
         <InfiniteScroll
             next={fetchMoreData}
             hasMore={hasMore}
-            loader={<h4 style={{ textAlign: 'center' }}>Loading...</h4>}
-            dataLength={items.length}
+            loader={<h4 className="loading">Loading...</h4>}
+            dataLength={products.length}
         >
             <CardList
-                products={items}
+                products={products}
                 setCategories={setCategories}
                 categories={categories}
                 setFilterIsActive={setFilterIsActive}
