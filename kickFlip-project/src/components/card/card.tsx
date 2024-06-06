@@ -78,6 +78,9 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
+            <button type="button" className="card_button">
+                Add to Cart
+            </button>
         </div>
     );
 }
