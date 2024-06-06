@@ -30,3 +30,10 @@
     flex-direction: column;
     gap: 1.6rem;
 }
+
+@media (width < 500px) {
+    .mailing-perks_container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

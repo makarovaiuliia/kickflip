@@ -1,6 +1,6 @@
 .link-lists {
     display: flex;
-    gap: 90px;
+    gap: 60px;
 }
 
 .link-list {
@@ -31,4 +31,16 @@
 
 .link-list_link:hover {
     text-decoration: underline;
+}
+
+@media (width < 900px) {
+    .link-lists {
+        justify-content: space-between;
+    }
+}
+
+@media (width < 500px) {
+    .link-lists {
+        gap: 1.6rem;
+    }
 }
