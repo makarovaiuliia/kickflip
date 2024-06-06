@@ -1,0 +1,13 @@
+.mailing-perks {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.mailing-perks_image {
+    inline-size: 16px;
+    block-size: 16px;
+}
+.mailing-perks_text {
+    font-size: 1.4rem;
+    line-height: 160%;
+}
