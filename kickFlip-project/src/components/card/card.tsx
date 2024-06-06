@@ -13,7 +13,8 @@ interface CardProps {
 
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     const { masterVariant, name, slug } = productInfo;
-    const [activeImage, setActiveImage] = useState(0);
+    const [activeImage, setActiveImage] = useState<number>(0);
+    const [inCart, setInCart] = useState<boolean>(false);
     const { section } = useParams<{ section: string }>();
 
     const productCategories = useSelector(getAllCategories);
@@ -78,8 +79,14 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <button type="button" className="card_button">
-                Add to Cart
+            <button
+                type="button"
+                className="card_button"
+                onClick={() => {
+                    setInCart((prev) => !prev);
+                }}
+            >
+                {inCart ? 'Remove from Cart' : 'Add in Cart'}
             </button>
         </div>
     );
