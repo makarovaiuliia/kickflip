@@ -4,7 +4,7 @@ import {
     LogInData,
     ProductProjected,
     ProductResponse,
-    SearchQuery,
+    SearchQueryVariants,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
@@ -446,7 +446,7 @@ export const getProductsFilteredApi = (options: TransformParams, page: number) =
                             return `"${value.toLowerCase()}"`;
                         })
                         .join(',');
-                    return `${SearchQuery[filterKey]}${values}`;
+                    return `${SearchQueryVariants[filterKey]}${values}`;
                 })
                 .join('&filter=');
 
@@ -461,14 +461,14 @@ export const getProductsFilteredApi = (options: TransformParams, page: number) =
 
         if (options.search) {
             query += query
-                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
-                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+                ? `&${SearchQueryVariants.search}=${options.search}&fuzzy=true`
+                : `${SearchQueryVariants.search}=${options.search}&fuzzy=true`;
         }
 
         if (options.category) {
             query += query
-                ? `&${SearchQuery.category}"${options.category}"`
-                : `${SearchQuery.category}"${options.category}"`;
+                ? `&${SearchQueryVariants.category}"${options.category}"`
+                : `${SearchQueryVariants.category}"${options.category}"`;
         }
     }
 

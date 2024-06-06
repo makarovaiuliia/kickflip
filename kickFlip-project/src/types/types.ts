@@ -307,7 +307,7 @@ export interface TransformParams {
     category: string;
 }
 
-export enum SearchQuery {
+export enum SearchQueryVariants {
     color = 'variants.attributes.color:',
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
