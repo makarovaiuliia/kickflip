@@ -9,6 +9,8 @@ import dior from '/dior.png';
 /* eslint-enable import/no-absolute-path */
 
 import Benefits from './benefits/benefits';
+import Categories from './categories/categories';
+import Promocode from './promocode/promocode';
 
 export default function HomePage(): JSX.Element {
     const dispatch = useDispatch();
@@ -54,6 +56,8 @@ export default function HomePage(): JSX.Element {
                 </div>
             </section>
             <Benefits />
+            <Categories />
+            <Promocode />
         </div>
     );
 }

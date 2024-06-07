@@ -11,12 +11,12 @@ export default function Benefits(): JSX.Element {
     return (
         <section className="section section-benefits">
             <div className="content benefits">
-                <div className="benefits_text-container">
-                    <h3 className="benefits_subtitle">We are a bit different</h3>
-                    <h2 className="benefits_title">Understand the Kickflip</h2>
+                <div className="section_text-container">
+                    <h3 className="section_subtitle">We’re a bit different</h3>
+                    <h2 className="section_title">Understand the Kickflip</h2>
                 </div>
 
-                <ul className="benefits_list">
+                <ul className="section_list benefits_list">
                     <li className="benefits_list-item">
                         <img src={car} alt="car icon" className="benefits_image" />
                         <h4 className="benefits_list-item-title">Speedy delivery</h4>
