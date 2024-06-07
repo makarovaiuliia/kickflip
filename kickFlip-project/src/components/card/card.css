@@ -82,6 +82,21 @@
     opacity: 0.5;
 }
 
+.card_button {
+    height: 4rem;
+    padding: 0.8rem 1.6rem;
+    background: var(--electric-orange);
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: var(--white);
+    transition: all 0.3s;
+}
+
+.card_button:hover {
+    background: var(--deep-blue);
+}
+
 @media (width < 800px) {
     .card_image {
         grid-template-columns: repeat(2, 1fr);
