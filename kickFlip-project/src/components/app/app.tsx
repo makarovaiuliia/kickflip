@@ -14,7 +14,7 @@ import CartPage from '@/pages/cart/cartPage';
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getCategories, getFilteredProducts } from '@/services/sneakersSlice';
+import { getCategories } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -40,13 +40,6 @@ function App() {
                 } else {
                     await dispatch(getAnonymousToken()).unwrap();
                 }
-                await dispatch(
-                    getFilteredProducts({
-                        filter: { color: [], size: [], price: [], discount: [] },
-                        sort: '',
-                        search: '',
-                    })
-                ).unwrap();
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);
             } catch (error) {
@@ -60,6 +53,7 @@ function App() {
     if (loading) {
         return <Loader />;
     }
+
     return (
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>

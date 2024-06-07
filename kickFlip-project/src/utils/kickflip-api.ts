@@ -4,7 +4,7 @@ import {
     LogInData,
     ProductProjected,
     ProductResponse,
-    SearchQuery,
+    SearchQueryVariants,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
@@ -422,7 +422,7 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsFilteredApi = (options?: TransformParams) => {
+export const getProductsFilteredApi = (options: TransformParams, page: number) => {
     let query = '';
 
     if (options) {
@@ -446,7 +446,7 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
                             return `"${value.toLowerCase()}"`;
                         })
                         .join(',');
-                    return `${SearchQuery[filterKey]}${values}`;
+                    return `${SearchQueryVariants[filterKey]}${values}`;
                 })
                 .join('&filter=');
 
@@ -461,12 +461,18 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
 
         if (options.search) {
             query += query
-                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
-                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+                ? `&${SearchQueryVariants.search}=${options.search}&fuzzy=true`
+                : `${SearchQueryVariants.search}=${options.search}&fuzzy=true`;
+        }
+
+        if (options.category) {
+            query += query
+                ? `&${SearchQueryVariants.category}"${options.category}"`
+                : `${SearchQueryVariants.category}"${options.category}"`;
         }
     }
 
-    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${page}`;
 
     return fetch(fetchUrl, {
         method: 'GET',

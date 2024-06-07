@@ -304,12 +304,14 @@ export interface TransformParams {
     filter: Record<FilterOptions, string[]>;
     sort: string;
     search: string;
+    category: string;
 }
 
-export enum SearchQuery {
+export enum SearchQueryVariants {
     color = 'variants.attributes.color:',
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
     search = 'text.en-US',
     discount = 'variants.prices.discounted:',
+    category = 'filter=categories.id:',
 }
