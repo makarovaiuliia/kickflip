@@ -5,7 +5,9 @@ export default function MailingForm(): JSX.Element {
     const [signedUp, setSignedUp] = useState<boolean>(false);
     const handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault();
+        const form = event.target as HTMLFormElement;
         setSignedUp(true);
+        form.reset();
         setTimeout(() => {
             setSignedUp(false);
         }, 2000);
