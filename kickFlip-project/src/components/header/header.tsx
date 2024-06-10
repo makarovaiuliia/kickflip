@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useMatch } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -10,7 +11,7 @@ import logout from '/logoutIcon.svg';
 /* eslint-enable import/no-absolute-path */
 
 import './header.css';
-import { getAnonymousToken, getIsAuth, logoutUser } from '@/services/userSlice';
+import { getAnonymousToken, getIsAuth, logoutUser, setCustomerId } from '@/services/userSlice';
 
 export default function Header() {
     const [isOpen, setMenuIsOpen] = useState(false);
@@ -20,7 +21,9 @@ export default function Header() {
     const closeMenu = () => setMenuIsOpen(false);
 
     const handleLogout = () => {
-        dispatch(getAnonymousToken());
+        const id = uuidv4();
+        dispatch(setCustomerId({ id }));
+        dispatch(getAnonymousToken(id));
         dispatch(logoutUser());
         closeMenu();
     };
