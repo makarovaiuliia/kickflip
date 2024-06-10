@@ -315,3 +315,37 @@ export enum SearchQueryVariants {
     discount = 'variants.prices.discounted:',
     category = 'filter=categories.id:',
 }
+
+export interface LineItem {
+    id: string;
+    key?: string;
+    productId: string;
+    productKey?: string;
+    name: string;
+    variant: Product;
+    price: Price;
+    quantity: number;
+    totalPrice: PriceValue;
+}
+
+export interface DiscountCodeInfo {
+    discountCode: ProductTypeReference;
+    state: string;
+}
+
+export type ProductTypeReference = {
+    id: string;
+    typeId: string;
+};
+
+export interface CartResponse {
+    id: string;
+    key?: string;
+    customerId?: string;
+    anonymousId?: string;
+    lineItems: LineItem[];
+    totalLineItemQuantity?: number;
+    totalPrice: PriceValue;
+    cartState: string;
+    discountCodes: DiscountCodeInfo[];
+}

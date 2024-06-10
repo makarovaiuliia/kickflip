@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { ProductProjected } from '@/types/types';
 import './card.css';
-import { getImageFromEachColor, processVariants } from '@/utils/utils';
+import { getAdditionalSize, getImageFromEachColor, getProductsSizes, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
+import { useDispatch, useSelector } from '@/services/store';
+import { createCart, getCardId } from '@/services/cartSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -12,16 +13,18 @@ interface CardProps {
 }
 
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
-    const { masterVariant, name, slug } = productInfo;
+    const dispatch = useDispatch();
+
+    const { masterVariant, name, slug, variants } = productInfo;
+    const cartId = useSelector(getCardId);
     const [activeImage, setActiveImage] = useState<number>(0);
-    const [inCart, setInCart] = useState<boolean>(false);
     const { section } = useParams<{ section: string }>();
-
     const productCategories = useSelector(getAllCategories);
-
     const category = Object.keys(productCategories)
         .filter((cat) => productCategories[cat].id === productInfo.categories[0].id)[0]
         .toLowerCase();
+
+    // card info
 
     const productPrices = masterVariant.prices[0];
     const price = productPrices.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits;
@@ -30,6 +33,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         : undefined;
     const colorMap = useMemo(() => processVariants(productInfo.masterVariant, productInfo.variants), [productInfo]);
     const images = getImageFromEachColor(colorMap);
+    const sizes = Array.from(getProductsSizes(masterVariant, variants));
 
     useEffect(() => {
         if (selectedColors) {
@@ -42,6 +46,12 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             }
         }
     }, [selectedColors, colorMap]);
+
+    const handleAddToCart = () => {
+        if (!cartId) {
+            dispatch(createCart());
+        }
+    };
 
     return (
         <div className="card">
@@ -79,15 +89,19 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <button
-                type="button"
-                className="card_button"
-                onClick={() => {
-                    setInCart((prev) => !prev);
-                }}
-            >
-                {inCart ? 'Remove from Cart' : 'Add in Cart'}
-            </button>
+            <form onSubmit={handleAddToCart} className="card_cart-form">
+                <select id="size-select" className="card_size-select">
+                    <option value="">Size</option>
+                    {getAdditionalSize(sizes).map((size, index) => (
+                        <option key={size} value={size} disabled={index > sizes.length}>
+                            {size}
+                        </option>
+                    ))}
+                </select>
+                <button type="submit" className="card_button">
+                    Add to Cart
+                </button>
+            </form>
         </div>
     );
 }

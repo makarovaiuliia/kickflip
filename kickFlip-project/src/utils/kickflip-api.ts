@@ -16,6 +16,7 @@ import {
     AddNewAddressFormRequest,
     NewAddressAction,
     UpdateAddressAction,
+    CartResponse,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
@@ -511,5 +512,21 @@ export const getProductById = async (id: string) => {
     });
 
     const data = checkResponse<ProductResponse>(response);
+    return data;
+};
+
+export const createCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/carts`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            currency: 'USD',
+        }),
+    });
+
+    const data = checkResponse<CartResponse>(response);
     return data;
 };
