@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ProductProjected } from '@/types/types';
 import './card.css';
-import { getAdditionalSize, getImageFromEachColor, getProductsSizes, processVariants } from '@/utils/utils';
+import { getImageFromEachColor, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
+import AddToCartForm from './addToCartForm/addToCartForm';
 import { createCart, getCardId } from '@/services/cartSlice';
+import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -15,8 +17,7 @@ interface CardProps {
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     const dispatch = useDispatch();
 
-    const { masterVariant, name, slug, variants } = productInfo;
-    const cartId = useSelector(getCardId);
+    const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState<number>(0);
     const { section } = useParams<{ section: string }>();
     const productCategories = useSelector(getAllCategories);
@@ -33,7 +34,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         : undefined;
     const colorMap = useMemo(() => processVariants(productInfo.masterVariant, productInfo.variants), [productInfo]);
     const images = getImageFromEachColor(colorMap);
-    const sizes = Array.from(getProductsSizes(masterVariant, variants));
 
     useEffect(() => {
         if (selectedColors) {
@@ -47,10 +47,30 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         }
     }, [selectedColors, colorMap]);
 
-    const handleAddToCart = () => {
+    const cartId = useSelector(getCardId);
+    const isAuth = useSelector(getIsAuth);
+
+    const handleAddToCart = async (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        // product info
+        // const target = event.target as HTMLFormElement;
+        // const selectedSize = target.size.value;
+        // const color = Object.keys(colorMap)[activeImage];
         if (!cartId) {
-            dispatch(createCart());
+            await dispatch(createCart(isAuth));
         }
+        // const variant = productInfo.variants.filter((product) => {
+        //     const sizeAttribute = product.attributes.find((attr) => attr.name === 'size')?.value;
+        //     const colorAttribute = product.attributes.find((attr) => attr.name === 'color')?.value;
+
+        //     if (sizeAttribute && colorAttribute) {
+        //         return sizeAttribute === parseInt(selectedSize) && colorAttribute === color;
+        //     }
+        //     return false;
+        // });
+
+        // console.log(variant[0].id);
     };
 
     return (
@@ -89,19 +109,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <form onSubmit={handleAddToCart} className="card_cart-form">
-                <select id="size-select" className="card_size-select">
-                    <option value="">Size</option>
-                    {getAdditionalSize(sizes).map((size, index) => (
-                        <option key={size} value={size} disabled={index > sizes.length}>
-                            {size}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit" className="card_button">
-                    Add to Cart
-                </button>
-            </form>
+            <AddToCartForm productInfo={productInfo} handleAddToCart={handleAddToCart} />
         </div>
     );
 }

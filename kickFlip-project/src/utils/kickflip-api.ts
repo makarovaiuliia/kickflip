@@ -17,6 +17,8 @@ import {
     NewAddressAction,
     UpdateAddressAction,
     CartResponse,
+    AddItemToCartAction,
+    AddItemToCartBody,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
@@ -515,8 +517,8 @@ export const getProductById = async (id: string) => {
     return data;
 };
 
-export const createCartApi = async () => {
-    const response = await fetch(`${URL}/${projectKey}/carts`, {
+export const createCartApi = async (isAuth: boolean) => {
+    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts`, {
         method: 'POST',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
@@ -525,6 +527,24 @@ export const createCartApi = async () => {
         body: JSON.stringify({
             currency: 'USD',
         }),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction) => {
+    const body: AddItemToCartBody = {
+        version: 1,
+        actions: [item],
+    };
+    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
     });
 
     const data = checkResponse<CartResponse>(response);
