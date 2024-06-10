@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { ProductProjected, TransformParams } from '@/types/types';
 import Card from '../card/card';
 import './cardList.css';
@@ -50,7 +52,7 @@ function CardList({ products, setCategories, categories, setFilterIsActive, isMo
             ) : (
                 <div className="card-list">
                     {products.map((product) => (
-                        <Card productInfo={product} key={product.id} selectedColors={categories.filter.color} />
+                        <Card productInfo={product} key={uuidv4()} selectedColors={categories.filter.color} />
                     ))}
                 </div>
             )}

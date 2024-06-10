@@ -4,8 +4,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import CardList from '@/components/cardList/cardList';
 import './infiniteScrollList.css';
 import { useDispatch, useSelector } from '@/services/store';
-import { getAllSneakers, getFilteredProducts, removeAllSneakers } from '@/services/sneakersSlice';
+import { getAllSneakers, getFilteredProducts } from '@/services/sneakersSlice';
 import { TransformParams } from '@/types/types';
+import Loader from '../loader/loader';
 
 interface InfiniteScrollListProps {
     setCategories: React.Dispatch<React.SetStateAction<TransformParams>>;
@@ -27,17 +28,17 @@ export default function InfiniteScrollList({
     const [page, setPage] = useState<number>(1);
 
     useEffect(() => {
-        dispatch(removeAllSneakers());
-        dispatch(getFilteredProducts({ options: categories, page: 0 }))
+        dispatch(getFilteredProducts({ options: categories, offset: 0 }))
             .unwrap()
             .then(() => {
                 setHasMore(true);
                 setPage(1);
-            });
+            })
+            .catch(() => {});
     }, [categories, dispatch]);
 
     const fetchMoreData = () => {
-        dispatch(getFilteredProducts({ options: categories, page: page * 6 }))
+        dispatch(getFilteredProducts({ options: categories, offset: page * 6 }))
             .unwrap()
             .then((response) => {
                 const sneakers = response.results;
@@ -51,6 +52,10 @@ export default function InfiniteScrollList({
                 setHasMore(false);
             });
     };
+
+    if (products.length === 0) {
+        return <Loader />;
+    }
 
     return (
         <InfiniteScroll

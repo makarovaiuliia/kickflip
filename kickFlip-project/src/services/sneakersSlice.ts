@@ -13,8 +13,8 @@ export const getCategories = createAsyncThunk('categories/post', async () => {
 
 export const getFilteredProducts = createAsyncThunk(
     'filtered/get',
-    async ({ options, page }: { options: TransformParams; page: number }) => {
-        const response = await getProductsFilteredApi(options, page);
+    async ({ options, offset }: { options: TransformParams; offset: number }) => {
+        const response = await getProductsFilteredApi(options, offset);
         return response;
     }
 );
@@ -34,17 +34,16 @@ const initialState: InitialState = {
 const sneakersSlice = createSlice({
     name: 'sneakers',
     initialState,
-    reducers: {
-        removeAllSneakers(state) {
-            state.allSneakers = [];
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getCategories.fulfilled, (state, action) => {
                 state.categories = transformCategoryData(action.payload);
             })
             .addCase(getFilteredProducts.fulfilled, (state, action) => {
+                if (action.payload.offset === 0) {
+                    state.allSneakers = [];
+                }
                 state.allSneakers = [...state.allSneakers, ...action.payload.results];
                 state.total = action.payload.total;
             });
@@ -54,8 +53,6 @@ const sneakersSlice = createSlice({
 export const getAllSneakers = (state: RootState) => state.sneakers.allSneakers;
 export const getAllCategories = (state: RootState) => state.sneakers.categories;
 export const getTotal = (state: RootState) => state.sneakers.total;
-
-export const { removeAllSneakers } = sneakersSlice.actions;
 
 export default sneakersSlice.reducer;
 

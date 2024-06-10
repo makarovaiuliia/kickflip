@@ -423,7 +423,7 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsFilteredApi = (options: TransformParams, page: number) => {
+export const getProductsFilteredApi = (options: TransformParams, offset: number) => {
     let query = '';
 
     if (options) {
@@ -473,7 +473,7 @@ export const getProductsFilteredApi = (options: TransformParams, page: number) =
         }
     }
 
-    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${page}`;
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${offset}`;
 
     return fetch(fetchUrl, {
         method: 'GET',
