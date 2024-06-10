@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from '@/services/store';
-import { getAnonymousToken, getUser } from '@/services/userSlice';
+import { getAnonymousToken, getUser, setCustomerId } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
 import HomePage from '@/pages/home/homePage';
@@ -35,10 +36,14 @@ function App() {
                     try {
                         await dispatch(getUser()).unwrap();
                     } catch (error) {
-                        await dispatch(getAnonymousToken()).unwrap();
+                        const id = uuidv4();
+                        dispatch(setCustomerId({ id }));
+                        await dispatch(getAnonymousToken(id)).unwrap();
                     }
                 } else {
-                    await dispatch(getAnonymousToken()).unwrap();
+                    const id = uuidv4();
+                    dispatch(setCustomerId({ id }));
+                    await dispatch(getAnonymousToken(id)).unwrap();
                 }
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);

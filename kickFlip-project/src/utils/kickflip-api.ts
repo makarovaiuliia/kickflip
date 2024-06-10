@@ -98,9 +98,10 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
         });
 };
 
-export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
+export const getAnonymousTokenApi = (id: string): Promise<TAuthResponse> => {
     const body = {
         grant_type: 'client_credentials',
+        anonymous_id: id,
     };
 
     return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token`, {
