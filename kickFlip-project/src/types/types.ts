@@ -319,277 +319,31 @@ export type ProductTypeReference = {
     typeId: string;
 };
 
-export type Refference = {
-    id: string;
-    typeId: string;
-};
-export type KeyRefference = {
-    key: string;
-    typeId: string;
-};
-
-export type DiscountOnTotalPrice = {
-    discountedAmount: PriceValue;
-    includedDiscounts: DiscountedLineItemPortion[];
-    discountedNetAmount: PriceValue;
-    discountedGrossAmount: PriceValue;
-};
-
-export type DiscountedLineItemPortion = {
-    discount: Refference;
-    discountedAmount: PriceValue;
-};
-
-export type DiscountedLineItemPrice = {
-    value: PriceValue;
-    includedDiscounts: DiscountedLineItemPortion[];
-};
-
-export type DiscountedLineItemPriceForQuantity = {
-    quantity: number;
-    discountedPrice: DiscountedLineItemPrice;
-};
-
-export type TaxPortion = {
-    name: string;
-    rate: number;
-    amount: PriceValue;
-};
-
-export type TaxedItemPrice = {
-    totalNet: PriceValue;
-    totalGross: PriceValue;
-    taxPortions: TaxPortion[];
-    totalTax?: PriceValue;
-};
-export type SubRate = {
-    name: string;
-    amount: number;
-};
-
-export type TaxRate = {
-    id?: string;
-    key?: string;
-    name: string;
-    amount: number;
-    includedInPrice: boolean;
-    country: string;
-    state?: string;
-    subRates?: SubRate[];
-};
-
-export type MethodTaxedPrice = {
-    shippingMethodKey: string;
-    taxedPrice: TaxedItemPrice;
-};
-export type MethodTaxRate = {
-    shippingMethodKey: string;
-    taxRate: TaxRate;
-};
-
-export type ItemState = {
-    quantity: number;
-    state: Refference;
-};
-
-export type ItemShippingTarget = {
-    addressKey: string;
-    quantity: number;
-    shippingMethodKey: string;
-};
-export type ItemShippingDetails = {
-    targets: ItemShippingTarget[];
-    valid: boolean;
-};
-
-export type TypeResourceIdentifier = {
-    id: string;
-    key: string;
-    typeId: string;
-};
-
-export type CustomFieldsDraft = {
-    type: TypeResourceIdentifier;
-};
-
 export interface LineItem {
     id: string;
-    version: number;
     key?: string;
     productId: string;
     productKey?: string;
-    name: Text;
-    productSlug?: Text;
-    productType: ProductTypeReference;
+    name: string;
     variant: Product;
     price: Price;
     quantity: number;
     totalPrice: PriceValue;
-    discountedPricePerQuantity: DiscountedLineItemPriceForQuantity[];
-    taxedPrice?: TaxedItemPrice;
-    taxedPricePortions?: MethodTaxedPrice[];
-    state: ItemState[];
-    taxRate?: TaxRate;
-    perMethodTaxRate: MethodTaxRate[];
-    supplyChannel?: Refference;
-    distributionChannel?: Refference;
-    priceMode: string;
-    lineItemMode: string;
-    inventoryMode?: string;
-    shippingDetails?: ItemShippingDetails;
-    addedAt?: Date;
-    custom?: CustomFieldsDraft;
-    lastModifiedAt?: Date;
 }
 
-export interface CustomLineItem {
-    id: string;
-    key?: string;
-    name: Text;
-    money: PriceValue;
-    taxedPrice?: TaxedItemPrice;
-    taxedPricePortions: MethodTaxedPrice[];
-    totalPrice: PriceValue;
-    slug: string;
-    taxCategory: Refference;
-    taxRate: TaxRate;
-    perMethodTaxRate: MethodTaxRate[];
-    discountedPricePerQuantity: DiscountedLineItemPriceForQuantity[];
-    shippingDetails?: ItemShippingDetails;
-    priceMode: string;
-    custom?: CustomFieldsDraft;
-}
-
-type CartValueTier = {
-    type: string;
-    minimumCentAmount: number;
-    price: Pick<PriceValue, 'centAmount' | 'currencyCode'>;
-    isMatching?: boolean;
-};
-
-type CartClassificationTier = {
-    type: string;
-    value: string;
-    price: Pick<PriceValue, 'centAmount' | 'currencyCode'>;
-    isMatching?: boolean;
-};
-
-type CartScoreTier = {
-    type: string;
-    score: number;
-    price?: Pick<PriceValue, 'centAmount' | 'currencyCode'>;
-    priceFunction?: {
-        currencyCode: string;
-        function: string;
-    };
-    isMatching?: boolean;
-};
-
-export type ShippingRatePriceTier = CartValueTier | CartClassificationTier | CartScoreTier;
-
-export type ShippingRate = {
-    price: PriceValue;
-    freeAbove?: PriceValue;
-    isMatching?: boolean;
-    tiers: ShippingRatePriceTier[];
-};
-
-type DeliveryItem = {
-    id: string;
-    quantity: number;
-};
-
-type Parcel = {
-    id: string;
-    key?: string;
-    measurements?: number;
-    trackingData?: string | boolean;
-    items?: DeliveryItem[];
-    custom?: CustomFieldsDraft;
-    createdAt: Date;
-};
-export type Delivery = {
-    id: string;
-    key?: string;
-    items: DeliveryItem[];
-    parcels: Parcel[];
-    address?: TAddress;
-    custom?: CustomFieldsDraft;
-    createdAt: Date;
-};
-
-export type ShippingInfo = {
-    shippingMethodName: string;
-    price: PriceValue;
-    shippingRate: ShippingRate;
-    taxedPrice?: TaxedItemPrice;
-    taxRate?: TaxRate;
-    taxCategory?: Refference;
-    shippingMethod?: Refference;
-    deliveries?: Delivery[];
-    discountedPrice?: DiscountedLineItemPrice;
-    shippingMethodState: string;
-};
-
-export type Shipping = {
-    shippingKey: string;
-    shippingInfo: ShippingInfo;
-    shippingAddress: TAddress;
-};
-
-export type DiscountCodeInfo = {
-    discountCode: Refference;
+export interface DiscountCodeInfo {
+    discountCode: ProductTypeReference;
     state: string;
-};
+}
 
-// export type DirectDiscount = {
-//     id: string;
-//     value:
-//     target?: LineItem| CustomLineItem |ShippingInfo| PriceValue
-// }
-
-type PaymentInfo = {
-    payments: Refference[];
-};
-
-export interface Cart {
+export interface CartResponse {
     id: string;
-    version: number;
     key?: string;
     customerId?: string;
-    customerEmail?: string;
-    customerGroup?: Refference;
     anonymousId?: string;
-    businessUnit?: KeyRefference;
-    store?: KeyRefference;
     lineItems: LineItem[];
-    customLineItems: CustomLineItem[];
     totalLineItemQuantity?: number;
     totalPrice: PriceValue;
-    taxedPrice?: TaxedItemPrice;
-    taxedShippingPrice?: TaxedItemPrice;
-    discountOnTotalPrice?: DiscountOnTotalPrice;
-    taxMode: string;
-    taxRoundingMode: string;
-    taxCalculationMode: string;
-    inventoryMode: string;
     cartState: string;
-    billingAddress?: TAddress;
-    shippingAddress?: TAddress;
-    shippingMode: string;
-    shippingKey?: string;
-    shippingInfo?: ShippingInfo;
-    shipping: Shipping[];
-    itemShippingAddresses: TAddress[];
-    discountCodes: DiscountCodeInfo;
-    directDiscounts: DirectDiscount[];
-    refusedGifts: Refference;
-    paymentInfo?: PaymentInfo;
-    country?: string;
-    locale?: string;
-    origin: string;
-    deleteDaysAfterLastModification?: number;
-    custom?: CustomFieldsDraft;
-    createdAt: Date;
-    lastModifiedAt: Date;
+    discountCodes: DiscountCodeInfo[];
 }
