@@ -54,6 +54,10 @@ const mockCart: CartResponse = {
                         name: 'size',
                         value: 'M',
                     },
+                    {
+                        name: 'shortDescription',
+                        value: "Women's lifestyle shoes",
+                    },
                 ],
             },
             price: {
@@ -129,6 +133,10 @@ const mockCart: CartResponse = {
                     {
                         name: 'pattern',
                         value: 'striped',
+                    },
+                    {
+                        name: 'shortDescription',
+                        value: "Women's lifestyle shoes",
                     },
                 ],
             },

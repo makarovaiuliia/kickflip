@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CartResponse } from '@/types/types';
+import { CartResponse, DefaultCartItem } from '@/types/types';
 import { getFormatPrice } from '@/utils/utils';
 import './cartSummary.css';
 
@@ -8,7 +8,6 @@ interface CartSummaryProps {
 }
 
 export default function CartSummary({ summaryData }: CartSummaryProps) {
-    const deliveryCost = 30;
     const [inputValue, setInputValue] = useState('');
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,11 +37,11 @@ export default function CartSummary({ summaryData }: CartSummaryProps) {
             </div>
             <div className="cart-price">
                 <span>Delivery</span>
-                <span>${deliveryCost}</span>
+                <span>${DefaultCartItem.ShippingCost}</span>
             </div>
             <div className="cart-price total">
                 <span>Total</span>
-                <span>${+getFormatPrice(summaryData.totalPrice) + deliveryCost}</span>
+                <span>${+getFormatPrice(summaryData.totalPrice) + +DefaultCartItem.ShippingCost}</span>
             </div>
             <button className="send-order-btn" type="submit">
                 Checkout

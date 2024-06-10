@@ -1,4 +1,4 @@
-import { LineItem } from '@/types/types';
+import { DefaultCartItem, LineItem } from '@/types/types';
 import './cartItem.css';
 import { getFormatPrice } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
@@ -9,19 +9,18 @@ interface CartItemProps {
 
 export default function CartItem({ itemData }: CartItemProps) {
     const itemVariant = itemData.variant;
+    const itemDescription = itemVariant.attributes.find((attr) => attr.name === 'shortDescription');
 
     return (
         <div className="cart-item">
-            <img src={itemVariant.images[0].url} alt={itemData.name} className="cart-item-img" />
+            <div className="cart-item-img-wrapper">
+                <img src={itemVariant.images[0].url} alt={itemData.name} className="cart-item-img" />
+            </div>
             <div className="item-data">
                 <div className="item-info">
                     <h3 className="item-name">{itemData.name}</h3>
                     <div className="item-description">
-                        {itemVariant.attributes.map((attr) => (
-                            <p className="item-attribute" key={attr.name}>
-                                {attr.name}: {attr.value}
-                            </p>
-                        ))}
+                        {itemDescription ? itemDescription.value : DefaultCartItem.ItemDescription}
                     </div>
                     <span className="item-price">
                         <ProductPrices priceData={itemVariant.prices[0]} />

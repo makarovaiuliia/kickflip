@@ -26,6 +26,11 @@ export enum StateMessage {
     AddedProfileAddress = 'Your address have been successfully added',
 }
 
+export enum DefaultCartItem {
+    ShippingCost = '30',
+    ItemDescription = 'Awesome sneakers',
+}
+
 export type TUser = {
     email?: string;
     firstName?: string;
