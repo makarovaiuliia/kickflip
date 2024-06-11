@@ -190,3 +190,27 @@ export const transformPriceRange = (priceRange: string): string => {
 
     return `(${min} to ${max})`;
 };
+
+export const findVariantId = (
+    masterVariant: Product,
+    variants: Product[],
+    selectedSize: string,
+    SelectedColor: string
+): number => {
+    const sizeAttribute = masterVariant.attributes.find((attr) => attr.name === 'size')?.value;
+    const colorAttribute = masterVariant.attributes.find((attr) => attr.name === 'color')?.value;
+    if (sizeAttribute === parseInt(selectedSize, 10) && colorAttribute === SelectedColor) {
+        return masterVariant.id;
+    }
+
+    const variant = variants.filter((product) => {
+        const sizeAttributeVariant = product.attributes.find((attr) => attr.name === 'size')?.value;
+        const colorAttributeVariant = product.attributes.find((attr) => attr.name === 'color')?.value;
+        if (sizeAttributeVariant && colorAttributeVariant) {
+            return sizeAttributeVariant === parseInt(selectedSize, 10) && colorAttributeVariant === SelectedColor;
+        }
+        return false;
+    });
+
+    return variant[0].id;
+};

@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch } from '@/services/store';
-import { getAnonymousToken, getUser, setCustomerId } from '@/services/userSlice';
+import { useDispatch, useSelector } from '@/services/store';
+import { getAnonymousToken, getIsAuth, getUser, setCustomerId } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
 import HomePage from '@/pages/home/homePage';
@@ -23,10 +23,12 @@ import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
 import ProductPage from '@/pages/product/productPage';
 import Loader from '../loader/loader';
+import { createCart } from '@/services/cartSlice';
 
 function App() {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
+    const isAuth = useSelector(getIsAuth);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,6 +47,7 @@ function App() {
                     dispatch(setCustomerId({ id }));
                     await dispatch(getAnonymousToken(id)).unwrap();
                 }
+                await dispatch(createCart(isAuth));
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);
             } catch (error) {
@@ -53,7 +56,7 @@ function App() {
         };
 
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, isAuth]);
 
     if (loading) {
         return <Loader />;

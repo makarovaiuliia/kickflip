@@ -2,11 +2,11 @@ import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ProductProjected } from '@/types/types';
 import './card.css';
-import { getImageFromEachColor, processVariants } from '@/utils/utils';
+import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
-import { createCart, getCardId } from '@/services/cartSlice';
+import { addToCart, getCardId } from '@/services/cartSlice';
 import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
@@ -54,23 +54,21 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         event.preventDefault();
 
         // product info
-        // const target = event.target as HTMLFormElement;
-        // const selectedSize = target.size.value;
-        // const color = Object.keys(colorMap)[activeImage];
-        if (!cartId) {
-            await dispatch(createCart(isAuth));
-        }
-        // const variant = productInfo.variants.filter((product) => {
-        //     const sizeAttribute = product.attributes.find((attr) => attr.name === 'size')?.value;
-        //     const colorAttribute = product.attributes.find((attr) => attr.name === 'color')?.value;
+        const target = event.target as HTMLFormElement;
+        const selectedSize = target.size.value;
+        const selectedColor = Object.keys(colorMap)[activeImage];
 
-        //     if (sizeAttribute && colorAttribute) {
-        //         return sizeAttribute === parseInt(selectedSize) && colorAttribute === color;
-        //     }
-        //     return false;
-        // });
-
-        // console.log(variant[0].id);
+        const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
+        const data = {
+            isAuth,
+            cartId,
+            item: {
+                action: 'addLineItem',
+                productId: productInfo.id,
+                variantId,
+            },
+        };
+        dispatch(addToCart(data));
     };
 
     return (

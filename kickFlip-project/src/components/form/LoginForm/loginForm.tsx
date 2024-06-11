@@ -5,7 +5,7 @@ import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
 import { useDispatch, useSelector } from '@/services/store';
 import { responsesErrorsHandler } from '@/utils/utils';
-import { getUser, loginUser, signInUser } from '@/services/userSlice';
+import { loginUser, signInUser } from '@/services/userSlice';
 import { getCardId } from '@/services/cartSlice';
 
 function LoginForm(): JSX.Element {
@@ -104,12 +104,8 @@ function LoginForm(): JSX.Element {
         setLoginError('');
 
         try {
+            await dispatch(signInUser({ login: formData, cartId })).unwrap();
             await dispatch(loginUser(formData)).unwrap();
-            if (cartId) {
-                await dispatch(signInUser({ login: formData, cartId }));
-            } else {
-                await dispatch(getUser());
-            }
             navigate('/');
             resetForm();
         } catch (error) {
