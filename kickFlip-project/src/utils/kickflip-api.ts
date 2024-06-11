@@ -583,14 +583,14 @@ export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddIte
     return data;
 };
 
-export const getCartsApi = async () => {
-    const response = await fetch(`${URL}/${projectKey}/me/carts`, {
+export const getActiveCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/active-cart`, {
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
             'Content-Type': 'application/json',
         },
     });
 
-    const data = checkResponse<ServerResponse<CartResponse>>(response);
+    const data = checkResponse<CartResponse>(response);
     return data;
 };

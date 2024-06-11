@@ -23,7 +23,7 @@ import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
 import ProductPage from '@/pages/product/productPage';
 import Loader from '../loader/loader';
-import { createCart, getCarts, setCart } from '@/services/cartSlice';
+import { createCart, getActiveCart } from '@/services/cartSlice';
 
 function App() {
     const dispatch = useDispatch();
@@ -36,11 +36,8 @@ function App() {
                 if (token) {
                     try {
                         await dispatch(getUser()).unwrap();
-                        const cartsResponse = await dispatch(getCarts()).unwrap();
-                        if (cartsResponse.total > 0) {
-                            const cart = cartsResponse.results[0];
-                            dispatch(setCart(cart));
-                        } else {
+                        const activeCart = await dispatch(getActiveCart()).unwrap();
+                        if (!activeCart) {
                             await dispatch(createCart(true));
                         }
                     } catch (error) {

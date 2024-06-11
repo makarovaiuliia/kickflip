@@ -17,7 +17,6 @@ interface CardListProps {
 
 function CardList({ products, setCategories, categories, setFilterIsActive, isMobile }: CardListProps): JSX.Element {
     const total = useSelector(getTotal);
-
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCategories((prevCategories) => {
             return { ...prevCategories, sort: event.target.value };

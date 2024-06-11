@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addToCartApi, createCartApi, getCartsApi } from '@/utils/kickflip-api';
+import { addToCartApi, createCartApi, getActiveCartApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { AddItemToCartAction, CartResponse, LineItem } from '@/types/types';
 
@@ -10,8 +10,8 @@ export const createCart = createAsyncThunk('cart/create', async (isAuth: boolean
     return response;
 });
 
-export const getCarts = createAsyncThunk('carts/get', async () => {
-    const response = await getCartsApi();
+export const getActiveCart = createAsyncThunk('cart/getActive', async () => {
+    const response = await getActiveCartApi();
     return response;
 });
 
@@ -59,6 +59,11 @@ const cartSlice = createSlice({
             .addCase(addToCart.fulfilled, (state, action) => {
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;
+            })
+            .addCase(getActiveCart.fulfilled, (state, action) => {
+                state.cartVersion = action.payload.version;
+                state.items = action.payload.lineItems;
+                state.cartId = action.payload.id;
             });
     },
 });
