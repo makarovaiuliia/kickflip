@@ -82,6 +82,7 @@ type TAuthResponse = {
 
 interface LoginResponse {
     customer: TUser;
+    cart: CartResponse;
 }
 
 export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
@@ -579,5 +580,17 @@ export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddIte
     });
 
     const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getCartsApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const data = checkResponse<ServerResponse<CartResponse>>(response);
     return data;
 };

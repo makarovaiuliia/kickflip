@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch, useSelector } from '@/services/store';
-import { getAnonymousToken, getIsAuth, getUser, setCustomerId } from '@/services/userSlice';
+import { useDispatch } from '@/services/store';
+import { getAnonymousToken, getUser, setCustomerId } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
 import HomePage from '@/pages/home/homePage';
@@ -23,12 +23,11 @@ import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
 import ProductPage from '@/pages/product/productPage';
 import Loader from '../loader/loader';
-import { createCart } from '@/services/cartSlice';
+import { createCart, getCarts, setCart } from '@/services/cartSlice';
 
 function App() {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-    const isAuth = useSelector(getIsAuth);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,17 +36,25 @@ function App() {
                 if (token) {
                     try {
                         await dispatch(getUser()).unwrap();
+                        const cartsResponse = await dispatch(getCarts()).unwrap();
+                        if (cartsResponse.total > 0) {
+                            const cart = cartsResponse.results[0];
+                            dispatch(setCart({ cartId: cart.id, cartVersion: cart.version }));
+                        } else {
+                            await dispatch(createCart(true));
+                        }
                     } catch (error) {
                         const id = uuidv4();
                         dispatch(setCustomerId({ id }));
                         await dispatch(getAnonymousToken(id)).unwrap();
+                        await dispatch(createCart(false));
                     }
                 } else {
                     const id = uuidv4();
                     dispatch(setCustomerId({ id }));
                     await dispatch(getAnonymousToken(id)).unwrap();
+                    await dispatch(createCart(false));
                 }
-                await dispatch(createCart(isAuth));
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);
             } catch (error) {
@@ -56,7 +63,7 @@ function App() {
         };
 
         fetchData();
-    }, [dispatch, isAuth]);
+    }, [dispatch]);
 
     if (loading) {
         return <Loader />;

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addToCartApi, createCartApi } from '@/utils/kickflip-api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { addToCartApi, createCartApi, getCartsApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { AddItemToCartAction } from '@/types/types';
 
@@ -7,6 +7,11 @@ import { AddItemToCartAction } from '@/types/types';
 
 export const createCart = createAsyncThunk('cart/create', async (isAuth: boolean) => {
     const response = await createCartApi(isAuth);
+    return response;
+});
+
+export const getCarts = createAsyncThunk('carts/get', async () => {
+    const response = await getCartsApi();
     return response;
 });
 
@@ -35,7 +40,12 @@ const initialState: InitialState = {
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
-    reducers: {},
+    reducers: {
+        setCart(state, action: PayloadAction<{ cartId: string; cartVersion: number }>) {
+            state.cartId = action.payload.cartId;
+            state.cartVersion = action.payload.cartVersion;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createCart.fulfilled, (state, action) => {
@@ -50,6 +60,8 @@ const cartSlice = createSlice({
 
 export const getCardId = (state: RootState) => state.cart.cartId;
 export const getCardVersion = (state: RootState) => state.cart.cartVersion;
+
+export const { setCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
