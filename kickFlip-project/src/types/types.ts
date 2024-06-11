@@ -26,6 +26,11 @@ export enum StateMessage {
     AddedProfileAddress = 'Your address have been successfully added',
 }
 
+export enum DefaultCartItem {
+    ShippingCost = '30',
+    ItemDescription = 'Awesome sneakers',
+}
+
 export type TUser = {
     email?: string;
     firstName?: string;
@@ -314,4 +319,38 @@ export enum SearchQueryVariants {
     search = 'text.en-US',
     discount = 'variants.prices.discounted:',
     category = 'filter=categories.id:',
+}
+
+export type ProductTypeReference = {
+    id: string;
+    typeId: string;
+};
+
+export interface LineItem {
+    id: string;
+    key?: string;
+    productId: string;
+    productKey?: string;
+    name: string;
+    variant: Product;
+    price: Price;
+    quantity: number;
+    totalPrice: PriceValue;
+}
+
+export interface DiscountCodeInfo {
+    discountCode: ProductTypeReference;
+    state: string;
+}
+
+export interface CartResponse {
+    id: string;
+    key?: string;
+    customerId?: string;
+    anonymousId?: string;
+    lineItems: LineItem[];
+    totalLineItemQuantity?: number;
+    totalPrice: PriceValue;
+    cartState: string;
+    discountCodes: DiscountCodeInfo[];
 }

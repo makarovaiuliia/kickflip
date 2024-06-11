@@ -7,6 +7,7 @@ import {
     SignUpDataRequest,
     Variants,
     ErrorMessage,
+    PriceValue,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -189,4 +190,8 @@ export const transformPriceRange = (priceRange: string): string => {
         .map((value) => parseInt(value, 10) * 100);
 
     return `(${min} to ${max})`;
+};
+
+export const getFormatPrice = (price: PriceValue): string => {
+    return `${price.centAmount / 10 ** price.fractionDigits}`;
 };
