@@ -19,6 +19,7 @@ import {
     CartResponse,
     AddItemToCartAction,
     AddItemToCartBody,
+    TUser,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
@@ -77,6 +78,36 @@ type TAuthResponse = {
     token_type: string;
     scope: string;
     refresh_token: string;
+};
+
+interface LoginResponse {
+    customer: TUser;
+}
+
+export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
+    const loginBody = {
+        email: data.email,
+        password: data.password,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
+
+    return fetch(`${URL}/${projectKey}/me/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(loginBody),
+    })
+        .then((res) => checkResponse<LoginResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
 };
 
 export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {

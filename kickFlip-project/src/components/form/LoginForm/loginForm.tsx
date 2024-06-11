@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage, LogInData } from '@/types/types';
 import '../form.css';
-import { useDispatch } from '@/services/store';
+import { useDispatch, useSelector } from '@/services/store';
 import { responsesErrorsHandler } from '@/utils/utils';
-import { getUser, loginUser } from '@/services/userSlice';
+import { getUser, loginUser, signInUser } from '@/services/userSlice';
+import { getCardId } from '@/services/cartSlice';
 
 function LoginForm(): JSX.Element {
     const [formData, setFormData] = useState<LogInData>({
@@ -22,6 +23,8 @@ function LoginForm(): JSX.Element {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const cartId = useSelector(getCardId);
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -99,9 +102,14 @@ function LoginForm(): JSX.Element {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoginError('');
+
         try {
             await dispatch(loginUser(formData)).unwrap();
-            await dispatch(getUser());
+            if (cartId) {
+                await dispatch(signInUser({ login: formData, cartId }));
+            } else {
+                await dispatch(getUser());
+            }
             navigate('/');
             resetForm();
         } catch (error) {

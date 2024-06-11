@@ -9,6 +9,7 @@ import {
     updateUserAddressApi,
     deleteUserAddressApi,
     addNewUserAddressApi,
+    signInUserApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
@@ -28,6 +29,11 @@ import {
 export const loginUser = createAsyncThunk('user/login', async (data: LogInData) => {
     const response = await loginUserApi(data);
     saveTokens(response.access_token, response.refresh_token);
+    return response;
+});
+
+export const signInUser = createAsyncThunk('user/signIn', async (data: { login: LogInData; cartId: string }) => {
+    const response = await signInUserApi(data.login, data.cartId);
     return response;
 });
 
@@ -135,6 +141,9 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state) => {
                 state.isAuth = true;
                 state.isAuthChecked = true;
+            })
+            .addCase(signInUser.fulfilled, (state, action) => {
+                state.user = action.payload.customer;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.error = action.error.message;
