@@ -345,6 +345,7 @@ export interface DiscountCodeInfo {
 
 export interface CartResponse {
     id: string;
+    version: number;
     key?: string;
     customerId?: string;
     anonymousId?: string;
@@ -354,3 +355,13 @@ export interface CartResponse {
     cartState: string;
     discountCodes: DiscountCodeInfo[];
 }
+
+export type UpdateAction = {
+    action: string;
+    lineItemId: string;
+    quantity: number;
+};
+export type ChangeLineItemQuantity = {
+    version: number;
+    actions: UpdateAction[];
+};

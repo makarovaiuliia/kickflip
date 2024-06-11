@@ -30,7 +30,13 @@ export default function CartPage(): JSX.Element {
     }, [id]);
     return (
         <div className="main-wrapper cart-page-wrapper">
-            {cartData ? <Cart cartData={mockCart} /> : cartError ? <div>{cartError}</div> : <Loader />}
+            {cartData ? (
+                <Cart cartData={cartData} setCartData={setCartData} />
+            ) : cartError ? (
+                <div>{cartError}</div>
+            ) : (
+                <Loader />
+            )}
         </div>
     );
 }
