@@ -2,6 +2,7 @@ import { DefaultCartItem, LineItem } from '@/types/types';
 import './cartItem.css';
 import { getFormatPrice } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
+import QuantityCounter from '@/components/quantityCounter/quantittyCounter';
 
 interface CartItemProps {
     itemData: LineItem;
@@ -10,6 +11,8 @@ interface CartItemProps {
 export default function CartItem({ itemData }: CartItemProps) {
     const itemVariant = itemData.variant;
     const itemDescription = itemVariant.attributes.find((attr) => attr.name === 'shortDescription');
+
+    const qChange = (count: number) => console.log(count);
 
     return (
         <div className="cart-item">
@@ -28,7 +31,9 @@ export default function CartItem({ itemData }: CartItemProps) {
                 </div>
 
                 <div className="item-total-cost">
-                    <span className="item-quantity">Quantity {itemData.quantity}</span>
+                    <div className="item-quantity">
+                        <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={qChange} />
+                    </div>
                     <span className="item-total">Total: $ {getFormatPrice(itemData.totalPrice)}</span>
                 </div>
             </div>
