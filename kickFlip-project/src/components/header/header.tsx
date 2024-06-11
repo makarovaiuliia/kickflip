@@ -12,6 +12,7 @@ import logout from '/logoutIcon.svg';
 
 import './header.css';
 import { getAnonymousToken, getIsAuth, logoutUser, setCustomerId } from '@/services/userSlice';
+import { createCart } from '@/services/cartSlice';
 
 export default function Header() {
     const [isOpen, setMenuIsOpen] = useState(false);
@@ -20,11 +21,12 @@ export default function Header() {
 
     const closeMenu = () => setMenuIsOpen(false);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         const id = uuidv4();
-        dispatch(setCustomerId({ id }));
-        dispatch(getAnonymousToken(id));
-        dispatch(logoutUser());
+        await dispatch(setCustomerId({ id }));
+        await dispatch(getAnonymousToken(id));
+        await dispatch(createCart(false));
+        await dispatch(logoutUser());
         closeMenu();
     };
 

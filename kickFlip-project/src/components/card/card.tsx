@@ -6,7 +6,7 @@ import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/u
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
-import { addToCart, getCardId } from '@/services/cartSlice';
+import { addToCart, getCardId, getCardVersion } from '@/services/cartSlice';
 import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
@@ -48,6 +48,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     }, [selectedColors, colorMap]);
 
     const cartId = useSelector(getCardId);
+    const cartVersion = useSelector(getCardVersion);
     const isAuth = useSelector(getIsAuth);
 
     const handleAddToCart = async (event: SyntheticEvent) => {
@@ -67,6 +68,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                 productId: productInfo.id,
                 variantId,
             },
+            cartVersion,
         };
         dispatch(addToCart(data));
     };

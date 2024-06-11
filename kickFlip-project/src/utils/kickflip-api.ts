@@ -564,9 +564,9 @@ export const createCartApi = async (isAuth: boolean) => {
     return data;
 };
 
-export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction) => {
+export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction, version: number) => {
     const body: AddItemToCartBody = {
-        version: 1,
+        version,
         actions: [item],
     };
     const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts/${cartId}`, {

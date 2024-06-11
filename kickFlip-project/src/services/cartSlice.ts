@@ -14,21 +14,22 @@ interface AddToCartData {
     isAuth: boolean;
     cartId: string;
     item: AddItemToCartAction;
+    cartVersion: number;
 }
 
 export const addToCart = createAsyncThunk('cart/addItem', async (data: AddToCartData) => {
-    const response = await addToCartApi(data.cartId, data.isAuth, data.item);
+    const response = await addToCartApi(data.cartId, data.isAuth, data.item, data.cartVersion);
     return response;
 });
 
 interface InitialState {
     cartId: string;
-    cartVersion: number | undefined;
+    cartVersion: number;
 }
 
 const initialState: InitialState = {
     cartId: '',
-    cartVersion: undefined,
+    cartVersion: 0,
 };
 
 const cartSlice = createSlice({
@@ -36,10 +37,14 @@ const cartSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(createCart.fulfilled, (state, action) => {
-            state.cartId = action.payload.id;
-            state.cartVersion = action.payload.version;
-        });
+        builder
+            .addCase(createCart.fulfilled, (state, action) => {
+                state.cartId = action.payload.id;
+                state.cartVersion = action.payload.version;
+            })
+            .addCase(addToCart.fulfilled, (state, action) => {
+                state.cartVersion = action.payload.version;
+            });
     },
 });
 
