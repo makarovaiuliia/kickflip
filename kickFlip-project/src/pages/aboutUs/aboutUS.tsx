@@ -8,10 +8,10 @@ import Pavel from '../../images/pavel.jpg';
 import Sveta from '../../images/sveta.jpeg';
 import Iuliia from '../../images/uliia.jpeg';
 
-import moji1 from '../../images/moji-ok-hand.svg';
-import moji2 from '../../images/moji-hand-with-flag.svg';
-import moji3 from '../../images/moji-hand-with-magnifying-glass.svg';
-import moji4 from '../../images/moji-hand-with-ring.svg';
+import moji1 from '../../images/moji-ok-hand.png';
+import moji2 from '../../images/moji-hand-with-flag.png';
+import moji3 from '../../images/moji-hand-with-magnifying-glass.png';
+import moji4 from '../../images/moji-hand-with-ring.png';
 
 import rsschool from '../../assets/icons/rs_school_js.svg';
 
@@ -57,6 +57,7 @@ const TeamMembers = [
             'Display product list and category navigation;',
             'Interactive product cards;',
             'Main page and Footer implementation;',
+            'Shopping cart integration;',
         ],
     },
     {
@@ -74,6 +75,7 @@ const TeamMembers = [
             'Display product information;',
             'Enlarged image modal with slider;',
             'Display basket items;',
+            'Modify product quantity;',
         ],
     },
     {
@@ -91,6 +93,7 @@ const TeamMembers = [
             'Display user profile information;',
             'Edit user profile information;',
             'About page implementation;',
+            'Detailed product page implementation;',
         ],
     },
 ];
