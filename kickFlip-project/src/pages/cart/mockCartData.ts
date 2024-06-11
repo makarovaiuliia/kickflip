@@ -2,6 +2,7 @@ import { CartResponse } from '@/types/types';
 
 const mockCart: CartResponse = {
     id: 'cart-id-123',
+    version: 1,
     key: 'cart-key-123',
     version: 1,
     customerId: 'customer-id-456',

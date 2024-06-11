@@ -20,6 +20,7 @@ import {
     AddItemToCartAction,
     AddItemToCartBody,
     TUser,
+    ChangeLineItemQuantity,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
@@ -623,4 +624,18 @@ export const getProductImg = async (id: string, color: string) => {
         if (error instanceof Error) throw new Error(error.message);
         return undefined;
     }
+};
+
+export const updateCartQuantitty = async (cartId: string, updateLineItemQuantity: ChangeLineItemQuantity) => {
+    const response = await fetch(`${URL}/${projectKey}/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(updateLineItemQuantity),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
 };
