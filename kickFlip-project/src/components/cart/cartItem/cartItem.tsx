@@ -81,7 +81,10 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                         Qty
                         <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleQuantityChange} />
                     </div>
-                    <span className="item-total">Total: $ {getFormatPrice(itemData.totalPrice)}</span>
+                    <div className="item-total">
+                        Total
+                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>{' '}
+                    </div>
                 </div>
             </div>
         </div>
