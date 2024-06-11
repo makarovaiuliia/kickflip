@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addToCartApi, createCartApi, getCartsApi } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import { AddItemToCartAction } from '@/types/types';
+import { AddItemToCartAction, CartResponse, LineItem } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -30,20 +30,23 @@ export const addToCart = createAsyncThunk('cart/addItem', async (data: AddToCart
 interface InitialState {
     cartId: string;
     cartVersion: number;
+    items: LineItem[];
 }
 
 const initialState: InitialState = {
     cartId: '',
     cartVersion: 0,
+    items: [],
 };
 
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        setCart(state, action: PayloadAction<{ cartId: string; cartVersion: number }>) {
-            state.cartId = action.payload.cartId;
-            state.cartVersion = action.payload.cartVersion;
+        setCart(state, action: PayloadAction<CartResponse>) {
+            state.cartId = action.payload.id;
+            state.cartVersion = action.payload.version;
+            state.items = action.payload.lineItems;
         },
     },
     extraReducers: (builder) => {
@@ -51,15 +54,18 @@ const cartSlice = createSlice({
             .addCase(createCart.fulfilled, (state, action) => {
                 state.cartId = action.payload.id;
                 state.cartVersion = action.payload.version;
+                state.items = action.payload.lineItems;
             })
             .addCase(addToCart.fulfilled, (state, action) => {
                 state.cartVersion = action.payload.version;
+                state.items = action.payload.lineItems;
             });
     },
 });
 
-export const getCardId = (state: RootState) => state.cart.cartId;
-export const getCardVersion = (state: RootState) => state.cart.cartVersion;
+export const getCartId = (state: RootState) => state.cart.cartId;
+export const getCartVersion = (state: RootState) => state.cart.cartVersion;
+export const getCartItems = (state: RootState) => state.cart.items;
 
 export const { setCart } = cartSlice.actions;
 

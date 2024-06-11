@@ -39,7 +39,7 @@ function App() {
                         const cartsResponse = await dispatch(getCarts()).unwrap();
                         if (cartsResponse.total > 0) {
                             const cart = cartsResponse.results[0];
-                            dispatch(setCart({ cartId: cart.id, cartVersion: cart.version }));
+                            dispatch(setCart(cart));
                         } else {
                             await dispatch(createCart(true));
                         }

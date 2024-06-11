@@ -6,7 +6,7 @@ import '../form.css';
 import { useDispatch, useSelector } from '@/services/store';
 import { responsesErrorsHandler } from '@/utils/utils';
 import { loginUser, signInUser } from '@/services/userSlice';
-import { getCardId, setCart } from '@/services/cartSlice';
+import { getCartId, setCart } from '@/services/cartSlice';
 
 function LoginForm(): JSX.Element {
     const [formData, setFormData] = useState<LogInData>({
@@ -24,7 +24,7 @@ function LoginForm(): JSX.Element {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const cartId = useSelector(getCardId);
+    const cartId = useSelector(getCartId);
 
     useEffect(() => {
         if (passwordValid && emailValid) {
@@ -108,7 +108,7 @@ function LoginForm(): JSX.Element {
                 .unwrap()
                 .then((result) => {
                     const { cart } = result;
-                    dispatch(setCart({ cartId: cart.id, cartVersion: cart.version }));
+                    dispatch(setCart(cart));
                 });
             await dispatch(loginUser(formData)).unwrap();
             navigate('/');
