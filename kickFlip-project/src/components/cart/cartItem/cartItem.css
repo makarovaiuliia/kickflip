@@ -52,6 +52,15 @@
     align-items: end;
 }
 
+.total-price {
+    padding: 8px 0;
+    width: 95px;
+    height: 40px;
+    display: flex;
+
+    align-items: center;
+}
+
 .cart-error {
     position: absolute;
     right: 0;
