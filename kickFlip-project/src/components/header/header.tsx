@@ -79,7 +79,7 @@ export default function Header() {
                                 className={({ isActive }) =>
                                     isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
                                 }
-                                to="/aboutUs"
+                                to="/about-us"
                                 onClick={closeMenu}
                             >
                                 About Us

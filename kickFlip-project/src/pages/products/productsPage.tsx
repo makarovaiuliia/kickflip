@@ -32,13 +32,11 @@ export default function ProductsPage(): JSX.Element {
     const productCategories = useSelector(getAllCategories);
 
     useEffect(() => {
-        if (section === 'outlet') {
-            setCategories((prevCategories) => {
-                const newFilter = { ...prevCategories.filter };
-                newFilter.discount = section === 'outlet' ? [''] : [];
-                return { ...prevCategories, filter: newFilter };
-            });
-        }
+        setCategories((prevCategories) => {
+            const newFilter = { ...prevCategories.filter };
+            newFilter.discount = section === 'outlet' ? [''] : [];
+            return { ...prevCategories, filter: newFilter };
+        });
     }, [section]);
 
     useEffect(() => {
