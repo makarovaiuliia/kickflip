@@ -11,6 +11,7 @@ import RegistrationPage from '@/pages/registration/registrationPage';
 import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
 import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
+import AboutUsPage from '@/pages/aboutUs/aboutUS';
 
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
@@ -73,6 +74,7 @@ function App() {
                 <Route path="/:section" element={<ProductsPage />} />
                 <Route path="/:section/:category/:id/:slug" element={<ProductPage />} />
                 <Route path="/:section/:category" element={<ProductsPage />} />
+                <Route path="aboutUs" element={<AboutUsPage />} />
                 <Route
                     path="profile/*"
                     element={

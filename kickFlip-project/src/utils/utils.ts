@@ -7,6 +7,7 @@ import {
     SignUpDataRequest,
     Variants,
     ErrorMessage,
+    PriceValue,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -213,4 +214,8 @@ export const findVariantId = (
     });
 
     return variant[0].id;
+};
+
+export const getFormatPrice = (price: PriceValue): string => {
+    return `${price.centAmount / 10 ** price.fractionDigits}`;
 };
