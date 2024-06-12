@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { CartResponse, ChangeLineItemQuantity, DefaultCartItem, LineItem } from '@/types/types';
 import './cartItem.css';
@@ -5,6 +6,7 @@ import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils'
 import ProductPrices from '@/components/product/productDetails/productPrice';
 import { getProductImg, updateCartQuantitty } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantittyCounter';
+import { getCartId, setCart } from '@/services/cartSlice';
 
 interface CartItemProps {
     itemData: LineItem;
@@ -12,13 +14,13 @@ interface CartItemProps {
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null>>;
 }
 
-const cartId = 1;
-
 export default function CartItem({ itemData, setCartData, cartVersion }: CartItemProps) {
     const [cartError, setCartError] = useState('');
     const itemVariant = itemData.variant;
     const itemDescription = itemVariant.attributes.find((attr) => attr.name === 'shortDescription');
     const [imgSrc, setImgSrc] = useState('');
+    const cartId = useSelector(getCartId);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function ImgSrc() {
@@ -36,7 +38,8 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
             }
         }
         ImgSrc();
-    }, [itemData.productId, itemVariant.attributes, itemVariant.images]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleQuantityChange = async (newQuantity: number) => {
         const changedData: ChangeLineItemQuantity = {
@@ -52,6 +55,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
         try {
             const newCart = await updateCartQuantitty(`${cartId}`, changedData);
             setCartData(newCart);
+            dispatch(setCart(newCart));
         } catch (error) {
             if (error) {
                 responsesErrorsHandler(error, setCartError);
@@ -85,15 +89,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                     </div>
                     <div className="item-total">
                         Total
-                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>{' '}
-                    </div>
-                    <div className="item-quantity">
-                        Qty
-                        <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleQuantityChange} />
-                    </div>
-                    <div className="item-total">
-                        Total
-                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>{' '}
+                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>
                     </div>
                 </div>
             </div>
