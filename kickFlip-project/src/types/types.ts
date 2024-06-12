@@ -331,7 +331,7 @@ export interface LineItem {
     key?: string;
     productId: string;
     productKey?: string;
-    name: string;
+    name: Text;
     variant: Product;
     price: Price;
     quantity: number;
@@ -365,38 +365,4 @@ export interface AddItemToCartAction {
     action: string;
     productId: string;
     variantId: number;
-}
-
-export type ProductTypeReference = {
-    id: string;
-    typeId: string;
-};
-
-export interface LineItem {
-    id: string;
-    key?: string;
-    productId: string;
-    productKey?: string;
-    name: string;
-    variant: Product;
-    price: Price;
-    quantity: number;
-    totalPrice: PriceValue;
-}
-
-export interface DiscountCodeInfo {
-    discountCode: ProductTypeReference;
-    state: string;
-}
-
-export interface CartResponse {
-    id: string;
-    key?: string;
-    customerId?: string;
-    anonymousId?: string;
-    lineItems: LineItem[];
-    totalLineItemQuantity?: number;
-    totalPrice: PriceValue;
-    cartState: string;
-    discountCodes: DiscountCodeInfo[];
 }
