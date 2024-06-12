@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { CartResponse, ChangeLineItem, DefaultCartItem, LineItem } from '@/types/types';
+import { CartResponse, ChangeLineItem, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
 import './cartItem.css';
 import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
@@ -93,7 +93,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                     </div>
                 </div>
 
-                <RemoveItemBtn onclick={() => handleChange(itemData.quantity, 'removeLineItem')} />
+                <RemoveItemBtn onclick={() => handleChange(itemData.quantity, UpdateActions.RemoveItem)} />
             </div>
         </div>
     );
