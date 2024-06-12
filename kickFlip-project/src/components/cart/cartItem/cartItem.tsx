@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useState } from 'react';
 import { CartResponse, ChangeLineItemQuantity, DefaultCartItem, LineItem } from '@/types/types';
 import './cartItem.css';
 import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
-import { getProductImg } from '@/utils/kickflip-api';
-import { updateCartQuantitty } from '@/utils/kickflip-api';
+import { getProductImg, updateCartQuantitty } from '@/utils/kickflip-api';
+import QuantityCounter from '@/components/quantityCounter/quantittyCounter';
 
 interface CartItemProps {
     itemData: LineItem;
