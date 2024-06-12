@@ -372,7 +372,7 @@ export type UpdateAction = {
     lineItemId: string;
     quantity: number;
 };
-export type ChangeLineItemQuantity = {
+export type ChangeLineItem = {
     version: number;
     actions: UpdateAction[];
 };
