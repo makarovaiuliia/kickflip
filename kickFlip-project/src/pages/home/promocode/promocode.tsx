@@ -7,7 +7,7 @@ export default function Promocode(): JSX.Element {
         const textToCopy = target.textContent!;
 
         navigator.clipboard.writeText(textToCopy).then(() => {
-            target.textContent = 'Copied';
+            target.textContent = 'Copied!';
             setTimeout(() => {
                 target.textContent = 'newToKickFlip';
             }, 2000);

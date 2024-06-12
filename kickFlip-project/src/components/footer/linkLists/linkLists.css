@@ -27,10 +27,13 @@
     line-height: 160%;
     color: inherit;
     text-transform: none;
+    transition: 0.3s;
+    text-decoration: underline;
+    text-decoration-color: transparent;
 }
 
 .link-list_link:hover {
-    text-decoration: underline;
+    text-decoration-color: #fff;
 }
 
 @media (width < 900px) {

@@ -30,4 +30,11 @@
     margin-top: -50px;
     text-transform: none;
     color: var(--deep-blue);
+    transition: 0.5s;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+}
+
+.category-main_list-item-title:hover {
+    text-decoration-color: var(--deep-blue);
 }

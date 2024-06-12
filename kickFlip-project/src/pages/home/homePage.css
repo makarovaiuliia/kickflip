@@ -150,6 +150,12 @@
     background-color: var(--electric-orange);
     block-size: 55px;
     text-align: center;
+    transition: all 0.3s;
+}
+
+.hero_link:hover {
+    background-color: var(--turquoise);
+    color: #fff;
 }
 
 .hero_link-light {

@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import { clearRegistrationMessage, getUserSelector } from '@/services/userSlice';
 
 /* eslint-disable import/no-absolute-path */
-import dior from '/dior.png';
+import dior from '/dior.webp';
 /* eslint-enable import/no-absolute-path */
 
 import Benefits from './benefits/benefits';
 import Categories from './categories/categories';
 import Promocode from './promocode/promocode';
+import data from './categories/categoryMain/categoryMainData';
 
 export default function HomePage(): JSX.Element {
     const dispatch = useDispatch();
@@ -56,7 +57,7 @@ export default function HomePage(): JSX.Element {
                 </div>
             </section>
             <Benefits />
-            <Categories />
+            <Categories categories={data} />
             <Promocode />
         </div>
     );
