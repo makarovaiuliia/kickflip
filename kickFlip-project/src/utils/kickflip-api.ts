@@ -22,7 +22,7 @@ import {
     TUser,
 } from '@/types/types';
 import { getCookie } from './cookie';
-import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
+import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
 
 const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
@@ -604,4 +604,23 @@ export const getCartbyId = async (cartId: string) => {
 
     const data = checkResponse<CartResponse>(response);
     return data;
+};
+
+export const getProductImg = async (id: string, color: string) => {
+    try {
+        const response = await getProductById(id);
+
+        const products = response.masterData.current;
+        const variants = [...products.variants, products.masterVariant];
+        const product = variants.find((variant) => {
+            return findAttr('color', variant.attributes)?.value === color && variant.images.length !== 0;
+        });
+
+        const img = product?.images[0];
+        return img;
+    } catch (error) {
+        console.error(error);
+        if (error instanceof Error) throw new Error(error.message);
+        return undefined;
+    }
 };

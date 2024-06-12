@@ -331,7 +331,7 @@ export interface LineItem {
     key?: string;
     productId: string;
     productKey?: string;
-    name: string;
+    name: Text;
     variant: Product;
     price: Price;
     quantity: number;

@@ -8,6 +8,7 @@ import {
     Variants,
     ErrorMessage,
     PriceValue,
+    Attributes,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -218,4 +219,8 @@ export const findVariantId = (
 
 export const getFormatPrice = (price: PriceValue): string => {
     return `${price.centAmount / 10 ** price.fractionDigits}`;
+};
+
+export const findAttr = (attr: string, array: Attributes[]) => {
+    return array.find((item) => item.name === attr);
 };
