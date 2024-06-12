@@ -48,6 +48,11 @@ const cartSlice = createSlice({
             state.cartVersion = action.payload.version;
             state.items = action.payload.lineItems;
         },
+        removeCart(state) {
+            state.cartId = '';
+            state.cartVersion = 0;
+            state.items = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -72,7 +77,7 @@ export const getCartId = (state: RootState) => state.cart.cartId;
 export const getCartVersion = (state: RootState) => state.cart.cartVersion;
 export const getCartItems = (state: RootState) => state.cart.items;
 
-export const { setCart } = cartSlice.actions;
+export const { setCart, removeCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 

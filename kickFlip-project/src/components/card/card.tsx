@@ -6,7 +6,7 @@ import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/u
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
-import { addToCart, getCartId, getCartItems, getCartVersion } from '@/services/cartSlice';
+import { addToCart, createCart, getCartId, getCartItems, getCartVersion } from '@/services/cartSlice';
 import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
@@ -67,6 +67,10 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         event.preventDefault();
 
         setIsLoading(true);
+
+        if (!cartId) {
+            await dispatch(createCart(isAuth));
+        }
 
         // product info
         const target = event.target as HTMLFormElement;

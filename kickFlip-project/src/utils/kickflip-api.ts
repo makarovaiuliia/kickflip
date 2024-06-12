@@ -82,7 +82,7 @@ type TAuthResponse = {
 
 interface LoginResponse {
     customer: TUser;
-    cart: CartResponse;
+    cart?: CartResponse;
 }
 
 export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
