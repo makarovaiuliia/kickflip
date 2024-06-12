@@ -12,6 +12,8 @@ interface CartItemProps {
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null>>;
 }
 
+const cartId = 1;
+
 export default function CartItem({ itemData, setCartData, cartVersion }: CartItemProps) {
     const [cartError, setCartError] = useState('');
     const itemVariant = itemData.variant;
@@ -61,6 +63,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
     return (
         <div className="cart-item">
             {cartError && <div className="cart-error">{cartError}</div>}
+            {cartError && <div className="cart-error">{cartError}</div>}
             <div className="cart-item-img-wrapper">
                 <img src={imgSrc} alt={itemData.name['en-US']} className="cart-item-img" />
             </div>
@@ -76,6 +79,14 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                 </div>
 
                 <div className="item-total-cost">
+                    <div className="item-quantity">
+                        Qty
+                        <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleQuantityChange} />
+                    </div>
+                    <div className="item-total">
+                        Total
+                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>{' '}
+                    </div>
                     <div className="item-quantity">
                         Qty
                         <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleQuantityChange} />
