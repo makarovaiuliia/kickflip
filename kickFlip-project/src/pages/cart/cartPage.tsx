@@ -13,7 +13,7 @@ export default function CartPage(): JSX.Element {
     const id: string = '';
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        const fetchCartItems = async () => {
             try {
                 if (id) {
                     const data = await getCartbyId(id);
@@ -26,7 +26,7 @@ export default function CartPage(): JSX.Element {
             }
         };
 
-        fetchProduct();
+        fetchCartItems();
     }, [id]);
     return (
         <div className="main-wrapper cart-page-wrapper">
