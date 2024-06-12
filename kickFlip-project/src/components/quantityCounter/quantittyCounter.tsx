@@ -3,7 +3,7 @@ import './quantittyCounter.css';
 
 interface QuantityCounterProps {
     initialQuantity: number;
-    onQuantityChange: (quantity: number) => void;
+    onQuantityChange: (quantity: number, updateAction: string) => void;
 }
 
 export default function QuantityCounter({ initialQuantity, onQuantityChange }: QuantityCounterProps) {
@@ -12,14 +12,14 @@ export default function QuantityCounter({ initialQuantity, onQuantityChange }: Q
     const handleIncrease = () => {
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
-        onQuantityChange(newQuantity);
+        onQuantityChange(newQuantity, 'changeLineItemQuantity');
     };
 
     const handleDecrease = () => {
         if (quantity > 1) {
             const newQuantity = quantity - 1;
             setQuantity(newQuantity);
-            onQuantityChange(newQuantity);
+            onQuantityChange(newQuantity, 'changeLineItemQuantity');
         }
     };
 
