@@ -12,7 +12,9 @@ const mockCart: CartResponse = {
             key: 'line-item-key-1',
             productId: 'product-id-1',
             productKey: 'product-key-1',
-            name: 'Product Name 1',
+            name: {
+                'en-US': 'Product Name 1',
+            },
             variant: {
                 id: 1,
                 sku: 'sku-1',
@@ -92,7 +94,9 @@ const mockCart: CartResponse = {
             key: 'line-item-key-2',
             productId: 'product-id-2',
             productKey: 'product-key-2',
-            name: 'Product Name 2',
+            name: {
+                'en-US': 'Product Name 2',
+            },
             variant: {
                 id: 2,
                 sku: 'sku-2',
@@ -172,7 +176,9 @@ const mockCart: CartResponse = {
             key: 'line-item-key-1',
             productId: 'product-id-1',
             productKey: 'product-key-1',
-            name: 'Product Name 1',
+            name: {
+                'en-US': 'Product Name 2',
+            },
             variant: {
                 id: 1,
                 sku: 'sku-1',
@@ -248,7 +254,9 @@ const mockCart: CartResponse = {
             key: 'line-item-key-2',
             productId: 'product-id-2',
             productKey: 'product-key-2',
-            name: 'Product Name 2',
+            name: {
+                'en-US': 'Product Name 3',
+            },
             variant: {
                 id: 2,
                 sku: 'sku-2',
