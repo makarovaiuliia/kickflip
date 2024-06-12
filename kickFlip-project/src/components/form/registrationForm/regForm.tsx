@@ -8,6 +8,7 @@ import { useDispatch } from '@/services/store';
 import { loginUser, signUpUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
+import { createCart } from '@/services/cartSlice';
 
 export default function RegistrationForm() {
     const [registrationError, setRegistrationError] = useState('');
@@ -37,6 +38,7 @@ export default function RegistrationForm() {
         try {
             await dispatch(signUpUser(data)).unwrap();
             await dispatch(loginUser(loginData));
+            await dispatch(createCart(true));
             navigate('/');
             reset();
         } catch (error) {
