@@ -6,9 +6,15 @@ interface AddToCartFormProps {
     productInfo: ProductProjected;
     handleAddToCart: (event: SyntheticEvent) => void;
     alreadyInShoppingCart: boolean;
+    isLoading: boolean;
 }
 
-function AddToCartForm({ productInfo, handleAddToCart, alreadyInShoppingCart }: AddToCartFormProps): JSX.Element {
+function AddToCartForm({
+    productInfo,
+    handleAddToCart,
+    alreadyInShoppingCart,
+    isLoading,
+}: AddToCartFormProps): JSX.Element {
     const sizes = Array.from(getProductsSizes(productInfo.masterVariant, productInfo.variants));
 
     return (
@@ -21,9 +27,15 @@ function AddToCartForm({ productInfo, handleAddToCart, alreadyInShoppingCart }: 
                     </option>
                 ))}
             </select>
-            <button type="submit" className="card_button" disabled={alreadyInShoppingCart}>
-                {alreadyInShoppingCart ? 'Already in the Cart' : 'Add to Cart'}
-            </button>
+            {isLoading ? (
+                <button type="button" className="card_button">
+                    Adding...
+                </button>
+            ) : (
+                <button type="submit" className="card_button" disabled={alreadyInShoppingCart}>
+                    {alreadyInShoppingCart ? 'Already in the Cart' : 'Add to Cart'}
+                </button>
+            )}
         </form>
     );
 }

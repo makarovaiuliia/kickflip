@@ -22,6 +22,8 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         return item.productId === productInfo.id;
     });
 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState<number>(0);
 
@@ -64,6 +66,8 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     const handleAddToCart = async (event: SyntheticEvent) => {
         event.preventDefault();
 
+        setIsLoading(true);
+
         // product info
         const target = event.target as HTMLFormElement;
         const selectedSize = target.size.value;
@@ -81,7 +85,8 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             cartVersion,
         };
 
-        dispatch(addToCart(data));
+        await dispatch(addToCart(data));
+        setIsLoading(false);
     };
 
     return (
@@ -124,6 +129,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                 productInfo={productInfo}
                 handleAddToCart={handleAddToCart}
                 alreadyInShoppingCart={alreadyInShoppingCart}
+                isLoading={isLoading}
             />
         </div>
     );
