@@ -45,7 +45,6 @@ function SelectedCategories({ setCategories, categories }: SelectedCategoriesPro
             filter: { color: [], size: [], price: [], discount: section === 'outlet' ? [''] : [] },
             sort: '',
             search: '',
-            category: '',
         });
     };
 

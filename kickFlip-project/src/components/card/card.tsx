@@ -1,13 +1,10 @@
-import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { ProductProjected } from '@/types/types';
 import './card.css';
-import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/utils';
+import { getImageFromEachColor, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
-import { useDispatch, useSelector } from '@/services/store';
-import AddToCartForm from './addToCartForm/addToCartForm';
-import { addToCart, getCartId, getCartVersion } from '@/services/cartSlice';
-import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -15,17 +12,15 @@ interface CardProps {
 }
 
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
-    const dispatch = useDispatch();
-
     const { masterVariant, name, slug } = productInfo;
-    const [activeImage, setActiveImage] = useState<number>(0);
+    const [activeImage, setActiveImage] = useState(0);
     const { section } = useParams<{ section: string }>();
+
     const productCategories = useSelector(getAllCategories);
+
     const category = Object.keys(productCategories)
         .filter((cat) => productCategories[cat].id === productInfo.categories[0].id)[0]
         .toLowerCase();
-
-    // card info
 
     const productPrices = masterVariant.prices[0];
     const price = productPrices.value.centAmount / 10 ** masterVariant.prices[0].value.fractionDigits;
@@ -46,32 +41,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             }
         }
     }, [selectedColors, colorMap]);
-
-    const cartId = useSelector(getCartId);
-    const cartVersion = useSelector(getCartVersion);
-    const isAuth = useSelector(getIsAuth);
-
-    const handleAddToCart = async (event: SyntheticEvent) => {
-        event.preventDefault();
-
-        // product info
-        const target = event.target as HTMLFormElement;
-        const selectedSize = target.size.value;
-        const selectedColor = Object.keys(colorMap)[activeImage];
-
-        const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
-        const data = {
-            isAuth,
-            cartId,
-            item: {
-                action: 'addLineItem',
-                productId: productInfo.id,
-                variantId,
-            },
-            cartVersion,
-        };
-        dispatch(addToCart(data));
-    };
 
     return (
         <div className="card">
@@ -109,7 +78,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <AddToCartForm productInfo={productInfo} handleAddToCart={handleAddToCart} />
         </div>
     );
 }

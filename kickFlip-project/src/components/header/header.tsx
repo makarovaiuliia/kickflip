@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useMatch } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from '@/services/store';
 
 /* eslint-disable import/no-absolute-path */
@@ -11,8 +10,7 @@ import logout from '/logoutIcon.svg';
 /* eslint-enable import/no-absolute-path */
 
 import './header.css';
-import { getAnonymousToken, getIsAuth, logoutUser, setCustomerId } from '@/services/userSlice';
-import { createCart } from '@/services/cartSlice';
+import { getAnonymousToken, getIsAuth, logoutUser } from '@/services/userSlice';
 
 export default function Header() {
     const [isOpen, setMenuIsOpen] = useState(false);
@@ -21,12 +19,9 @@ export default function Header() {
 
     const closeMenu = () => setMenuIsOpen(false);
 
-    const handleLogout = async () => {
-        const id = uuidv4();
-        await dispatch(setCustomerId({ id }));
-        await dispatch(getAnonymousToken(id));
-        await dispatch(createCart(false));
-        await dispatch(logoutUser());
+    const handleLogout = () => {
+        dispatch(getAnonymousToken());
+        dispatch(logoutUser());
         closeMenu();
     };
 
@@ -74,15 +69,6 @@ export default function Header() {
                                 onClick={closeMenu}
                             >
                                 Outlet
-                            </NavLink>
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
-                                }
-                                to="/aboutUs"
-                                onClick={closeMenu}
-                            >
-                                About Us
                             </NavLink>
                         </div>
                     </nav>

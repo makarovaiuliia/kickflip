@@ -1,8 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from '@/services/store';
-import { getAnonymousToken, getUser, setCustomerId } from '@/services/userSlice';
+import { getAnonymousToken, getUser } from '@/services/userSlice';
 import { getCookie } from '@/utils/cookie';
 
 import HomePage from '@/pages/home/homePage';
@@ -11,12 +10,11 @@ import RegistrationPage from '@/pages/registration/registrationPage';
 import NotFoundPage from '@/pages/notFoundPage/notFoundPage';
 import ProductsPage from '@/pages/products/productsPage';
 import CartPage from '@/pages/cart/cartPage';
-import AboutUsPage from '@/pages/aboutUs/aboutUS';
 
 import BasicLayoutPage from '../layout/basicLayout';
 import ProfilePage from '@/pages/profilePage/profilePage';
 import ProtectedRoute from '@/utils/protectedRoute';
-import { getCategories } from '@/services/sneakersSlice';
+import { getCategories, getFilteredProducts } from '@/services/sneakersSlice';
 
 import ProfileAccount from '../profileAccount/profileAccount';
 import ProfileAddress from '../profileAddress/profileAddress';
@@ -24,7 +22,6 @@ import ProfileOrders from '../profileOrders/profileOrders';
 import ProfilePassword from '../profilePassword/profilePassword';
 import ProductPage from '@/pages/product/productPage';
 import Loader from '../loader/loader';
-import { createCart, getActiveCart } from '@/services/cartSlice';
 
 function App() {
     const dispatch = useDispatch();
@@ -37,22 +34,19 @@ function App() {
                 if (token) {
                     try {
                         await dispatch(getUser()).unwrap();
-                        const activeCart = await dispatch(getActiveCart()).unwrap();
-                        if (!activeCart) {
-                            await dispatch(createCart(true));
-                        }
                     } catch (error) {
-                        const id = uuidv4();
-                        dispatch(setCustomerId({ id }));
-                        await dispatch(getAnonymousToken(id)).unwrap();
-                        await dispatch(createCart(false));
+                        await dispatch(getAnonymousToken()).unwrap();
                     }
                 } else {
-                    const id = uuidv4();
-                    dispatch(setCustomerId({ id }));
-                    await dispatch(getAnonymousToken(id)).unwrap();
-                    await dispatch(createCart(false));
+                    await dispatch(getAnonymousToken()).unwrap();
                 }
+                await dispatch(
+                    getFilteredProducts({
+                        filter: { color: [], size: [], price: [], discount: [] },
+                        sort: '',
+                        search: '',
+                    })
+                ).unwrap();
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);
             } catch (error) {
@@ -66,7 +60,6 @@ function App() {
     if (loading) {
         return <Loader />;
     }
-
     return (
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
@@ -74,7 +67,6 @@ function App() {
                 <Route path="/:section" element={<ProductsPage />} />
                 <Route path="/:section/:category/:id/:slug" element={<ProductPage />} />
                 <Route path="/:section/:category" element={<ProductsPage />} />
-                <Route path="aboutUs" element={<AboutUsPage />} />
                 <Route
                     path="profile/*"
                     element={

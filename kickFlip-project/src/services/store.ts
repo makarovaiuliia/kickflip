@@ -2,12 +2,10 @@ import { TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selec
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from '@/services/userSlice';
 import sneakersSlice from './sneakersSlice';
-import cartSlice from './cartSlice';
 
 export const rootReducer = combineReducers({
     user: userReducer,
     sneakers: sneakersSlice,
-    cart: cartSlice,
 });
 
 export const store = configureStore({
