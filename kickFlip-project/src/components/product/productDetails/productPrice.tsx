@@ -1,5 +1,4 @@
 import { ProductPricesProps } from '@/types/componentsInterfaces';
-import { getFormatPrice } from '@/utils/utils';
 
 export default function ProductPrices({ priceData }: ProductPricesProps) {
     const regularPrice = priceData.value;
@@ -8,9 +7,11 @@ export default function ProductPrices({ priceData }: ProductPricesProps) {
     return (
         <div className="product-prices">
             <span className={`product-price ${discountPrice ? 'old-price' : ''}`}>
-                $ {getFormatPrice(regularPrice)}
+                $ {regularPrice.centAmount / 10 ** regularPrice.fractionDigits}
             </span>
-            {discountPrice && <span className="product-price">$ {getFormatPrice(discountPrice)}</span>}
+            {discountPrice && (
+                <span className="product-price">$ {discountPrice.centAmount / 10 ** discountPrice.fractionDigits}</span>
+            )}
         </div>
     );
 }

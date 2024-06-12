@@ -1,44 +1,47 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+import CardList from '@/components/cardList/cardList';
 import './productsPage.css';
-import { useSelector } from '@/services/store';
-import { getAllCategories } from '@/services/sneakersSlice';
+import { useSelector, useDispatch } from '@/services/store';
+import { getAllCategories, getAllSneakers, getFilteredProducts } from '@/services/sneakersSlice';
 import CategorySection from '@/components/categorySection/categorySection';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
 import FilterComponent from '@/components/filterComponent/filterComponent';
 import filterData from '@/components/filterComponent/filterComponentData';
-import { TransformParams } from '@/types/types';
+import { ProductProjected, TransformParams } from '@/types/types';
 import ModalWindow from '@/components/modalWindow/modalWindow';
-import initialTransformParams from '@/data/initialTransformParams';
-import InfiniteScrollList from '@/components/infiniteScrollList/infiniteScrollList';
 
 export default function ProductsPage(): JSX.Element {
+    const dispatch = useDispatch();
     const { section, category } = useParams<{ category: string; section: string }>();
-    const transformParams: TransformParams =
+    const [products, setProducts] = useState<ProductProjected[]>([]);
+    const initialTransformParams: TransformParams =
         section === 'outlet'
             ? {
                   filter: { color: [], size: [], price: [], discount: [''] },
                   sort: '',
                   search: '',
-                  category: '',
               }
-            : initialTransformParams;
+            : {
+                  filter: { color: [], size: [], price: [], discount: [] },
+                  sort: '',
+                  search: '',
+              };
 
-    const [categories, setCategories] = useState<TransformParams>(transformParams);
+    const [categories, setCategories] = useState<TransformParams>(initialTransformParams);
     const [filterIsActive, setFilterIsActive] = useState<boolean>(true);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
 
+    const allSneakers = useSelector(getAllSneakers);
     const productCategories = useSelector(getAllCategories);
 
     useEffect(() => {
-        if (section === 'outlet') {
-            setCategories((prevCategories) => {
-                const newFilter = { ...prevCategories.filter };
-                newFilter.discount = section === 'outlet' ? [''] : [];
-                return { ...prevCategories, filter: newFilter };
-            });
-        }
+        setCategories((prevCategories) => {
+            const newFilter = { ...prevCategories.filter };
+            newFilter.discount = section === 'outlet' ? [''] : [];
+            return { ...prevCategories, filter: newFilter };
+        });
     }, [section]);
 
     useEffect(() => {
@@ -57,20 +60,25 @@ export default function ProductsPage(): JSX.Element {
     }, []);
 
     useEffect(() => {
-        if (!category) {
-            setCategories((prevCategories) => {
-                return { ...prevCategories, category: '' };
-            });
+        if (!productCategories || !category) {
+            setProducts(allSneakers);
             return;
         }
 
         const categoryId = productCategories[category.toUpperCase()]?.id;
         if (categoryId) {
-            setCategories((prevCategories) => {
-                return { ...prevCategories, category: categoryId };
-            });
+            const filteredProducts = allSneakers.filter((product) =>
+                product.categories.some((cat) => cat.id === categoryId)
+            );
+            setProducts(filteredProducts);
+        } else {
+            setProducts(allSneakers);
         }
-    }, [category, productCategories]);
+    }, [category, allSneakers, productCategories]);
+
+    useEffect(() => {
+        dispatch(getFilteredProducts(categories));
+    }, [categories, dispatch]);
 
     const breadCrumbs: CrumbType[] = category
         ? [
@@ -132,11 +140,12 @@ export default function ProductsPage(): JSX.Element {
                         isMobile={isMobile}
                     />
                 )}
-                <InfiniteScrollList
-                    categories={categories}
+                <CardList
+                    products={products}
                     setCategories={setCategories}
-                    isMobile={isMobile}
+                    categories={categories}
                     setFilterIsActive={setFilterIsActive}
+                    isMobile={isMobile}
                 />
             </div>
         </div>

@@ -9,7 +9,6 @@ const filterData: TransformParams = {
     },
     sort: '',
     search: '',
-    category: '',
 };
 
 export default filterData;
