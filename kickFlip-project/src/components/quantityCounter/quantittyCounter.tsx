@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './quantittyCounter.css';
+import { UpdateActions } from '@/types/types';
 
 interface QuantityCounterProps {
     initialQuantity: number;
@@ -12,14 +13,14 @@ export default function QuantityCounter({ initialQuantity, onQuantityChange }: Q
     const handleIncrease = () => {
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
-        onQuantityChange(newQuantity, 'changeLineItemQuantity');
+        onQuantityChange(newQuantity, UpdateActions.ChangeQty);
     };
 
     const handleDecrease = () => {
         if (quantity > 1) {
             const newQuantity = quantity - 1;
             setQuantity(newQuantity);
-            onQuantityChange(newQuantity, 'changeLineItemQuantity');
+            onQuantityChange(newQuantity, UpdateActions.ChangeQty);
         }
     };
 
