@@ -111,6 +111,19 @@
     font-family: var(--font-family);
 }
 
+@media (width < 1050px) {
+    .card_cart-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .card_size-select {
+        width: 100%;
+    }
+    .card_button {
+        width: 100%;
+    }
+}
+
 @media (width < 800px) {
     .card_image {
         grid-template-columns: repeat(2, 1fr);
