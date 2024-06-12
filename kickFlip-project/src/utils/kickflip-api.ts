@@ -17,6 +17,9 @@ import {
     NewAddressAction,
     UpdateAddressAction,
     CartResponse,
+    AddItemToCartAction,
+    AddItemToCartBody,
+    TUser,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
@@ -77,6 +80,37 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
+interface LoginResponse {
+    customer: TUser;
+    cart: CartResponse;
+}
+
+export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
+    const loginBody = {
+        email: data.email,
+        password: data.password,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
+
+    return fetch(`${URL}/${projectKey}/me/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(loginBody),
+    })
+        .then((res) => checkResponse<LoginResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
 export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
     const loginBody = {
         username: data.email,
@@ -99,9 +133,10 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
         });
 };
 
-export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
+export const getAnonymousTokenApi = (id: string): Promise<TAuthResponse> => {
     const body = {
         grant_type: 'client_credentials',
+        anonymous_id: id,
     };
 
     return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token`, {
@@ -423,7 +458,7 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsFilteredApi = (options: TransformParams, page: number) => {
+export const getProductsFilteredApi = (options: TransformParams, offset: number) => {
     let query = '';
 
     if (options) {
@@ -473,7 +508,7 @@ export const getProductsFilteredApi = (options: TransformParams, page: number) =
         }
     }
 
-    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${page}`;
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${offset}`;
 
     return fetch(fetchUrl, {
         method: 'GET',
@@ -514,6 +549,52 @@ export const getProductById = async (id: string) => {
     return data;
 };
 
+export const createCartApi = async (isAuth: boolean) => {
+    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            currency: 'USD',
+        }),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction, version: number) => {
+    const body: AddItemToCartBody = {
+        version,
+        actions: [item],
+    };
+    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getActiveCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/active-cart`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+    });
+  
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+          
 export const getCartbyId = async (cartId: string) => {
     const response = await fetch(`${URL}/${projectKey}/carts/${cartId}`, {
         headers: {

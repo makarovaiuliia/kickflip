@@ -91,10 +91,24 @@
     font-size: 1.4rem;
     color: var(--white);
     transition: all 0.3s;
+    width: 70%;
 }
 
 .card_button:hover {
     background: var(--deep-blue);
+}
+
+.card_cart-form {
+    display: flex;
+    gap: 2%;
+}
+
+.card_size-select {
+    width: 28%;
+    padding: 1rem 0.8rem;
+    border: 1px solid var(--border-gray);
+    color: var(--deep-blue);
+    font-family: var(--font-family);
 }
 
 @media (width < 800px) {
