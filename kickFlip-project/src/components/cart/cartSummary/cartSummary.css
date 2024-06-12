@@ -1,0 +1,86 @@
+.summary-wrapper {
+    border: 2px solid var(--deep-blue);
+    background: var(--smoke-grey);
+    min-height: 470px;
+    padding: 4rem;
+}
+
+.summary-title {
+    font-family: var(--second-family);
+    font-weight: 600;
+    font-size: 2.8rem;
+    line-height: 114%;
+    margin-bottom: 4rem;
+}
+
+.promo {
+    margin-bottom: 3.3rem;
+}
+
+.promo-title {
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 150%;
+    margin-bottom: 0.8rem;
+}
+.promo-field {
+    display: flex;
+}
+
+.promo-input {
+    flex-grow: 2;
+    height: 40px;
+}
+
+.promo-button {
+    width: 120px;
+    height: 40px;
+    background: var(--deep-blue);
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 114%;
+    color: var(--white);
+    text-transform: none;
+    transition: all 0.3s;
+}
+
+.promo-button:hover {
+    background: var(--electric-orange);
+}
+
+.promo-button.disable {
+    pointer-events: none;
+}
+
+.cart-price {
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 150%;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-price.total {
+    font-weight: 700;
+    border-top: 1px solid var(--beige);
+    padding-top: 2.4rem;
+}
+
+.send-order-btn {
+    width: 100%;
+    height: 56px;
+    background: var(--electric-orange);
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 2rem;
+    color: var(--white);
+    transition: all 0.3s;
+}
+
+.send-order-btn:hover {
+    background: var(--deep-blue);
+}
