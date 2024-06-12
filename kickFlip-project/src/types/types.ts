@@ -354,7 +354,6 @@ export interface CartResponse {
     totalPrice: PriceValue;
     cartState: string;
     discountCodes: DiscountCodeInfo[];
-    version: number;
 }
 
 export interface AddItemToCartBody {

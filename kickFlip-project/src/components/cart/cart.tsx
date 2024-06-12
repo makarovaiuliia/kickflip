@@ -5,7 +5,7 @@ import CartSummary from './cartSummary/cartSummary';
 
 interface CartProps {
     cartData: CartResponse;
-    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null>>;
+    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
 }
 
 export default function Cart({ cartData, setCartData }: CartProps) {
