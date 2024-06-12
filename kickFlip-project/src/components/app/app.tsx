@@ -74,7 +74,7 @@ function App() {
                 <Route path="/:section" element={<ProductsPage />} />
                 <Route path="/:section/:category/:id/:slug" element={<ProductPage />} />
                 <Route path="/:section/:category" element={<ProductsPage />} />
-                <Route path="aboutUs" element={<AboutUsPage />} />
+                <Route path="about-us" element={<AboutUsPage />} />
                 <Route
                     path="profile/*"
                     element={
