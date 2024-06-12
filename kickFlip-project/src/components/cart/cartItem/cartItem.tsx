@@ -11,7 +11,7 @@ import { getCartId, setCart } from '@/services/cartSlice';
 interface CartItemProps {
     itemData: LineItem;
     cartVersion: number;
-    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null>>;
+    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
 }
 
 export default function CartItem({ itemData, setCartData, cartVersion }: CartItemProps) {
