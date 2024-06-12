@@ -26,6 +26,11 @@ export enum StateMessage {
     AddedProfileAddress = 'Your address have been successfully added',
 }
 
+export enum DefaultCartItem {
+    ShippingCost = '30',
+    ItemDescription = 'Awesome sneakers',
+}
+
 export type TUser = {
     email?: string;
     firstName?: string;
@@ -304,12 +309,60 @@ export interface TransformParams {
     filter: Record<FilterOptions, string[]>;
     sort: string;
     search: string;
+    category: string;
 }
 
-export enum SearchQuery {
+export enum SearchQueryVariants {
     color = 'variants.attributes.color:',
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
     search = 'text.en-US',
     discount = 'variants.prices.discounted:',
+    category = 'filter=categories.id:',
+}
+
+export type ProductTypeReference = {
+    id: string;
+    typeId: string;
+};
+
+export interface LineItem {
+    id: string;
+    key?: string;
+    productId: string;
+    productKey?: string;
+    name: string;
+    variant: Product;
+    price: Price;
+    quantity: number;
+    totalPrice: PriceValue;
+}
+
+export interface DiscountCodeInfo {
+    discountCode: ProductTypeReference;
+    state: string;
+}
+
+export interface CartResponse {
+    id: string;
+    key?: string;
+    customerId?: string;
+    anonymousId?: string;
+    lineItems: LineItem[];
+    totalLineItemQuantity?: number;
+    totalPrice: PriceValue;
+    cartState: string;
+    discountCodes: DiscountCodeInfo[];
+    version: number;
+}
+
+export interface AddItemToCartBody {
+    version: number;
+    actions: AddItemToCartAction[];
+}
+
+export interface AddItemToCartAction {
+    action: string;
+    productId: string;
+    variantId: number;
 }
