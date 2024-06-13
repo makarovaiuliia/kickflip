@@ -12,6 +12,7 @@ export default function DetailsContainer({
     descrProps,
     imgProps,
     isMobile,
+    ifProductInCart,
 }: DetailsContainerProps) {
     return (
         <div className="details-container">
@@ -28,10 +29,15 @@ export default function DetailsContainer({
                 images={variantProps.images}
                 setImages={variantProps.setImages}
                 currentImages={variantProps.currentImages}
+                handleActiveColorImage={variantProps.handleActiveColorImage}
             />
-            <ProductSizes sizes={sizesProps.sizes} />
+            <ProductSizes
+                sizes={sizesProps.sizes}
+                handleActiveSize={sizesProps.handleActiveSize}
+                activeSize={sizesProps.activeSize}
+            />
             <button className="cart-btn" type="button">
-                Add to cart
+                {ifProductInCart === true ? 'Remove from cart' : 'Add to cart'}
             </button>
             <ProductDescription description={descrProps.description} />
         </div>

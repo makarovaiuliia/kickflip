@@ -15,6 +15,7 @@ interface CardProps {
 }
 
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
+    // console.log(productInfo);
     const dispatch = useDispatch();
 
     const { masterVariant, name, slug } = productInfo;
@@ -60,6 +61,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         const selectedColor = Object.keys(colorMap)[activeImage];
 
         const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
+
         const data = {
             isAuth,
             cartId,
@@ -90,7 +92,9 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                 {images.map((image, index) => (
                     <button
                         type="button"
-                        onClick={() => setActiveImage(index)}
+                        onClick={() => {
+                            setActiveImage(index);
+                        }}
                         key={`image url: ${image[0]}`}
                         className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         style={{

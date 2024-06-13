@@ -1,11 +1,15 @@
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '@/utils/kickflip-api';
+import { getProductById, getCartbyId } from '@/utils/kickflip-api';
 import { responsesErrorsHandler } from '@/utils/utils';
-import { ProductResponse } from '@/types/types';
+import { ProductResponse, CartResponse } from '@/types/types';
 import Product from '@/components/product/product';
 import Loader from '@/components/loader/loader';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
+import { getCartId } from '@/services/cartSlice';
+// import { getAllSneakers } from '@/services/sneakersSlice';
+
 import './productPage.css';
 
 export default function ProductPage() {
@@ -18,6 +22,28 @@ export default function ProductPage() {
 
     const [productData, setProductData] = useState<ProductResponse | null>(null);
     const [productError, setProductErrorError] = useState('');
+
+    const [cartData, setCartData] = useState<CartResponse | null>();
+    const [cartError, setCartError] = useState('');
+
+    const idCart: string = useSelector(getCartId);
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            try {
+                if (idCart) {
+                    const data = await getCartbyId(idCart);
+                    setCartData(data);
+                }
+            } catch (error) {
+                if (error) {
+                    responsesErrorsHandler(error, setCartError);
+                }
+            }
+        };
+
+        fetchCartItems();
+    }, [cartError, idCart]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -60,10 +86,13 @@ export default function ProductPage() {
             {productData ? (
                 <>
                     <BreadCrumbs crumbs={breadCrumbs} />
-                    <Product productData={productData} />
+                    <Product productData={productData} cartData={cartData!} />
                 </>
             ) : productError ? (
-                <div>{productError}</div>
+                <>
+                    <div>{productError}</div>
+                    <div>{cartError}</div>
+                </>
             ) : (
                 <Loader />
             )}

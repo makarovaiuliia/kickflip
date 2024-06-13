@@ -1,4 +1,4 @@
-import { Price, Variants } from './types';
+import { Price, Variants, CartResponse } from './types';
 
 export interface ImgProps {
     imagesSrc: string[];
@@ -11,6 +11,7 @@ export interface VariantImagesProps {
     images: Variants;
     setImages: (images: string[]) => void;
     currentImages: string[];
+    handleActiveColorImage: (index: number) => void;
 }
 
 export interface ProductPricesProps {
@@ -28,6 +29,8 @@ export interface ProductDescriptionProps {
 
 export interface ProductSizesProps {
     sizes: number[];
+    handleActiveSize: (index: number) => void;
+    activeSize: number;
 }
 
 export interface DetailsContainerProps {
@@ -37,4 +40,6 @@ export interface DetailsContainerProps {
     descrProps: ProductDescriptionProps;
     imgProps: ImgProps;
     isMobile: boolean;
+    cartData: CartResponse;
+    ifProductInCart: boolean;
 }
