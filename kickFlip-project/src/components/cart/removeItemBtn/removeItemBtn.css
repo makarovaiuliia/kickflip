@@ -1,11 +1,11 @@
 .remove-btn {
-    position: absolute;
-    top: 6px;
-    right: 0;
-    background-image: url('/trash.svg');
-    height: 1.5rem;
-    width: 1.5rem;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    text-align: start;
+    text-transform: none;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    text-decoration-color: var(--deep-blue);
 }
