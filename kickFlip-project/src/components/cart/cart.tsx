@@ -42,7 +42,7 @@ export default function Cart({ cartData, setCartData }: CartProps) {
     return (
         <div className="cart-page-wrapper">
             <div className="title-wrapper">
-                <h1 className="cart-title">Your shopping cart ({cartData.totalLineItemQuantity}) </h1>
+                <h1 className="cart-title">Your shopping cart ({cartData.lineItems.length}) </h1>
                 <RemoveAllItemsBtn onclick={() => setShowConfirm(true)} />
                 {deletingError && <div className="delete-error">{deletingError}</div>}
             </div>
