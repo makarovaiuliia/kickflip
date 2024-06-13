@@ -48,8 +48,8 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
     return response;
 });
 
-export const signUpUser = createAsyncThunk('user/register', async (data: SignUpDataForm) => {
-    const response = await signUpUserApi(data);
+export const signUpUser = createAsyncThunk('user/register', async (data: { data: SignUpDataForm; cartId: string }) => {
+    const response = await signUpUserApi(data.data, data.cartId);
     return response;
 });
 

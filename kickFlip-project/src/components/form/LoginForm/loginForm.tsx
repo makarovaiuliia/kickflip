@@ -6,7 +6,7 @@ import '../form.css';
 import { useDispatch, useSelector } from '@/services/store';
 import { responsesErrorsHandler } from '@/utils/utils';
 import { loginUser, signInUser } from '@/services/userSlice';
-import { getCartId, setCart } from '@/services/cartSlice';
+import { getCartId, removeCart, setCart } from '@/services/cartSlice';
 
 function LoginForm(): JSX.Element {
     const [formData, setFormData] = useState<LogInData>({
@@ -108,7 +108,10 @@ function LoginForm(): JSX.Element {
                 .unwrap()
                 .then((result) => {
                     const { cart } = result;
-                    dispatch(setCart(cart));
+                    dispatch(removeCart());
+                    if (cart) {
+                        dispatch(setCart(cart));
+                    }
                 });
             await dispatch(loginUser(formData)).unwrap();
             navigate('/');
