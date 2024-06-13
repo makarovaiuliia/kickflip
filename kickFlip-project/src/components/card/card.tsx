@@ -7,7 +7,6 @@ import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
 import { addToCart, createCart, getCartId, getCartItems, getCartVersion } from '@/services/cartSlice';
-import { getIsAuth } from '@/services/userSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -61,7 +60,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
 
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
-    const isAuth = useSelector(getIsAuth);
 
     const handleAddToCart = async (event: SyntheticEvent) => {
         event.preventDefault();
@@ -69,7 +67,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         setIsLoading(true);
 
         if (!cartId) {
-            await dispatch(createCart(isAuth));
+            await dispatch(createCart());
         }
 
         // product info
@@ -79,7 +77,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
 
         const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
         const data = {
-            isAuth,
             cartId,
             item: {
                 action: 'addLineItem',

@@ -38,7 +38,7 @@ export default function RegistrationForm() {
         try {
             await dispatch(signUpUser(data)).unwrap();
             await dispatch(loginUser(loginData));
-            await dispatch(createCart(true));
+            await dispatch(createCart());
             navigate('/');
             reset();
         } catch (error) {

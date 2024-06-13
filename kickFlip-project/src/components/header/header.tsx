@@ -25,7 +25,7 @@ export default function Header() {
         const id = uuidv4();
         await dispatch(setCustomerId({ id }));
         await dispatch(getAnonymousToken(id));
-        await dispatch(createCart(false));
+        await dispatch(createCart());
         await dispatch(logoutUser());
         closeMenu();
     };

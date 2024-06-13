@@ -5,8 +5,8 @@ import { AddItemToCartAction, CartResponse, LineItem } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
-export const createCart = createAsyncThunk('cart/create', async (isAuth: boolean) => {
-    const response = await createCartApi(isAuth);
+export const createCart = createAsyncThunk('cart/create', async () => {
+    const response = await createCartApi();
     return response;
 });
 
@@ -16,14 +16,13 @@ export const getActiveCart = createAsyncThunk('cart/getActive', async () => {
 });
 
 interface AddToCartData {
-    isAuth: boolean;
     cartId: string;
     item: AddItemToCartAction;
     cartVersion: number;
 }
 
 export const addToCart = createAsyncThunk('cart/addItem', async (data: AddToCartData) => {
-    const response = await addToCartApi(data.cartId, data.isAuth, data.item, data.cartVersion);
+    const response = await addToCartApi(data.cartId, data.item, data.cartVersion);
     return response;
 });
 

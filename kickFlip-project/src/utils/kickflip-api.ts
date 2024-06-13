@@ -549,8 +549,8 @@ export const getProductById = async (id: string) => {
     return data;
 };
 
-export const createCartApi = async (isAuth: boolean) => {
-    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts`, {
+export const createCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts`, {
         method: 'POST',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
@@ -565,12 +565,12 @@ export const createCartApi = async (isAuth: boolean) => {
     return data;
 };
 
-export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction, version: number) => {
+export const addToCartApi = async (cartId: string, item: AddItemToCartAction, version: number) => {
     const body: AddItemToCartBody = {
         version,
         actions: [item],
     };
-    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts/${cartId}`, {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,

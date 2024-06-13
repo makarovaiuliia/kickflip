@@ -39,19 +39,19 @@ function App() {
                         await dispatch(getUser()).unwrap();
                         const activeCart = await dispatch(getActiveCart()).unwrap();
                         if (!activeCart) {
-                            await dispatch(createCart(true));
+                            await dispatch(createCart());
                         }
                     } catch (error) {
                         const id = uuidv4();
                         dispatch(setCustomerId({ id }));
                         await dispatch(getAnonymousToken(id)).unwrap();
-                        await dispatch(createCart(false));
+                        await dispatch(createCart());
                     }
                 } else {
                     const id = uuidv4();
                     dispatch(setCustomerId({ id }));
                     await dispatch(getAnonymousToken(id)).unwrap();
-                    await dispatch(createCart(false));
+                    await dispatch(createCart());
                 }
                 await dispatch(getCategories()).unwrap();
                 setLoading(false);
