@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from '@/services/store';
 import { CartResponse } from '@/types/types';
 import './cart.css';
 import CartItem from './cartItem/cartItem';
@@ -6,6 +7,8 @@ import CartSummary from './cartSummary/cartSummary';
 import RemoveAllItemsBtn from './removeIBtn/removeAllItemsBtn';
 import ModalWindow from '../modalWindow/modalWindow';
 import ConfirmRemovingMessage from '../confirmCartRemoving/confirmRemoving';
+import { createCart, getCartId, getCartVersion } from '@/services/cartSlice';
+import { deleteCartApi } from '@/utils/kickflip-api';
 
 interface CartProps {
     cartData: CartResponse;
@@ -14,7 +17,16 @@ interface CartProps {
 
 export default function Cart({ cartData, setCartData }: CartProps) {
     const [showConfirm, setShowConfirm] = useState(false);
-    const removeAllItem = () => console.log(123);
+    const catId = useSelector(getCartId);
+    const cartVersion = useSelector(getCartVersion);
+    const dispatch = useDispatch();
+
+    const removeAllItem = async () => {
+        await deleteCartApi(catId, cartVersion);
+        dispatch(createCart());
+        setShowConfirm(false);
+    };
+
     const closeModal = () => setShowConfirm(false);
 
     return (
