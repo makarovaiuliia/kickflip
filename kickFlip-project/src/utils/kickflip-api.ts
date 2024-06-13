@@ -606,7 +606,7 @@ export const getActiveCartApi = async () => {
 };
 
 export const getCartbyId = async (cartId: string) => {
-    const response = await fetch(`${URL}/${projectKey}/carts/${cartId}`, {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
         },
@@ -636,7 +636,7 @@ export const getProductImg = async (id: string, color: string) => {
 };
 
 export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeLineItem) => {
-    const response = await fetch(`${URL}/${projectKey}/carts/${cartId}`, {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
