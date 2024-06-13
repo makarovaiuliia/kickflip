@@ -209,8 +209,17 @@ export type TCustomerResponse = {
     authenticationMode: string;
 };
 
-export const signUpUserApi = (data: SignUpDataForm) => {
+export const signUpUserApi = (data: SignUpDataForm, cartId: string) => {
     const signUpData: SignUpDataRequest = transformData(data);
+
+    const body = {
+        ...signUpData,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
 
     return fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',
@@ -218,9 +227,9 @@ export const signUpUserApi = (data: SignUpDataForm) => {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(signUpData),
+        body: JSON.stringify(body),
     })
-        .then((res) => checkResponse<TUserResponse>(res))
+        .then((res) => checkResponse<LoginResponse>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
