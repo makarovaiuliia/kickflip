@@ -2,6 +2,7 @@ import { CartResponse } from '@/types/types';
 import './cart.css';
 import CartItem from './cartItem/cartItem';
 import CartSummary from './cartSummary/cartSummary';
+import RemoveAllItemsBtn from './removeIBtn/removeAllItemsBtn';
 
 interface CartProps {
     cartData: CartResponse;
@@ -10,8 +11,11 @@ interface CartProps {
 
 export default function Cart({ cartData, setCartData }: CartProps) {
     return (
-        <>
-            <h1 className="cart-title">Your shopping cart</h1>
+        <div className="cart-page-wrapper">
+            <div className="title-wrapper">
+                <h1 className="cart-title">Your shopping cart ({cartData.totalLineItemQuantity}) </h1>
+                <RemoveAllItemsBtn onclick={() => console.log(123)} />
+            </div>
             <div className="cart-wrapper">
                 <div className="cart-items">
                     {cartData.lineItems.map((item) => (
@@ -27,6 +31,6 @@ export default function Cart({ cartData, setCartData }: CartProps) {
                     <CartSummary summaryData={cartData} />
                 </div>
             </div>
-        </>
+        </div>
     );
 }
