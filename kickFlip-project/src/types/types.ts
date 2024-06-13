@@ -31,6 +31,12 @@ export enum DefaultCartItem {
     ItemDescription = 'Awesome sneakers',
 }
 
+export enum UpdateActions {
+    ChangeQty = 'changeLineItemQuantity',
+    RemoveItem = 'removeLineItem',
+    AddItem = 'addLineItem',
+}
+
 export type TUser = {
     email?: string;
     firstName?: string;
@@ -372,7 +378,7 @@ export type UpdateAction = {
     lineItemId: string;
     quantity: number;
 };
-export type ChangeLineItemQuantity = {
+export type ChangeLineItem = {
     version: number;
     actions: UpdateAction[];
 };
