@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ProductProjected } from '@/types/types';
+import { ProductProjected, UpdateActions } from '@/types/types';
 import './card.css';
 import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
@@ -79,7 +79,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         const data = {
             cartId,
             item: {
-                action: 'addLineItem',
+                action: UpdateActions.AddItem,
                 productId: productInfo.id,
                 variantId,
             },

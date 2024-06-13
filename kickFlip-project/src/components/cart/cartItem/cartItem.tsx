@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { CartResponse, ChangeLineItemQuantity, DefaultCartItem, LineItem } from '@/types/types';
+import { CartResponse, ChangeLineItem, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
 import './cartItem.css';
 import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
-import { getProductImg, updateCartQuantitty } from '@/utils/kickflip-api';
+import { getProductImg, updateCart } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantittyCounter';
 import { getCartId, setCart } from '@/services/cartSlice';
+import RemoveItemBtn from '../removeItemBtn/removeItemBtn';
 
 interface CartItemProps {
     itemData: LineItem;
@@ -41,19 +42,19 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleQuantityChange = async (newQuantity: number) => {
-        const changedData: ChangeLineItemQuantity = {
+    const handleChange = async (quantity: number, updateAction: string) => {
+        const changedData: ChangeLineItem = {
             version: cartVersion,
             actions: [
                 {
-                    action: 'changeLineItemQuantity',
+                    action: updateAction,
                     lineItemId: itemData.id,
-                    quantity: newQuantity,
+                    quantity,
                 },
             ],
         };
         try {
-            const newCart = await updateCartQuantitty(`${cartId}`, changedData);
+            const newCart = await updateCart(`${cartId}`, changedData);
             setCartData(newCart);
             dispatch(setCart(newCart));
         } catch (error) {
@@ -84,13 +85,14 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                 <div className="item-total-cost">
                     <div className="item-quantity">
                         Qty
-                        <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleQuantityChange} />
+                        <QuantityCounter initialQuantity={itemData.quantity} onQuantityChange={handleChange} />
                     </div>
                     <div className="item-total">
                         Total
                         <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>
                     </div>
                 </div>
+                <RemoveItemBtn onclick={() => handleChange(itemData.quantity, UpdateActions.RemoveItem)} />
             </div>
         </div>
     );
