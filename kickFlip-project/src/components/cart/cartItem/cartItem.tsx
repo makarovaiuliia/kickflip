@@ -92,7 +92,6 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                         <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>
                     </div>
                 </div>
-
                 <RemoveItemBtn onclick={() => handleChange(itemData.quantity, UpdateActions.RemoveItem)} />
             </div>
         </div>
