@@ -9,6 +9,7 @@ import ModalWindow from '../modalWindow/modalWindow';
 import ConfirmRemovingMessage from '../confirmCartRemoving/confirmRemoving';
 import { createCart, getCartId, getCartVersion } from '@/services/cartSlice';
 import { deleteCartApi } from '@/utils/kickflip-api';
+import { responsesErrorsHandler } from '@/utils/utils';
 
 interface CartProps {
     cartData: CartResponse;
@@ -17,14 +18,23 @@ interface CartProps {
 
 export default function Cart({ cartData, setCartData }: CartProps) {
     const [showConfirm, setShowConfirm] = useState(false);
-    const catId = useSelector(getCartId);
+    const [deletingError, setDelitingError] = useState('');
+    const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
 
     const removeAllItem = async () => {
-        await deleteCartApi(catId, cartVersion);
-        dispatch(createCart());
-        setShowConfirm(false);
+        try {
+            await deleteCartApi(cartId, cartVersion);
+            const newCart = await dispatch(createCart()).unwrap();
+            setCartData(newCart);
+        } catch (error) {
+            if (error) {
+                responsesErrorsHandler(error, setDelitingError);
+            }
+        } finally {
+            setShowConfirm(false);
+        }
     };
 
     const closeModal = () => setShowConfirm(false);
@@ -34,6 +44,7 @@ export default function Cart({ cartData, setCartData }: CartProps) {
             <div className="title-wrapper">
                 <h1 className="cart-title">Your shopping cart ({cartData.totalLineItemQuantity}) </h1>
                 <RemoveAllItemsBtn onclick={() => setShowConfirm(true)} />
+                {deletingError && <div className="delete-error">{deletingError}</div>}
             </div>
             <div className="cart-wrapper">
                 <div className="cart-items">

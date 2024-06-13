@@ -650,10 +650,12 @@ export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeL
 };
 
 export const deleteCartApi = async (cartId: string, cartVersion: number) => {
-    await fetch(`${URL}/${projectKey}/me/carts/${cartId}?version=${cartVersion}`, {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}?version=${cartVersion}`, {
         method: 'DELETE',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
         },
     });
+    const data = checkResponse<CartResponse>(response);
+    return data;
 };
