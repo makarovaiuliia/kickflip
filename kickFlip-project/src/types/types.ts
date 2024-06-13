@@ -123,7 +123,7 @@ export interface AddNewAddressForm {
 export interface AddNewAddressFormRequest {
     id?: string;
     version?: number;
-    adresses?: TAddress[];
+    addresses?: TAddress[];
     addressId?: string;
     data?: AddNewAddressForm;
 }
@@ -143,7 +143,7 @@ export interface UpdateUserAddressFormRequest {
     addressId?: string;
     data?: UpdateUserAddressForm;
     defaultCheckedBilling?: boolean;
-    defaultcheckedBillingDefault?: boolean;
+    defaultCheckedBillingDefault?: boolean;
     defaultCheckedShipping?: boolean;
     defaultCheckedShippingDefault?: boolean;
 }

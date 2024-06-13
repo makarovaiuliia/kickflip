@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './quantittyCounter.css';
+import './quantityCounter.css';
 import { UpdateActions } from '@/types/types';
 
 interface QuantityCounterProps {

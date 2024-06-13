@@ -53,7 +53,7 @@ export const signUpUser = createAsyncThunk('user/register', async (data: { data:
     return response;
 });
 
-export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
+export const updateUserPassword = createAsyncThunk('user/updatePassword', async (data: UpdatePasswordForm) => {
     const response = await updateUserPasswordApi(data);
     return response;
 });
