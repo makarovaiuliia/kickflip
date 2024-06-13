@@ -83,7 +83,7 @@ type TAuthResponse = {
 
 interface LoginResponse {
     customer: TUser;
-    cart: CartResponse;
+    cart?: CartResponse;
 }
 
 export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
@@ -210,8 +210,17 @@ export type TCustomerResponse = {
     authenticationMode: string;
 };
 
-export const signUpUserApi = (data: SignUpDataForm) => {
+export const signUpUserApi = (data: SignUpDataForm, cartId: string) => {
     const signUpData: SignUpDataRequest = transformData(data);
+
+    const body = {
+        ...signUpData,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
 
     return fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',
@@ -219,9 +228,9 @@ export const signUpUserApi = (data: SignUpDataForm) => {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(signUpData),
+        body: JSON.stringify(body),
     })
-        .then((res) => checkResponse<TUserResponse>(res))
+        .then((res) => checkResponse<LoginResponse>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
@@ -550,8 +559,8 @@ export const getProductById = async (id: string) => {
     return data;
 };
 
-export const createCartApi = async (isAuth: boolean) => {
-    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts`, {
+export const createCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts`, {
         method: 'POST',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
@@ -566,12 +575,12 @@ export const createCartApi = async (isAuth: boolean) => {
     return data;
 };
 
-export const addToCartApi = async (cartId: string, isAuth: boolean, item: AddItemToCartAction, version: number) => {
+export const addToCartApi = async (cartId: string, item: AddItemToCartAction, version: number) => {
     const body: AddItemToCartBody = {
         version,
         actions: [item],
     };
-    const response = await fetch(`${URL}/${projectKey}${isAuth ? '/me' : ''}/carts/${cartId}`, {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,

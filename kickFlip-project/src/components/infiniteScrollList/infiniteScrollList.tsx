@@ -26,13 +26,16 @@ export default function InfiniteScrollList({
 
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        setIsLoading(true);
         dispatch(getFilteredProducts({ options: categories, offset: 0 }))
             .unwrap()
             .then(() => {
                 setHasMore(true);
                 setPage(1);
+                setIsLoading(false);
             })
             .catch(() => {});
     }, [categories, dispatch]);
@@ -53,17 +56,12 @@ export default function InfiniteScrollList({
             });
     };
 
-    if (products.length === 0) {
+    if (isLoading) {
         return <Loader />;
     }
 
     return (
-        <InfiniteScroll
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<h4 className="loading">Loading...</h4>}
-            dataLength={products.length}
-        >
+        <InfiniteScroll next={fetchMoreData} hasMore={hasMore} loader={<p />} dataLength={products.length}>
             <CardList
                 products={products}
                 setCategories={setCategories}

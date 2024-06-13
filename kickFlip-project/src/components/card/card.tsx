@@ -6,8 +6,7 @@ import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/u
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
-import { addToCart, getCartId, getCartVersion } from '@/services/cartSlice';
-import { getIsAuth } from '@/services/userSlice';
+import { addToCart, createCart, getCartId, getCartItems, getCartVersion } from '@/services/cartSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -17,13 +16,23 @@ interface CardProps {
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     const dispatch = useDispatch();
 
+    const itemsInCart = useSelector(getCartItems);
+    const alreadyInShoppingCart = itemsInCart.some((item) => {
+        return item.productId === productInfo.id;
+    });
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState<number>(0);
+
     const { section } = useParams<{ section: string }>();
     const productCategories = useSelector(getAllCategories);
     const category = Object.keys(productCategories)
         .filter((cat) => productCategories[cat].id === productInfo.categories[0].id)[0]
         .toLowerCase();
+
+    // card info
 
     // card info
 
@@ -47,12 +56,19 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         }
     }, [selectedColors, colorMap]);
 
+    // cart functionality - add and remove
+
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
-    const isAuth = useSelector(getIsAuth);
 
     const handleAddToCart = async (event: SyntheticEvent) => {
         event.preventDefault();
+
+        setIsLoading(true);
+
+        if (!cartId) {
+            await dispatch(createCart());
+        }
 
         // product info
         const target = event.target as HTMLFormElement;
@@ -61,7 +77,6 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
 
         const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
         const data = {
-            isAuth,
             cartId,
             item: {
                 action: 'addLineItem',
@@ -70,7 +85,9 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             },
             cartVersion,
         };
-        dispatch(addToCart(data));
+
+        await dispatch(addToCart(data));
+        setIsLoading(false);
     };
 
     return (
@@ -109,7 +126,12 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <AddToCartForm productInfo={productInfo} handleAddToCart={handleAddToCart} />
+            <AddToCartForm
+                productInfo={productInfo}
+                handleAddToCart={handleAddToCart}
+                alreadyInShoppingCart={alreadyInShoppingCart}
+                isLoading={isLoading}
+            />
         </div>
     );
 }
