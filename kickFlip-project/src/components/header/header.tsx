@@ -12,11 +12,12 @@ import logout from '/logoutIcon.svg';
 
 import './header.css';
 import { getAnonymousToken, getIsAuth, logoutUser, setCustomerId } from '@/services/userSlice';
-import { createCart } from '@/services/cartSlice';
+import { createCart, getCartItems } from '@/services/cartSlice';
 
 export default function Header() {
     const [isOpen, setMenuIsOpen] = useState(false);
     const isAuth = useSelector(getIsAuth);
+    const cartItems = useSelector(getCartItems);
     const dispatch = useDispatch();
 
     const closeMenu = () => setMenuIsOpen(false);
@@ -146,7 +147,9 @@ export default function Header() {
                             )}
                             <NavLink
                                 className={({ isActive }) =>
-                                    isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    isActive
+                                        ? 'services-nav-link services-nav-link-active cart-icon'
+                                        : 'services-nav-link cart-icon'
                                 }
                                 to="/cart"
                                 onClick={closeMenu}
@@ -154,6 +157,9 @@ export default function Header() {
                                 <svg className="services-nav-link-icon">
                                     <use xlinkHref={`${cart}#cart-icon`} />
                                 </svg>
+                                {cartItems.length > 0 && (
+                                    <span className="services-cart-items-length">{cartItems.length}</span>
+                                )}
                                 <span className="services-nav-link-text">Cart</span>
                             </NavLink>
                         </div>
