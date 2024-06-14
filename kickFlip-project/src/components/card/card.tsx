@@ -86,7 +86,13 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             cartVersion,
         };
 
-        await dispatch(addToCart(data));
+        try {
+            await dispatch(addToCart(data));
+        } catch {
+            await dispatch(createCart());
+            await dispatch(addToCart(data));
+        }
+
         setIsLoading(false);
     };
 
