@@ -2,7 +2,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
+    text-align: center;
+}
+
+.empty-cart_icon {
+    block-size: 20rem;
 }
 
 .empty-cart-title {
@@ -10,16 +15,15 @@
     font-size: 4rem;
 }
 
-.empty-cart-text {
+.empty-cart_text-container {
     font-size: 2rem;
 }
 
 .back-to-catalog-link {
+    font-family: var(--second-family);
     background-color: var(--electric-orange);
     color: var(--white);
     padding: 8px 16px;
-}
-
-.back-link-text {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    inline-size: 100%;
 }
