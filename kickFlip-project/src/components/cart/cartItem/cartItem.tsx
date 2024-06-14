@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { CartResponse, ChangeLineItem, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
+import { CartResponse, UpdateCart, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
 import './cartItem.css';
 import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
@@ -43,7 +43,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
     }, []);
 
     const handleChange = async (quantity: number, updateAction: string) => {
-        const changedData: ChangeLineItem = {
+        const changedData: UpdateCart = {
             version: cartVersion,
             actions: [
                 {

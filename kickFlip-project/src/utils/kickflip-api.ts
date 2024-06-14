@@ -20,7 +20,7 @@ import {
     AddItemToCartAction,
     AddItemToCartBody,
     TUser,
-    ChangeLineItem,
+    UpdateCart,
     DiscountCodeResponse,
 } from '@/types/types';
 import { getCookie } from './cookie';
@@ -636,7 +636,7 @@ export const getProductImg = async (id: string, color: string) => {
     }
 };
 
-export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeLineItem) => {
+export const updateCart = async (cartId: string, updateLineItemQuantity: UpdateCart) => {
     const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {
@@ -668,5 +668,17 @@ export const getDiscountCodeApi = async () => {
         },
     });
     const data = checkResponse<DiscountCodeResponse>(response);
+    return data;
+};
+
+export const applyDiscountApi = async (cartId: string, appliedDiscounts: UpdateCart) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(appliedDiscounts),
+    });
+    const data = checkResponse<CartResponse>(response);
     return data;
 };

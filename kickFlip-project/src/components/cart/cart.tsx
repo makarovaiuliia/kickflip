@@ -58,7 +58,7 @@ export default function Cart({ cartData, setCartData }: CartProps) {
                     ))}
                 </div>
                 <div className="cart-summary">
-                    <CartSummary summaryData={cartData} />
+                    <CartSummary summaryData={cartData} setCartData={setCartData} />
                 </div>
             </div>
             {showConfirm && (

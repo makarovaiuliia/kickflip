@@ -1,14 +1,35 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { CartResponse, DefaultCartItem } from '@/types/types';
+import { CartResponse, DefaultCartItem, UpdateActions } from '@/types/types';
 import { getFormatPrice } from '@/utils/utils';
 import './cartSummary.css';
+import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
+import { applyDiscountApi } from '@/utils/kickflip-api';
 
 interface CartSummaryProps {
     summaryData: CartResponse;
+    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
 }
 
-export default function CartSummary({ summaryData }: CartSummaryProps) {
+export default function CartSummary({ summaryData, setCartData }: CartSummaryProps) {
     const [inputValue, setInputValue] = useState('');
+    const cartId = useSelector(getCartId);
+    const cartVersion = useSelector(getCartVersion);
+    const dispatch = useDispatch();
+
+    const apllyDiscount = async () => {
+        const request = {
+            version: cartVersion,
+            actions: [{ action: UpdateActions.ApplayDiscount, code: inputValue }],
+        };
+        try {
+            const newCart = await applyDiscountApi(cartId, request);
+            setCartData(newCart);
+            dispatch(setCart(newCart));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -26,7 +47,11 @@ export default function CartSummary({ summaryData }: CartSummaryProps) {
                         value={inputValue}
                         onChange={handleInputChange}
                     />
-                    <button className={`promo-button ${inputValue ? '' : 'disable'}`} type="button">
+                    <button
+                        className={`promo-button ${inputValue ? '' : 'disable'}`}
+                        type="button"
+                        onClick={apllyDiscount}
+                    >
                         Redeem
                     </button>
                 </div>

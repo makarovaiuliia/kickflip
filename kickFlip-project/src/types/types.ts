@@ -35,6 +35,7 @@ export enum UpdateActions {
     ChangeQty = 'changeLineItemQuantity',
     RemoveItem = 'removeLineItem',
     AddItem = 'addLineItem',
+    ApplayDiscount = 'addDiscountCode',
 }
 
 export type TUser = {
@@ -378,9 +379,15 @@ export type UpdateAction = {
     lineItemId: string;
     quantity: number;
 };
-export type ChangeLineItem = {
+
+export type UpdateDiscounts = {
+    action: string;
+    code: string;
+};
+
+export type UpdateCart = {
     version: number;
-    actions: UpdateAction[];
+    actions: UpdateAction[] | UpdateDiscounts[];
 };
 
 export type CartDiscount = {
