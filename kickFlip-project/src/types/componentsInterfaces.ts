@@ -45,4 +45,5 @@ export interface DetailsContainerProps {
     productQuantity: number;
     cartItemIndex: number;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
+    handleAddToCart: () => void;
 }

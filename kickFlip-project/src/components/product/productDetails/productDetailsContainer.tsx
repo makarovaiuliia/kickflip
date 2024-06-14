@@ -24,6 +24,7 @@ export default function DetailsContainer({
     productQuantity,
     cartItemIndex,
     setCartData,
+    handleAddToCart,
 }: DetailsContainerProps) {
     console.log(cartData);
     console.log(productQuantity);
@@ -60,6 +61,7 @@ export default function DetailsContainer({
             console.log('Remove from cart');
             handleDeleteFromCart(productQuantity, UpdateActions.RemoveItem);
         } else {
+            handleAddToCart();
             console.log('Add to cart');
         }
     };

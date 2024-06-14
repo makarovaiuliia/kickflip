@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ProductResponse, ProductData, Price, CartResponse } from '@/types/types';
+import { ProductResponse, ProductData, Price, CartResponse, UpdateActions } from '@/types/types';
 import {
     getProductsSizes,
     processVariants,
@@ -7,6 +7,9 @@ import {
     getAdditionalSize,
     findVariantId,
 } from '@/utils/utils';
+import { useDispatch, useSelector } from '@/services/store';
+import { getCartId, addToCart, getCartVersion } from '@/services/cartSlice';
+
 import './product.css';
 
 import ImagesContainer from './productImages/imagesContainer';
@@ -35,6 +38,10 @@ export default function Product({ productData, cartData, setCartData }: ProductP
     const [images, setImages] = useState(Object.values(imagesData)[0]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const cartId = useSelector(getCartId);
+    const cartVersion = useSelector(getCartVersion);
+
+    const dispatch = useDispatch();
 
     const handleActiveColorImage = (activeImageColor: number) => {
         setActiveImage(activeImageColor);
@@ -66,6 +73,22 @@ export default function Product({ productData, cartData, setCartData }: ProductP
         //     ifProductInCart = true;
         // }
     }
+
+    const handleAddToCart = async () => {
+        // product info
+
+        const data = {
+            cartId,
+            item: {
+                action: UpdateActions.AddItem,
+                productId,
+                variantId,
+            },
+            cartVersion,
+        };
+
+        await dispatch(addToCart(data));
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -111,6 +134,7 @@ export default function Product({ productData, cartData, setCartData }: ProductP
                     ifProductInCart={ifProductInCart}
                     cartItemIndex={cartItemIndex}
                     setCartData={setCartData}
+                    handleAddToCart={handleAddToCart}
                 />
             </div>
             {isModalOpen && <ModalWindow content={modalContent} closeModal={setIsModalOpen} open={isModalOpen} />}
