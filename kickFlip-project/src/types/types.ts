@@ -351,6 +351,16 @@ export interface DiscountCodeInfo {
     state: string;
 }
 
+type Discount = {
+    typeId: string;
+    id: string;
+};
+
+type Discounts = {
+    discount: Discount;
+    discountedAmount: PriceValue;
+};
+
 export interface CartResponse {
     id: string;
     version: number;
@@ -360,6 +370,10 @@ export interface CartResponse {
     lineItems: LineItem[];
     totalLineItemQuantity?: number;
     totalPrice: PriceValue;
+    discountOnTotalPrice?: {
+        discountedAmount: PriceValue;
+        includedDiscounts: Discounts[];
+    };
     cartState: string;
     discountCodes: DiscountCodeInfo[];
 }
@@ -387,10 +401,7 @@ export type UpdateDiscounts = {
 };
 export type DeleteDiscounts = {
     action: string;
-    discountCode: {
-        typeId: string;
-        id: string;
-    };
+    discountCode: Discount;
 };
 
 export type UpdateCart = {
