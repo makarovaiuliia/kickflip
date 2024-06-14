@@ -1,7 +1,17 @@
 import { SyntheticEvent } from 'react';
 import './promocode.css';
+import { DiscountCode } from '@/types/types';
+import PromoCode from './promocodeBtn';
 
-export default function Promocode(): JSX.Element {
+interface PromocodesProps {
+    discounts: DiscountCode[];
+}
+
+export default function Promocodes({ discounts }: PromocodesProps): JSX.Element {
+    const titleText = discounts.length
+        ? 'Click to copy'
+        : 'Unfortunately, we currently do not have any discounts available. ';
+
     const handleClick = (e: SyntheticEvent) => {
         const target = e.target as HTMLElement;
         const textToCopy = target.textContent!;
@@ -18,12 +28,14 @@ export default function Promocode(): JSX.Element {
         <section className="section section-promocode">
             <div className="content promocode">
                 <h2 className="promocode_title">
-                    Promocode for the first purchase<span className="accent">.</span>
+                    Get discount for the best kicks<span className="accent">.</span>
                 </h2>
-                <p className="promocode_text">Click to copy</p>
-                <button className="promocode_button" type="button" onClick={handleClick}>
-                    newToKickFlip
-                </button>
+                <p className="promocode_text">{titleText}</p>
+                <div className="promocodes-container">
+                    {discounts.map((discount) => (
+                        <PromoCode discount={discount} onclick={handleClick} key={discount.id} />
+                    ))}
+                </div>
             </div>
         </section>
     );
