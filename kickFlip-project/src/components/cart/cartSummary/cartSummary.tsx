@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartResponse, DefaultCartItem, DiscountCode, UpdateActions } from '@/types/types';
-import { getFormatPrice, getOldPrice, getPriceWithoutDiscount } from '@/utils/utils';
+import { getFormatPrice, getOldPrice, getPriceWithoutDiscount, responsesErrorsHandler } from '@/utils/utils';
 import './cartSummary.css';
 import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
 import { getDiscountByIdApi, updateDiscountApi } from '@/utils/kickflip-api';
@@ -15,9 +15,28 @@ interface CartSummaryProps {
 export default function CartSummary({ summaryData, setCartData }: CartSummaryProps) {
     const [inputValue, setInputValue] = useState('');
     const [appliedDiscount, setAppliedDiscount] = useState<DiscountCode[]>([]);
+    const [discountError, setDiscountError] = useState('');
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (summaryData.discountCodes.length !== appliedDiscount.length) {
+            const fetchDiscounts = async () => {
+                try {
+                    const discountDetailsPromises = summaryData.discountCodes.map(async (discount) => {
+                        return getDiscountByIdApi(discount.discountCode.id);
+                    });
+
+                    const appliedDiscounts = await Promise.all(discountDetailsPromises);
+                    setAppliedDiscount(appliedDiscounts);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            fetchDiscounts();
+        }
+    }, [appliedDiscount.length, summaryData.discountCodes]);
 
     const apllyDiscount = async () => {
         const request = {
@@ -27,17 +46,11 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
         try {
             const newCart = await updateDiscountApi(cartId, request);
             setCartData(newCart);
-            const discountDetailsPromises = newCart.discountCodes.map(async (discount) => {
-                return getDiscountByIdApi(discount.discountCode.id);
-            });
-
-            const appliedDiscounts = await Promise.all(discountDetailsPromises);
-            setAppliedDiscount(appliedDiscounts);
-
             dispatch(setCart(newCart));
         } catch (error) {
-            console.log(error);
+            if (error) responsesErrorsHandler(error, setDiscountError);
         } finally {
+            setDiscountError('');
             setInputValue('');
         }
     };
@@ -66,6 +79,7 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
                         Redeem
                     </button>
                 </div>
+                {discountError && <p>{discountError}</p>}
                 {appliedDiscount.map((discount) => (
                     <p className="isApplied" key={discount.id}>
                         {discount.name['en-US']} is applied
