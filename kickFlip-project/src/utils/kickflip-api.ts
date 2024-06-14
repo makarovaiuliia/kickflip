@@ -662,7 +662,11 @@ export const deleteCartApi = async (cartId: string, cartVersion: number) => {
 };
 
 export const getDiscountCodeApi = async () => {
-    const response = await fetch(`${URL}/${projectKey}/discount-codes`);
+    const response = await fetch(`${URL}/${projectKey}/discount-codes`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
     const data = checkResponse<DiscountCodeResponse>(response);
     return data;
 };
