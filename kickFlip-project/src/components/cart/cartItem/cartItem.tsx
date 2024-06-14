@@ -2,12 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { CartResponse, UpdateCart, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
 import './cartItem.css';
-import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
+import { findAttr, getFormatPrice, getOldProductTotalPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
 import { getProductImg, updateCart, updateDiscountApi } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantityCounter';
 import { getCartId, setCart } from '@/services/cartSlice';
 import RemoveItemBtn from '../removeIBtn/removeItemBtn';
+import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 
 interface CartItemProps {
     itemData: LineItem;
@@ -105,7 +106,16 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                     </div>
                     <div className="item-total">
                         Total
-                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>
+                        <div className="total-price">
+                            {itemData.totalPrice.centAmount !== itemData.price.value.centAmount * itemData.quantity ? (
+                                <OldNewPrise
+                                    oldPrice={getOldProductTotalPrice(itemData.price.value, itemData.quantity)}
+                                    newPrice={itemData.totalPrice}
+                                />
+                            ) : (
+                                <span> $ {getFormatPrice(itemData.totalPrice)}</span>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <RemoveItemBtn onclick={() => handleChange(itemData.quantity, UpdateActions.RemoveItem)} />

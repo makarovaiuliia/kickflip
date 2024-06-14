@@ -240,3 +240,9 @@ export const getOldPrice = (products: LineItem[]): PriceValue => {
         fractionDigits: 2,
     };
 };
+
+export const getOldProductTotalPrice = (priceValue: PriceValue, quantity: number): PriceValue => {
+    const oldPrice = { ...priceValue };
+    oldPrice.centAmount = priceValue.centAmount * quantity;
+    return oldPrice;
+};
