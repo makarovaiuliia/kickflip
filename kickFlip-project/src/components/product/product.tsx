@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ProductResponse, ProductData, Price } from '@/types/types';
-import { getProductsSizes, processVariants, setBodyoverflowStyle } from '@/utils/utils';
+import { getProductsSizes, processVariants, setBodyOverflowStyle } from '@/utils/utils';
 import './product.css';
 
 import ImagesContainer from './productImages/imagesContainer';
@@ -35,7 +35,7 @@ export default function Product({ productData }: ProductProps) {
     }, []);
 
     const modalContent = <ModalSlider sliderImages={images} />;
-    setBodyoverflowStyle(isModalOpen);
+    setBodyOverflowStyle(isModalOpen);
     return (
         <>
             <div className="product-wrapper">

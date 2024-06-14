@@ -10,7 +10,7 @@
     width: 100%;
 }
 
-.slider-controler {
+.slider-controller {
     display: flex;
     padding-top: 15px;
     justify-content: center;
@@ -33,7 +33,7 @@
         padding-top: 10px;
     }
 
-    .slider-controler {
+    .slider-controller {
         padding-top: 5px;
     }
 }
