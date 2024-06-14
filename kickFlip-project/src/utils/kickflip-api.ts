@@ -22,6 +22,7 @@ import {
     TUser,
     UpdateCart,
     DiscountCodeResponse,
+    DiscountCode,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
@@ -680,5 +681,15 @@ export const updateDiscountApi = async (cartId: string, appliedDiscounts: Update
         body: JSON.stringify(appliedDiscounts),
     });
     const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountByIdApi = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<DiscountCode>(response);
     return data;
 };

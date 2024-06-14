@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { CartResponse, DefaultCartItem, UpdateActions } from '@/types/types';
+import { CartResponse, DefaultCartItem, DiscountCode, UpdateActions } from '@/types/types';
 import { getFormatPrice, getOldPrice, getPriceWithoutDiscount } from '@/utils/utils';
 import './cartSummary.css';
 import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
-import { updateDiscountApi } from '@/utils/kickflip-api';
+import { getDiscountByIdApi, updateDiscountApi } from '@/utils/kickflip-api';
 import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 
 interface CartSummaryProps {
@@ -14,6 +14,7 @@ interface CartSummaryProps {
 
 export default function CartSummary({ summaryData, setCartData }: CartSummaryProps) {
     const [inputValue, setInputValue] = useState('');
+    const [appliedDiscount, setAppliedDiscount] = useState<DiscountCode[]>([]);
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
@@ -26,9 +27,18 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
         try {
             const newCart = await updateDiscountApi(cartId, request);
             setCartData(newCart);
+            const discountDetailsPromises = newCart.discountCodes.map(async (discount) => {
+                return getDiscountByIdApi(discount.discountCode.id);
+            });
+
+            const appliedDiscounts = await Promise.all(discountDetailsPromises);
+            setAppliedDiscount(appliedDiscounts);
+
             dispatch(setCart(newCart));
         } catch (error) {
             console.log(error);
+        } finally {
+            setInputValue('');
         }
     };
 
@@ -56,6 +66,11 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
                         Redeem
                     </button>
                 </div>
+                {appliedDiscount.map((discount) => (
+                    <p className="isApplied" key={discount.id}>
+                        {discount.name['en-US']} is applied
+                    </p>
+                ))}
             </div>
             <div className="cart-price">
                 <span>Subtotal</span>
