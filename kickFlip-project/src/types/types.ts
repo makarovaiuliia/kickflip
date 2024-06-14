@@ -31,6 +31,12 @@ export enum DefaultCartItem {
     ItemDescription = 'Awesome sneakers',
 }
 
+export enum UpdateActions {
+    ChangeQty = 'changeLineItemQuantity',
+    RemoveItem = 'removeLineItem',
+    AddItem = 'addLineItem',
+}
+
 export type TUser = {
     email?: string;
     firstName?: string;
@@ -117,7 +123,7 @@ export interface AddNewAddressForm {
 export interface AddNewAddressFormRequest {
     id?: string;
     version?: number;
-    adresses?: TAddress[];
+    addresses?: TAddress[];
     addressId?: string;
     data?: AddNewAddressForm;
 }
@@ -137,7 +143,7 @@ export interface UpdateUserAddressFormRequest {
     addressId?: string;
     data?: UpdateUserAddressForm;
     defaultCheckedBilling?: boolean;
-    defaultcheckedBillingDefault?: boolean;
+    defaultCheckedBillingDefault?: boolean;
     defaultCheckedShipping?: boolean;
     defaultCheckedShippingDefault?: boolean;
 }
@@ -372,7 +378,7 @@ export type UpdateAction = {
     lineItemId: string;
     quantity: number;
 };
-export type ChangeLineItemQuantity = {
+export type ChangeLineItem = {
     version: number;
     actions: UpdateAction[];
 };

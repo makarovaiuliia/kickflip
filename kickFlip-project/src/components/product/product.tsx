@@ -3,11 +3,10 @@ import { ProductResponse, ProductData, Price, CartResponse } from '@/types/types
 import {
     getProductsSizes,
     processVariants,
-    setBodyoverflowStyle,
+    setBodyOverflowStyle,
     getAdditionalSize,
     findVariantId,
 } from '@/utils/utils';
-
 import './product.css';
 
 import ImagesContainer from './productImages/imagesContainer';
@@ -18,9 +17,10 @@ import ModalSlider from '../modalSlider/modalSlider';
 interface ProductProps {
     productData: ProductResponse;
     cartData: CartResponse;
+    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
 }
 
-export default function Product({ productData, cartData }: ProductProps) {
+export default function Product({ productData, cartData, setCartData }: ProductProps) {
     const product: ProductData = productData.masterData.current;
     const productName: string = product.name['en-US'];
     const productDescription: string = product.description['en-US'];
@@ -51,9 +51,20 @@ export default function Product({ productData, cartData }: ProductProps) {
     const variantId = findVariantId(product.masterVariant, product.variants, selectedSize, selectedColor);
 
     let ifProductInCart = false;
+    let productQuantity: number = 0;
+    let cartItemIndex: number = 0;
 
-    if (cartData!.lineItems.find((item) => item.productId === productId && item.variant.id === variantId)) {
-        ifProductInCart = true;
+    if (cartData) {
+        cartData.lineItems.forEach((item, index) => {
+            if (item.productId === productId && item.variant.id === variantId) {
+                ifProductInCart = true;
+                productQuantity = item.quantity;
+                cartItemIndex = index;
+            }
+        });
+        // if (cartData.lineItems.find((item) => item.productId === productId && item.variant.id === variantId)) {
+        //     ifProductInCart = true;
+        // }
     }
 
     useEffect(() => {
@@ -66,8 +77,7 @@ export default function Product({ productData, cartData }: ProductProps) {
     }, []);
 
     const modalContent = <ModalSlider sliderImages={images} />;
-    setBodyoverflowStyle(isModalOpen);
-
+    setBodyOverflowStyle(isModalOpen);
     return (
         <>
             <div className="product-wrapper">
@@ -97,7 +107,10 @@ export default function Product({ productData, cartData }: ProductProps) {
                     }}
                     isMobile={isMobile}
                     cartData={cartData!}
+                    productQuantity={productQuantity}
                     ifProductInCart={ifProductInCart}
+                    cartItemIndex={cartItemIndex}
+                    setCartData={setCartData}
                 />
             </div>
             {isModalOpen && <ModalWindow content={modalContent} closeModal={setIsModalOpen} open={isModalOpen} />}

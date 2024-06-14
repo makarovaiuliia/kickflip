@@ -48,12 +48,12 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
     return response;
 });
 
-export const signUpUser = createAsyncThunk('user/register', async (data: SignUpDataForm) => {
-    const response = await signUpUserApi(data);
+export const signUpUser = createAsyncThunk('user/register', async (data: { data: SignUpDataForm; cartId: string }) => {
+    const response = await signUpUserApi(data.data, data.cartId);
     return response;
 });
 
-export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
+export const updateUserPassword = createAsyncThunk('user/updatePassword', async (data: UpdatePasswordForm) => {
     const response = await updateUserPasswordApi(data);
     return response;
 });

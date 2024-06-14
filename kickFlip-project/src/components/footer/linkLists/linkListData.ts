@@ -4,19 +4,16 @@ export interface LinkData {
 }
 
 export const catalog: LinkData[] = [
-    { title: 'Mens', link: '/products/men' },
-    { title: 'Women', link: '/products/women' },
-    { title: 'Kids', link: '/products/kids' },
+    { title: 'Mens', link: '/catalog/products/men' },
+    { title: 'Women', link: '/catalog/products/women' },
+    { title: 'Kids', link: '/catalog/products/kids' },
 ];
 
 export const discount: LinkData[] = [
-    { title: 'Outlet', link: '/outlet' },
-    { title: 'Outlet Men', link: '/outlet/men' },
-    { title: 'Outlet Women', link: '/outlet/women' },
-    { title: 'Outlet Kids', link: '/outlet/kids' },
+    { title: 'Outlet', link: '/catalog/outlet' },
+    { title: 'Outlet Men', link: '/catalog/outlet/men' },
+    { title: 'Outlet Women', link: '/catalog/outlet/women' },
+    { title: 'Outlet Kids', link: '/catalog/outlet/kids' },
 ];
 
-export const company: LinkData[] = [
-    { title: 'About Us', link: '/about-us' },
-    { title: 'About Shop', link: '/about-company' },
-];
+export const company: LinkData[] = [{ title: 'About Us', link: '/about-us' }];

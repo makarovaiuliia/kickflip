@@ -1,13 +1,12 @@
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ProductProjected } from '@/types/types';
+import { ProductProjected, UpdateActions } from '@/types/types';
 import './card.css';
 import { findVariantId, getImageFromEachColor, processVariants } from '@/utils/utils';
 import { getAllCategories } from '@/services/sneakersSlice';
 import { useDispatch, useSelector } from '@/services/store';
 import AddToCartForm from './addToCartForm/addToCartForm';
-import { addToCart, getCartId, getCartVersion } from '@/services/cartSlice';
-import { getIsAuth } from '@/services/userSlice';
+import { addToCart, createCart, getCartId, getCartItems, getCartVersion } from '@/services/cartSlice';
 
 interface CardProps {
     productInfo: ProductProjected;
@@ -18,13 +17,23 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
     // console.log(productInfo);
     const dispatch = useDispatch();
 
+    const itemsInCart = useSelector(getCartItems);
+    const alreadyInShoppingCart = itemsInCart.some((item) => {
+        return item.productId === productInfo.id;
+    });
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const { masterVariant, name, slug } = productInfo;
     const [activeImage, setActiveImage] = useState<number>(0);
+
     const { section } = useParams<{ section: string }>();
     const productCategories = useSelector(getAllCategories);
     const category = Object.keys(productCategories)
         .filter((cat) => productCategories[cat].id === productInfo.categories[0].id)[0]
         .toLowerCase();
+
+    // card info
 
     // card info
 
@@ -48,12 +57,19 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         }
     }, [selectedColors, colorMap]);
 
+    // cart functionality - add and remove
+
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
-    const isAuth = useSelector(getIsAuth);
 
     const handleAddToCart = async (event: SyntheticEvent) => {
         event.preventDefault();
+
+        setIsLoading(true);
+
+        if (!cartId) {
+            await dispatch(createCart());
+        }
 
         // product info
         const target = event.target as HTMLFormElement;
@@ -63,22 +79,23 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
 
         const data = {
-            isAuth,
             cartId,
             item: {
-                action: 'addLineItem',
+                action: UpdateActions.AddItem,
                 productId: productInfo.id,
                 variantId,
             },
             cartVersion,
         };
-        dispatch(addToCart(data));
+
+        await dispatch(addToCart(data));
+        setIsLoading(false);
     };
 
     return (
         <div className="card">
             <Link
-                to={`/${discountPrice ? 'outlet' : section}/${category}/${productInfo.id}/${slug['en-US']}`}
+                to={`/catalog/${discountPrice ? 'outlet' : section}/${category}/${productInfo.id}/${slug['en-US']}`}
                 className="image-link"
             >
                 <img src={images[activeImage][0]} alt="ProductImage" className="card_image" />
@@ -113,7 +130,12 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                     <p className="card_price_old">{`$ ${price}`}</p>
                 </div>
             )}
-            <AddToCartForm productInfo={productInfo} handleAddToCart={handleAddToCart} />
+            <AddToCartForm
+                productInfo={productInfo}
+                handleAddToCart={handleAddToCart}
+                alreadyInShoppingCart={alreadyInShoppingCart}
+                isLoading={isLoading}
+            />
         </div>
     );
 }

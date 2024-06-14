@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById, getCartbyId } from '@/utils/kickflip-api';
+import { getProductById, getCartById } from '@/utils/kickflip-api';
 import { responsesErrorsHandler } from '@/utils/utils';
 import { ProductResponse, CartResponse } from '@/types/types';
 import Product from '@/components/product/product';
@@ -32,7 +32,7 @@ export default function ProductPage() {
         const fetchCartItems = async () => {
             try {
                 if (idCart) {
-                    const data = await getCartbyId(idCart);
+                    const data = await getCartById(idCart);
                     setCartData(data);
                 }
             } catch (error) {
@@ -86,7 +86,7 @@ export default function ProductPage() {
             {productData ? (
                 <>
                     <BreadCrumbs crumbs={breadCrumbs} />
-                    <Product productData={productData} cartData={cartData!} />
+                    <Product productData={productData} cartData={cartData!} setCartData={setCartData} />
                 </>
             ) : productError ? (
                 <>

@@ -173,9 +173,9 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
     return categoryData;
 };
 
-export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
+export const setBodyOverflowStyle = (shouldBeHide: boolean) => {
     let overflowStyle: string;
-    if (shoulBeHide) {
+    if (shouldBeHide) {
         overflowStyle = 'hidden';
     } else {
         overflowStyle = '';

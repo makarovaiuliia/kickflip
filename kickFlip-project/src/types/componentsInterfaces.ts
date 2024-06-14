@@ -42,4 +42,7 @@ export interface DetailsContainerProps {
     isMobile: boolean;
     cartData: CartResponse;
     ifProductInCart: boolean;
+    productQuantity: number;
+    cartItemIndex: number;
+    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
 }

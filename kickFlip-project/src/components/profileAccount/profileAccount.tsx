@@ -1,5 +1,5 @@
 import './profileAccount.css';
-import ChangeUserDataForm from '../form/changeUserDataForm/chageUserDataForm';
+import ChangeUserDataForm from '../form/changeUserDataForm/changeUserDataForm';
 
 export default function ProfileAccount(): JSX.Element {
     return (
