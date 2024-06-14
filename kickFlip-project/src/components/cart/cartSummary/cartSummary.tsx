@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { CartResponse, DefaultCartItem } from '@/types/types';
 import { getFormatPrice } from '@/utils/utils';
 import './cartSummary.css';
+import ModalWindow from '@/components/modalWindow/modalWindow';
+import PlaceOrder from '../placeOrder/placeOrder';
 
 interface CartSummaryProps {
     summaryData: CartResponse;
@@ -9,6 +11,7 @@ interface CartSummaryProps {
 
 export default function CartSummary({ summaryData }: CartSummaryProps) {
     const [inputValue, setInputValue] = useState('');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -43,9 +46,10 @@ export default function CartSummary({ summaryData }: CartSummaryProps) {
                 <span>Total</span>
                 <span>${+getFormatPrice(summaryData.totalPrice) + +DefaultCartItem.ShippingCost}</span>
             </div>
-            <button className="send-order-btn" type="submit">
-                Checkout
+            <button className="send-order-btn" type="submit" onClick={() => setIsOpen(true)}>
+                Place your Order
             </button>
+            {isOpen && <ModalWindow content={<PlaceOrder />} closeModal={() => setIsOpen(false)} open={isOpen} />}
         </div>
     );
 }
