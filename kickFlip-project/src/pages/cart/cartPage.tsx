@@ -30,7 +30,7 @@ export default function CartPage(): JSX.Element {
         fetchCartItems();
     }, [id]);
     return (
-        <div className="main-wrapper cart-page-wrapper">
+        <div className="main-wrapper">
             {cartData ? (
                 <Cart cartData={cartData} setCartData={setCartData} />
             ) : cartError ? (
