@@ -1,0 +1,25 @@
+.empty-cart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.empty-cart-title {
+    font-family: var(--second-family);
+    font-size: 4rem;
+}
+
+.empty-cart-text {
+    font-size: 2rem;
+}
+
+.back-to-catalog-link {
+    background-color: var(--electric-orange);
+    color: var(--white);
+    padding: 8px 16px;
+}
+
+.back-link-text {
+    font-size: 1.5rem;
+}

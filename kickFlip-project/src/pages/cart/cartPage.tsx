@@ -6,10 +6,13 @@ import { getCartbyId } from '@/utils/kickflip-api';
 import Loader from '@/components/loader/loader';
 import Cart from '@/components/cart/cart';
 import { getCartId } from '@/services/cartSlice';
+import EmptyCart from '@/components/emptyCart/emptyCart';
 
 export default function CartPage(): JSX.Element {
     const [cartData, setCartData] = useState<CartResponse | null>();
     const [cartError, setCartError] = useState('');
+    const [isCartEmpty, setCartIsEmpty] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const id: string = useSelector(getCartId);
 
@@ -19,11 +22,14 @@ export default function CartPage(): JSX.Element {
                 if (id) {
                     const data = await getCartbyId(id);
                     setCartData(data);
+                    setCartIsEmpty(!data.lineItems.length);
                 }
             } catch (error) {
                 if (error) {
                     responsesErrorsHandler(error, setCartError);
                 }
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -31,10 +37,16 @@ export default function CartPage(): JSX.Element {
     }, [id]);
     return (
         <div className="main-wrapper cart-page-wrapper">
-            {cartData ? (
-                <Cart cartData={cartData} setCartData={setCartData} />
+            {loading ? (
+                <Loader />
             ) : cartError ? (
                 <div>{cartError}</div>
+            ) : cartData ? (
+                isCartEmpty ? (
+                    <EmptyCart />
+                ) : (
+                    <Cart cartData={cartData} setCartData={setCartData} />
+                )
             ) : (
                 <Loader />
             )}
