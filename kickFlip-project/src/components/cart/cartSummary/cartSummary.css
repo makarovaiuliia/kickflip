@@ -86,3 +86,9 @@
 .send-order-btn:hover {
     background: var(--deep-blue);
 }
+
+@media (width < 450px) {
+    .summary-wrapper {
+        padding: 1.5rem;
+    }
+}
