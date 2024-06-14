@@ -9,6 +9,7 @@ import {
     ErrorMessage,
     PriceValue,
     Attributes,
+    LineItem,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -217,10 +218,25 @@ export const findVariantId = (
     return variant[0].id;
 };
 
-export const getFormatPrice = (price: PriceValue): string => {
-    return `${price.centAmount / 10 ** price.fractionDigits}`;
+export const getFormatPrice = (price: PriceValue): number => {
+    return price.centAmount / 10 ** price.fractionDigits;
 };
 
 export const findAttr = (attr: string, array: Attributes[]) => {
     return array.find((item) => item.name === attr);
+};
+
+export const getPriceWithoutDiscount = (products: LineItem[]): number => {
+    return products.reduce((acc, item) => {
+        return item.price.value.centAmount * item.quantity + acc;
+    }, 0);
+};
+
+export const getOldPrice = (products: LineItem[]): PriceValue => {
+    return {
+        type: 'centPrecision',
+        currencyCode: 'USD',
+        centAmount: getPriceWithoutDiscount(products),
+        fractionDigits: 2,
+    };
 };

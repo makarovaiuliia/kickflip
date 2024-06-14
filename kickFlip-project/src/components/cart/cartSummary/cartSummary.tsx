@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { CartResponse, DefaultCartItem, UpdateActions } from '@/types/types';
-import { getFormatPrice } from '@/utils/utils';
+import { getFormatPrice, getOldPrice, getPriceWithoutDiscount } from '@/utils/utils';
 import './cartSummary.css';
 import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
 import { updateDiscountApi } from '@/utils/kickflip-api';
+import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 
 interface CartSummaryProps {
     summaryData: CartResponse;
@@ -58,7 +59,14 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
             </div>
             <div className="cart-price">
                 <span>Subtotal</span>
-                <span>${getFormatPrice(summaryData.totalPrice)}</span>
+                <span>
+                    {summaryData.discountOnTotalPrice ||
+                    summaryData.totalPrice.centAmount !== getPriceWithoutDiscount(summaryData.lineItems) ? (
+                        <OldNewPrise oldPrice={getOldPrice(summaryData.lineItems)} newPrice={summaryData.totalPrice} />
+                    ) : (
+                        <span>${getFormatPrice(summaryData.totalPrice)}</span>
+                    )}
+                </span>
             </div>
             <div className="cart-price">
                 <span>Delivery</span>
