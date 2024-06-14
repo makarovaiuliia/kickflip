@@ -19,7 +19,7 @@ export default function Promocodes({ discounts }: PromocodesProps): JSX.Element 
         navigator.clipboard.writeText(textToCopy).then(() => {
             target.textContent = 'Copied!';
             setTimeout(() => {
-                target.textContent = 'newToKickFlip';
+                target.textContent = textToCopy;
             }, 2000);
         });
     };
