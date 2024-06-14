@@ -17,7 +17,6 @@
 .content-wrapper {
     position: relative;
     min-width: 350px;
-    min-height: 60svh;
     display: flex;
     justify-content: center;
     align-items: center;

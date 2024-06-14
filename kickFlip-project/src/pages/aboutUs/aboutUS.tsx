@@ -1,43 +1,43 @@
 import './aboutUs.css';
 
-import gallery1 from '../../images/galery-1.png';
-import gallery2 from '../../images/galery-2.png';
-import gallery3 from '../../images/galery-3.png';
+import gallery1 from '../../images/gallery-1.png';
+import gallery2 from '../../images/gallery-2.png';
+import gallery3 from '../../images/gallery-3.png';
 
 import Pavel from '../../images/pavel.jpg';
 import Sveta from '../../images/sveta.jpeg';
-import Iuliia from '../../images/uliia.jpeg';
+import Iuliia from '../../images/iuliia.jpeg';
 
-import moji1 from '../../images/moji-ok-hand.png';
-import moji2 from '../../images/moji-hand-with-flag.png';
-import moji3 from '../../images/moji-hand-with-magnifying-glass.png';
-import moji4 from '../../images/moji-hand-with-ring.png';
+import icon1 from '../../images/icon-ok-hand.png';
+import icon2 from '../../images/icon-hand-with-flag.png';
+import icon3 from '../../images/icon-hand-with-magnifying-glass.png';
+import icon4 from '../../images/icon-hand-with-ring.png';
 
 import rsschool from '../../assets/icons/rs_school_js.svg';
 
-import ColoborationItem from '@/components/coloborationItem/coloborationItem';
+import CollaborationItem from '@/components/collaborationItem/collaborationItem';
 import AboutUsTeamMember from '@/components/aboutUsTeamMember/aboutUsTeamMember';
 
-const ColoborationItems = [
+const CollaborationItems = [
     {
-        coloborationImage: moji1,
-        coloborationHeading: 'Quality first',
-        coloborationText: 'Minimum bugs in the project',
+        collaborationImage: icon1,
+        collaborationHeading: 'Quality first',
+        collaborationText: 'Minimum bugs in the project',
     },
     {
-        coloborationImage: moji2,
-        coloborationHeading: 'High performance',
-        coloborationText: 'Timely completion of tasks',
+        collaborationImage: icon2,
+        collaborationHeading: 'High performance',
+        collaborationText: 'Timely completion of tasks',
     },
     {
-        coloborationImage: moji3,
-        coloborationHeading: 'Result orientation',
-        coloborationText: 'Completing tasks for 200%',
+        collaborationImage: icon3,
+        collaborationHeading: 'Result orientation',
+        collaborationText: 'Completing tasks for 200%',
     },
     {
-        coloborationImage: moji4,
-        coloborationHeading: 'Faith in success',
-        coloborationText: 'Confidence in the result',
+        collaborationImage: icon4,
+        collaborationHeading: 'Faith in success',
+        collaborationText: 'Confidence in the result',
     },
 ];
 
@@ -87,7 +87,7 @@ const TeamMembers = [
         description:
             'First of all, I want to gain new knowledge, skills and experience. I am sure they will be useful to me in the future. A good achievement will be successful completion of training at all stages and getting a new job. I am sure that I will succeed.',
         contributions: [
-            'Commercetools project and api client setup;',
+            'CommerceTools project and api client setup;',
             'Navigation and Header implementation;',
             'Routing implementation;',
             'Display user profile information;',
@@ -107,7 +107,7 @@ export default function AboutUsPage(): JSX.Element {
                         Kickflip shop by WebStore Warriors<span className="text-colored">.</span>{' '}
                     </h2>
                     <p className="section-content-text">
-                        World reknowned as one of the best stockists of exclusive, stylish footwear and streetwear.
+                        World renowned as one of the best stockists of exclusive, stylish footwear and streetwear.
                         Welcome to Kickflip.
                     </p>
                     <p className="section-content-text">
@@ -150,12 +150,12 @@ export default function AboutUsPage(): JSX.Element {
                         WebStore Warriors collaboration<span className="text-colored">.</span>{' '}
                     </h2>
                     <div className="collaboration-list">
-                        {ColoborationItems.map((item) => (
-                            <ColoborationItem
-                                coloborationImage={item.coloborationImage}
-                                coloborationHeading={item.coloborationHeading}
-                                coloborationText={item.coloborationText}
-                                key={item.coloborationImage}
+                        {CollaborationItems.map((item) => (
+                            <CollaborationItem
+                                collaborationImage={item.collaborationImage}
+                                collaborationHeading={item.collaborationHeading}
+                                collaborationText={item.collaborationText}
+                                key={item.collaborationImage}
                             />
                         ))}
                     </div>

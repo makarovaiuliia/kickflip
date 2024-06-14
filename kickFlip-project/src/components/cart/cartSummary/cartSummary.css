@@ -33,7 +33,8 @@
     height: 40px;
 }
 
-.promo-button {
+.promo-button,
+.confirm-button {
     width: 120px;
     height: 40px;
     background: var(--deep-blue);
@@ -46,7 +47,8 @@
     transition: all 0.3s;
 }
 
-.promo-button:hover {
+.promo-button:hover,
+.confirm-button--no:hover {
     background: var(--electric-orange);
 }
 

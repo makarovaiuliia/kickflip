@@ -321,7 +321,7 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
             });
         }
     }
-    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
+    if (data.defaultCheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
         if (data.data?.isDefaultBillingAddress === true) {
             dataRequest.actions.push({
                 action: 'setDefaultBillingAddress',
@@ -342,7 +342,7 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
             });
         }
     }
-    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
+    if (data.defaultCheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
         if (data.data?.isDefaultShippingAddress === true) {
             dataRequest.actions.push({
                 action: 'setDefaultShippingAddress',
@@ -410,7 +410,7 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((res) => {
-            const targetAdress = res.addresses[res.addresses.length - 1];
+            const targetAddress = res.addresses[res.addresses.length - 1];
             const dataRequestN: NewAddressAction = {
                 version: data.version! + 1,
                 actions: [],
@@ -418,31 +418,31 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
             if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === false) {
                 dataRequestN.actions.push({
                     action: 'addShippingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             } else if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultShippingAddress',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
                 dataRequestN.actions.push({
                     action: 'addShippingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             }
             if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === false) {
                 dataRequestN.actions.push({
                     action: 'addBillingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             } else if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultBillingAddress',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
                 dataRequestN.actions.push({
                     action: 'addBillingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             }
             return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
@@ -454,7 +454,7 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
                 body: JSON.stringify(dataRequestN),
             });
         })
-        .then((resul) => checkResponse<TUserResponse>(resul))
+        .then((result) => checkResponse<TUserResponse>(result))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
@@ -605,7 +605,7 @@ export const getActiveCartApi = async () => {
     return data;
 };
 
-export const getCartbyId = async (cartId: string) => {
+export const getCartById = async (cartId: string) => {
     const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         headers: {
             authorization: `Bearer ${getCookie('accessToken')}`,
@@ -645,6 +645,17 @@ export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeL
         body: JSON.stringify(updateLineItemQuantity),
     });
 
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const deleteCartApi = async (cartId: string, cartVersion: number) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}?version=${cartVersion}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
     const data = checkResponse<CartResponse>(response);
     return data;
 };
