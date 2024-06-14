@@ -18,7 +18,7 @@ interface CartProps {
 
 export default function Cart({ cartData, setCartData }: CartProps) {
     const [showConfirm, setShowConfirm] = useState(false);
-    const [deletingError, setDelitingError] = useState('');
+    const [deletingError, setDeletingError] = useState('');
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export default function Cart({ cartData, setCartData }: CartProps) {
             setCartData(newCart);
         } catch (error) {
             if (error) {
-                responsesErrorsHandler(error, setDelitingError);
+                responsesErrorsHandler(error, setDeletingError);
             }
         } finally {
             setShowConfirm(false);
