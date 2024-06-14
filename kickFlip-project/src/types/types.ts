@@ -382,3 +382,25 @@ export type ChangeLineItem = {
     version: number;
     actions: UpdateAction[];
 };
+
+export type CartDiscount = {
+    typeId: string;
+    id: string;
+};
+
+export interface DiscountCode {
+    id: string;
+    version: number;
+    code: string;
+    name: Text;
+    cartDiscounts: CartDiscount[];
+    isActive: boolean;
+}
+
+export interface DiscountCodeResponse {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: DiscountCode[];
+}

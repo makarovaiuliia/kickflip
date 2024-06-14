@@ -21,6 +21,7 @@ import {
     AddItemToCartBody,
     TUser,
     ChangeLineItem,
+    DiscountCodeResponse,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
@@ -657,5 +658,11 @@ export const deleteCartApi = async (cartId: string, cartVersion: number) => {
         },
     });
     const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountCodeApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes`);
+    const data = checkResponse<DiscountCodeResponse>(response);
     return data;
 };
