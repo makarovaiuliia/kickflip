@@ -1,0 +1,43 @@
+.confirm-wrapper {
+    background-color: var(--smoke-grey);
+    width: 100%;
+    font-family: var(--second-family);
+    font-size: 1.6rem;
+    padding: 30px;
+    font-weight: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: center;
+    max-inline-size: 450px;
+    text-align: center;
+}
+
+.confirm_attention {
+    inline-size: 4rem;
+    block-size: 4rem;
+}
+
+.confirm-title {
+    margin-bottom: -1rem;
+    font-size: 2.4rem;
+}
+
+.confirm-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.confirm-button {
+    width: 100%;
+}
+
+.confirm-button--yes {
+    background: var(--electric-orange);
+}
+
+.confirm-button--yes:hover {
+    background: var(--deep-blue);
+}

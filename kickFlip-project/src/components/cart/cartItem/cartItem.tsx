@@ -7,7 +7,7 @@ import ProductPrices from '@/components/product/productDetails/productPrice';
 import { getProductImg, updateCart } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantityCounter';
 import { getCartId, setCart } from '@/services/cartSlice';
-import RemoveItemBtn from '../removeItemBtn/removeItemBtn';
+import RemoveItemBtn from '../removeIBtn/removeItemBtn';
 
 interface CartItemProps {
     itemData: LineItem;

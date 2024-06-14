@@ -1,4 +1,4 @@
-import './removeItemBtn.css';
+import './removeBtn.css';
 
 interface RemoveItemBtnProps {
     onclick: () => void;
