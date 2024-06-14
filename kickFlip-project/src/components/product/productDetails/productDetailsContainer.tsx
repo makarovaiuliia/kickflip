@@ -26,8 +26,6 @@ export default function DetailsContainer({
     setCartData,
     handleAddToCart,
 }: DetailsContainerProps) {
-    console.log(cartData);
-    console.log(productQuantity);
     const cartId = useSelector(getCartId);
     const dispatch = useDispatch();
     const [cartError, setCartError] = useState('');
@@ -58,11 +56,9 @@ export default function DetailsContainer({
 
     const handleClick = () => {
         if (ifProductInCart === true) {
-            console.log('Remove from cart');
             handleDeleteFromCart(productQuantity, UpdateActions.RemoveItem);
         } else {
             handleAddToCart();
-            console.log('Add to cart');
         }
     };
 

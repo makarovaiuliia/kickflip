@@ -9,6 +9,7 @@ import {
 } from '@/utils/utils';
 import { useDispatch, useSelector } from '@/services/store';
 import { getCartId, addToCart, getCartVersion } from '@/services/cartSlice';
+import { getCartById } from '@/utils/kickflip-api';
 
 import './product.css';
 
@@ -21,9 +22,10 @@ interface ProductProps {
     productData: ProductResponse;
     cartData: CartResponse;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
+    idCart: string;
 }
 
-export default function Product({ productData, cartData, setCartData }: ProductProps) {
+export default function Product({ productData, cartData, setCartData, idCart }: ProductProps) {
     const product: ProductData = productData.masterData.current;
     const productName: string = product.name['en-US'];
     const productDescription: string = product.description['en-US'];
@@ -69,9 +71,6 @@ export default function Product({ productData, cartData, setCartData }: ProductP
                 cartItemIndex = index;
             }
         });
-        // if (cartData.lineItems.find((item) => item.productId === productId && item.variant.id === variantId)) {
-        //     ifProductInCart = true;
-        // }
     }
 
     const handleAddToCart = async () => {
@@ -88,6 +87,8 @@ export default function Product({ productData, cartData, setCartData }: ProductP
         };
 
         await dispatch(addToCart(data));
+        const newData = await getCartById(idCart);
+        setCartData(newData);
     };
 
     useEffect(() => {

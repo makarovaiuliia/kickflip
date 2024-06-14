@@ -23,8 +23,6 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
     const cartId = useSelector(getCartId);
     const dispatch = useDispatch();
 
-    console.log(itemData);
-
     useEffect(() => {
         async function ImgSrc() {
             if (itemVariant.images.length !== 0) {

@@ -86,7 +86,7 @@ export default function ProductPage() {
             {productData ? (
                 <>
                     <BreadCrumbs crumbs={breadCrumbs} />
-                    <Product productData={productData} cartData={cartData!} setCartData={setCartData} />
+                    <Product productData={productData} cartData={cartData!} setCartData={setCartData} idCart={idCart} />
                 </>
             ) : productError ? (
                 <>
