@@ -4,7 +4,7 @@ import { CartResponse, DefaultCartItem, UpdateActions } from '@/types/types';
 import { getFormatPrice } from '@/utils/utils';
 import './cartSummary.css';
 import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
-import { applyDiscountApi } from '@/utils/kickflip-api';
+import { updateDiscountApi } from '@/utils/kickflip-api';
 
 interface CartSummaryProps {
     summaryData: CartResponse;
@@ -23,7 +23,7 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
             actions: [{ action: UpdateActions.ApplayDiscount, code: inputValue }],
         };
         try {
-            const newCart = await applyDiscountApi(cartId, request);
+            const newCart = await updateDiscountApi(cartId, request);
             setCartData(newCart);
             dispatch(setCart(newCart));
         } catch (error) {

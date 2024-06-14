@@ -4,7 +4,7 @@ import { CartResponse, UpdateCart, DefaultCartItem, LineItem, UpdateActions } fr
 import './cartItem.css';
 import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
-import { getProductImg, updateCart } from '@/utils/kickflip-api';
+import { getProductImg, updateCart, updateDiscountApi } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantityCounter';
 import { getCartId, setCart } from '@/services/cartSlice';
 import RemoveItemBtn from '../removeIBtn/removeItemBtn';
@@ -54,7 +54,23 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
             ],
         };
         try {
-            const newCart = await updateCart(`${cartId}`, changedData);
+            let newCart = await updateCart(cartId, changedData);
+            if (newCart.lineItems.length === 0 && newCart.discountCodes.length > 0) {
+                const removeDiscountsActions = newCart.discountCodes.map((discountCode) => ({
+                    action: UpdateActions.DeleteDiscount,
+                    discountCode: {
+                        typeId: discountCode.discountCode.typeId,
+                        id: discountCode.discountCode.id,
+                    },
+                }));
+
+                const removeDiscountsRequest = {
+                    version: newCart.version,
+                    actions: removeDiscountsActions,
+                };
+
+                newCart = await updateDiscountApi(cartId, removeDiscountsRequest);
+            }
             setCartData(newCart);
             dispatch(setCart(newCart));
         } catch (error) {

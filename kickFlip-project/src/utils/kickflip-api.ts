@@ -671,7 +671,7 @@ export const getDiscountCodeApi = async () => {
     return data;
 };
 
-export const applyDiscountApi = async (cartId: string, appliedDiscounts: UpdateCart) => {
+export const updateDiscountApi = async (cartId: string, appliedDiscounts: UpdateCart) => {
     const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {

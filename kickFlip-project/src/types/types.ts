@@ -36,6 +36,7 @@ export enum UpdateActions {
     RemoveItem = 'removeLineItem',
     AddItem = 'addLineItem',
     ApplayDiscount = 'addDiscountCode',
+    DeleteDiscount = 'removeDiscountCode',
 }
 
 export type TUser = {
@@ -384,10 +385,17 @@ export type UpdateDiscounts = {
     action: string;
     code: string;
 };
+export type DeleteDiscounts = {
+    action: string;
+    discountCode: {
+        typeId: string;
+        id: string;
+    };
+};
 
 export type UpdateCart = {
     version: number;
-    actions: UpdateAction[] | UpdateDiscounts[];
+    actions: UpdateAction[] | UpdateDiscounts[] | DeleteDiscounts[];
 };
 
 export type CartDiscount = {
