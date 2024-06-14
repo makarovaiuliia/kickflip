@@ -71,9 +71,9 @@ function App() {
         <Routes>
             <Route path="/" element={<BasicLayoutPage />}>
                 <Route index element={<HomePage />} />
-                <Route path="/:section" element={<ProductsPage />} />
-                <Route path="/:section/:category/:id/:slug" element={<ProductPage />} />
-                <Route path="/:section/:category" element={<ProductsPage />} />
+                <Route path="catalog/:section" element={<ProductsPage />} />
+                <Route path="catalog/:section/:category/:id/:slug" element={<ProductPage />} />
+                <Route path="catalog/:section/:category" element={<ProductsPage />} />
                 <Route path="about-us" element={<AboutUsPage />} />
                 <Route
                     path="profile/*"

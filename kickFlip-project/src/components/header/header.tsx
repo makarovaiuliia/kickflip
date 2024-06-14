@@ -62,7 +62,7 @@ export default function Header() {
                                 className={({ isActive }) =>
                                     isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
                                 }
-                                to="/products"
+                                to="/catalog/products"
                                 onClick={closeMenu}
                             >
                                 Catalog
@@ -71,7 +71,7 @@ export default function Header() {
                                 className={({ isActive }) =>
                                     isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
                                 }
-                                to="/outlet"
+                                to="/catalog/outlet"
                                 onClick={closeMenu}
                             >
                                 Outlet
