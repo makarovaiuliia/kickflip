@@ -16,7 +16,7 @@ export default function EmptyCart() {
                 <p>Looks like you haven’t added any kicks yet.</p>
                 <p>Check what we’ve got for you!</p>
             </div>
-            <Link to="/products" className="back-to-catalog-link">
+            <Link to="/catalog/products" className="back-to-catalog-link">
                 Back to Shopping
             </Link>
         </div>

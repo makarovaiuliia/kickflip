@@ -36,11 +36,9 @@ export default function CartPage(): JSX.Element {
         fetchCartItems();
     }, [id]);
     return (
-
         <div className="main-wrapper cart-page-wrapper">
             {loading ? (
                 <Loader />
-     
             ) : cartError ? (
                 <div>{cartError}</div>
             ) : cartData ? (

@@ -45,7 +45,7 @@ export default function HomePage(): JSX.Element {
                             Europe’s finest streetwear outlet. With exclusive kicks from the world’s top brands.
                         </p>
                         <div className="hero_link-container">
-                            <Link to="/products" className="hero_link">
+                            <Link to="/catalog/products" className="hero_link">
                                 Shop now
                             </Link>
                             <Link to="/about-us" className="hero_link hero_link-light">
