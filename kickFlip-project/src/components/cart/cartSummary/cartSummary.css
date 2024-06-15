@@ -15,6 +15,9 @@
 
 .promo {
     margin-bottom: 3.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .promo-title {
