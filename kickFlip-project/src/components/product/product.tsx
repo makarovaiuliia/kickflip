@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ProductResponse, ProductData, Price, CartResponse, UpdateActions } from '@/types/types';
+import { ProductResponse, ProductData, Price, UpdateActions, LineItem } from '@/types/types';
 import {
     getProductsSizes,
     processVariants,
@@ -9,7 +9,6 @@ import {
 } from '@/utils/utils';
 import { useDispatch, useSelector } from '@/services/store';
 import { getCartId, addToCart, getCartVersion } from '@/services/cartSlice';
-import { getCartById } from '@/utils/kickflip-api';
 
 import './product.css';
 
@@ -20,12 +19,10 @@ import ModalSlider from '../modalSlider/modalSlider';
 
 interface ProductProps {
     productData: ProductResponse;
-    cartData: CartResponse;
-    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
-    idCart: string;
+    itemsInCart: LineItem[];
 }
 
-export default function Product({ productData, cartData, setCartData, idCart }: ProductProps) {
+export default function Product({ productData, itemsInCart }: ProductProps) {
     const product: ProductData = productData.masterData.current;
     const productName: string = product.name['en-US'];
     const productDescription: string = product.description['en-US'];
@@ -63,8 +60,8 @@ export default function Product({ productData, cartData, setCartData, idCart }: 
     let productQuantity: number = 0;
     let cartItemIndex: number = 0;
 
-    if (cartData) {
-        cartData.lineItems.forEach((item, index) => {
+    if (itemsInCart) {
+        itemsInCart.forEach((item, index) => {
             if (item.productId === productId && item.variant.id === variantId) {
                 ifProductInCart = true;
                 productQuantity = item.quantity;
@@ -87,8 +84,6 @@ export default function Product({ productData, cartData, setCartData, idCart }: 
         };
 
         await dispatch(addToCart(data));
-        const newData = await getCartById(idCart);
-        setCartData(newData);
     };
 
     useEffect(() => {
@@ -130,11 +125,10 @@ export default function Product({ productData, cartData, setCartData, idCart }: 
                         openModal: setIsModalOpen,
                     }}
                     isMobile={isMobile}
-                    cartData={cartData!}
+                    itemsInCart={itemsInCart}
                     productQuantity={productQuantity}
                     ifProductInCart={ifProductInCart}
                     cartItemIndex={cartItemIndex}
-                    setCartData={setCartData}
                     handleAddToCart={handleAddToCart}
                 />
             </div>

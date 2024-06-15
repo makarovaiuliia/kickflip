@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { DetailsContainerProps } from '@/types/componentsInterfaces';
 import ProductDescription from './productDescr';
 import ProductInfo from './productInfo';
@@ -7,8 +6,7 @@ import ProductSizes from './productSizes';
 import VariantsImages from './productVariantsImages';
 import MainImage from '../productImages/mainImage';
 
-import { responsesErrorsHandler } from '@/utils/utils';
-import { getCartId, setCart } from '@/services/cartSlice';
+import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
 import { updateCart } from '@/utils/kickflip-api';
 import { ChangeLineItem, UpdateActions } from '@/types/types';
 
@@ -20,38 +18,28 @@ export default function DetailsContainer({
     imgProps,
     isMobile,
     ifProductInCart,
-    cartData,
+    itemsInCart,
     productQuantity,
     cartItemIndex,
-    setCartData,
     handleAddToCart,
 }: DetailsContainerProps) {
     const cartId = useSelector(getCartId);
+    const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
-    const [cartError, setCartError] = useState('');
 
     const handleDeleteFromCart = async (quantity: number, updateAction: string) => {
         const changedData: ChangeLineItem = {
-            version: cartData.version,
+            version: cartVersion,
             actions: [
                 {
                     action: updateAction,
-                    lineItemId: cartData.lineItems[cartItemIndex].id,
+                    lineItemId: itemsInCart[cartItemIndex].id,
                     quantity,
                 },
             ],
         };
-        try {
-            const newCart = await updateCart(`${cartId}`, changedData);
-            setCartData(newCart);
-            dispatch(setCart(newCart));
-        } catch (error) {
-            if (error) {
-                responsesErrorsHandler(error, setCartError);
-                setTimeout(() => setCartError(''), 2000);
-            }
-            if (error) console.log(cartError);
-        }
+        const newCart = await updateCart(`${cartId}`, changedData);
+        dispatch(setCart(newCart));
     };
 
     const handleClick = () => {

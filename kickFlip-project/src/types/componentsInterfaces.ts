@@ -1,4 +1,4 @@
-import { Price, Variants, CartResponse } from './types';
+import { Price, Variants, LineItem } from './types';
 
 export interface ImgProps {
     imagesSrc: string[];
@@ -40,10 +40,9 @@ export interface DetailsContainerProps {
     descrProps: ProductDescriptionProps;
     imgProps: ImgProps;
     isMobile: boolean;
-    cartData: CartResponse;
+    itemsInCart: LineItem[];
     ifProductInCart: boolean;
     productQuantity: number;
     cartItemIndex: number;
-    setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
     handleAddToCart: () => void;
 }
