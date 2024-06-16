@@ -373,6 +373,17 @@ export interface AddItemToCartAction {
     variantId: number;
 }
 
+export interface RemoveItemFromCartBody {
+    version: number;
+    actions: RemoveItemFromCartAction[];
+}
+
+export interface RemoveItemFromCartAction {
+    action: string;
+    lineItemId: string;
+    quantity: number;
+}
+
 export type UpdateAction = {
     action: string;
     lineItemId: string;

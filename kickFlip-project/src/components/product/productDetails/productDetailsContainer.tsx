@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { DetailsContainerProps } from '@/types/componentsInterfaces';
 import ProductDescription from './productDescr';
 import ProductInfo from './productInfo';
 import ProductSizes from './productSizes';
 import VariantsImages from './productVariantsImages';
 import MainImage from '../productImages/mainImage';
+import { useDispatch } from '@/services/store';
 
-import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
-import { updateCart } from '@/utils/kickflip-api';
+import { getCartId, getCartVersion, removeFromCart } from '@/services/cartSlice';
 import { ChangeLineItem, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
@@ -27,24 +27,28 @@ export default function DetailsContainer({
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
 
-    const handleDeleteFromCart = async (quantity: number, updateAction: string) => {
+    const handleDeleteFromCart = async () => {
         const changedData: ChangeLineItem = {
             version: cartVersion,
             actions: [
                 {
-                    action: updateAction,
+                    action: UpdateActions.RemoveItem,
                     lineItemId: itemsInCart[cartItemIndex].id,
-                    quantity,
+                    quantity: productQuantity,
                 },
             ],
         };
-        const newCart = await updateCart(`${cartId}`, changedData);
-        dispatch(setCart(newCart));
+
+        const requestData = {
+            cartId,
+            dataRequest: changedData,
+        };
+        await dispatch(removeFromCart(requestData));
     };
 
     const handleClick = () => {
         if (ifProductInCart === true) {
-            handleDeleteFromCart(productQuantity, UpdateActions.RemoveItem);
+            handleDeleteFromCart();
         } else {
             handleAddToCart();
         }
