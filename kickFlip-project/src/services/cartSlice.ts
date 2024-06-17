@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addToCartApi, createCartApi, getActiveCartApi, updateCart } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import { AddItemToCartAction, CartResponse, LineItem, RemoveItemFromCartBody } from '@/types/types';
+import { AddItemToCartAction, CartResponse, LineItem, UpdateCart } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -28,7 +28,7 @@ export const addToCart = createAsyncThunk('cart/addItem', async (data: AddToCart
 
 interface RemoveFromCartData {
     cartId: string;
-    dataRequest: RemoveItemFromCartBody;
+    dataRequest: UpdateCart;
 }
 
 export const removeFromCart = createAsyncThunk('cart/removeItem', async (data: RemoveFromCartData) => {

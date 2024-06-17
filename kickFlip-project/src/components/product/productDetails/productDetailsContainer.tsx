@@ -8,7 +8,7 @@ import MainImage from '../productImages/mainImage';
 import { useDispatch } from '@/services/store';
 
 import { getCartId, getCartVersion, removeFromCart } from '@/services/cartSlice';
-import { ChangeLineItem, UpdateActions } from '@/types/types';
+import { UpdateCart, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
     infoProps,
@@ -28,7 +28,7 @@ export default function DetailsContainer({
     const dispatch = useDispatch();
 
     const handleDeleteFromCart = async () => {
-        const changedData: ChangeLineItem = {
+        const changedData: UpdateCart = {
             version: cartVersion,
             actions: [
                 {
