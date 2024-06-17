@@ -635,20 +635,16 @@ export const getProductImg = async (id: string, color: string) => {
 };
 
 export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeLineItem) => {
-    try {
-        const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${getCookie('accessToken')}`,
-            },
-            body: JSON.stringify(updateLineItemQuantity),
-        });
-        const data = checkResponse<CartResponse>(response);
-        return await data;
-    } catch (error) {
-        return Promise.reject(error);
-    }
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(updateLineItemQuantity),
+    });
+    const data = checkResponse<CartResponse>(response);
+    return data;
 };
 
 export const deleteCartApi = async (cartId: string, cartVersion: number) => {

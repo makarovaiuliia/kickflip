@@ -79,6 +79,9 @@ const cartSlice = createSlice({
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;
             })
+            .addCase(addToCart.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
             .addCase(getActiveCart.fulfilled, (state, action) => {
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;

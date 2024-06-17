@@ -7,7 +7,8 @@ import { ProductResponse } from '@/types/types';
 import Product from '@/components/product/product';
 import Loader from '@/components/loader/loader';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
-import { getCartItems } from '@/services/cartSlice';
+import { clearErrorMessage, getCartError, getCartItems } from '@/services/cartSlice';
+import { useDispatch } from '@/services/store';
 
 import './productPage.css';
 
@@ -23,6 +24,27 @@ export default function ProductPage() {
     const [productError, setProductErrorError] = useState('');
 
     const itemsInCart = useSelector(getCartItems);
+
+    const cartErr = useSelector(getCartError);
+    const cartErrMessage = cartErr === 'Failed to fetch' ? 'Internet is disconected' : cartErr;
+    const [showMessage, setShowMessage] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (cartErrMessage) {
+            setShowMessage(true);
+            timer = setTimeout(() => {
+                setShowMessage(false);
+                setTimeout(() => {
+                    dispatch(clearErrorMessage());
+                }, 1000);
+            }, 5000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [cartErrMessage, dispatch]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -72,6 +94,7 @@ export default function ProductPage() {
             ) : (
                 <Loader />
             )}
+            <p className={`successful-update-message ${showMessage ? 'show' : 'hide'}`}>{cartErrMessage}</p>
         </div>
     );
 }
