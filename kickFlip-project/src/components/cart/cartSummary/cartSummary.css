@@ -14,7 +14,7 @@
 }
 
 .promo {
-    margin-bottom: 3.3rem;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -88,6 +88,10 @@
 
 .send-order-btn:hover {
     background: var(--deep-blue);
+}
+
+.discount-info {
+    min-height: 30px;
 }
 
 @media (width < 450px) {

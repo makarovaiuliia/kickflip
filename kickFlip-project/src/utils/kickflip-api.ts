@@ -23,6 +23,7 @@ import {
     UpdateCart,
     DiscountCodeResponse,
     DiscountCode,
+    ProductDetails,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
@@ -618,18 +619,29 @@ export const getCartById = async (cartId: string) => {
     return data;
 };
 
-export const getProductImg = async (id: string, color: string) => {
+export const getProductCategory = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/categories/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = (await checkResponse<CategoriesResponse>(response)).key;
+    return data;
+};
+
+export const getProductDetailsApi = async (id: string, color: string): Promise<ProductDetails | undefined> => {
     try {
         const response = await getProductById(id);
-
+        const categoryId = response.masterData.current.categories[0].id;
         const products = response.masterData.current;
         const variants = [...products.variants, products.masterVariant];
         const product = variants.find((variant) => {
             return findAttr('color', variant.attributes)?.value === color && variant.images.length !== 0;
         });
-
-        const img = product?.images[0];
-        return img;
+        const category = await getProductCategory(categoryId);
+        if (!product) return undefined;
+        const image = product.images[0];
+        return { image, category };
     } catch (error) {
         if (error instanceof Error) throw new Error(error.message);
         return undefined;

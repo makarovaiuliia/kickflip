@@ -83,12 +83,14 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
                         Redeem
                     </button>
                 </div>
-                {discountError && <p>{discountError}</p>}
-                {appliedDiscount.map((discount) => (
-                    <p className="isApplied" key={discount.id}>
-                        {discount.name['en-US']} is applied
-                    </p>
-                ))}
+                <div className="discount-info">
+                    {discountError && <p>{discountError}</p>}
+                    {appliedDiscount.map((discount) => (
+                        <p className="isApplied" key={discount.id}>
+                            {discount.name['en-US']} is applied
+                        </p>
+                    ))}
+                </div>
             </div>
             <div className="cart-price">
                 <span>Subtotal</span>
