@@ -1,0 +1,23 @@
+.filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #ffffff;
+}
+
+.filter {
+    position: sticky;
+    top: 0;
+    height: 600px;
+}
+
+@media (width < 900px) {
+    .filter-wrapper {
+        padding: 2rem;
+    }
+
+    .filter {
+        height: fit-content;
+        width: 350px;
+    }
+}

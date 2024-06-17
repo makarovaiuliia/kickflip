@@ -1,0 +1,40 @@
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 1rem;
+    width: 100%;
+    font-size: 1.3rem;
+    text-transform: capitalize;
+}
+
+.crumb-current {
+    color: var(--electric-orange);
+    cursor: default;
+}
+
+.crumb-link {
+    color: var(--ink-light);
+    text-transform: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.crumb-link:hover {
+    text-decoration: underline;
+}
+
+.crumb-separator {
+    width: 1px;
+    height: 1.5rem;
+    transform: rotate(21deg);
+    background-color: var(--ink-light);
+    cursor: default;
+}
+
+.crumb-section {
+    display: flex;
+    gap: 1.2rem;
+}
