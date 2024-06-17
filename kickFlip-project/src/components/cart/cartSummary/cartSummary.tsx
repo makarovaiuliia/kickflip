@@ -9,7 +9,6 @@ import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 import ModalWindow from '@/components/modalWindow/modalWindow';
 import PlaceOrder from '../placeOrder/placeOrder';
 
-
 interface CartSummaryProps {
     summaryData: CartResponse;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
