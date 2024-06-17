@@ -9,7 +9,6 @@ import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 import ModalWindow from '@/components/modalWindow/modalWindow';
 import PlaceOrder from '../placeOrder/placeOrder';
 
-
 interface CartSummaryProps {
     summaryData: CartResponse;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
@@ -84,12 +83,14 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
                         Redeem
                     </button>
                 </div>
-                {discountError && <p>{discountError}</p>}
-                {appliedDiscount.map((discount) => (
-                    <p className="isApplied" key={discount.id}>
-                        {discount.name['en-US']} is applied
-                    </p>
-                ))}
+                <div className="discount-info">
+                    {discountError && <p>{discountError}</p>}
+                    {appliedDiscount.map((discount) => (
+                        <p className="isApplied" key={discount.id}>
+                            {discount.name['en-US']} is applied
+                        </p>
+                    ))}
+                </div>
             </div>
             <div className="cart-price">
                 <span>Subtotal</span>
