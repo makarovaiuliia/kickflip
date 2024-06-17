@@ -23,6 +23,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
     const itemVariant = itemData.variant;
     const isDiscounted = itemVariant.prices[0].discounted;
     const itemDescription = itemVariant.attributes.find((attr) => attr.name === 'shortDescription');
+    const size = itemVariant.attributes.find((attr) => attr.name === 'size');
     const [imgSrc, setImgSrc] = useState('');
     const [productCategory, setProductCategory] = useState('');
     const cartId = useSelector(getCartId);
@@ -112,9 +113,10 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
             </div>
             <div className="item-data">
                 <div className="item-info">
-                    <h3 className="item-name">{itemData.name['en-US']}</h3>
                     <div className="item-description">
-                        {itemDescription ? itemDescription.value : DefaultCartItem.ItemDescription}
+                        <h3 className="item-name">{itemData.name['en-US']}</h3>
+                        <p>{itemDescription ? itemDescription.value : DefaultCartItem.ItemDescription}</p>
+                        <p>{size ? `Size: ${size.value}` : ''}</p>
                     </div>
                     <span className="item-price">
                         <ProductPrices priceData={itemVariant.prices[0]} />
