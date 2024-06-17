@@ -340,6 +340,7 @@ export interface LineItem {
     productId: string;
     productKey?: string;
     name: Text;
+    productSlug: Text;
     variant: Product;
     price: Price;
     quantity: number;
@@ -435,4 +436,9 @@ export interface DiscountCodeResponse {
     count: number;
     total: number;
     results: DiscountCode[];
+}
+
+export interface ProductDetails {
+    image: Image;
+    category: string;
 }

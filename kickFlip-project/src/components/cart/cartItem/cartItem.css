@@ -7,7 +7,8 @@
 }
 
 .cart-item-img-wrapper {
-    max-width: 220px;
+    position: relative;
+    width: 220px;
     height: 220px;
     overflow: hidden;
 }
