@@ -24,6 +24,7 @@ export enum StateMessage {
     UpdatedProfileAddress = 'Your address have been successfully updated',
     DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
+    ProductRemovedFromTheCart = 'Product have been successfully removed from the cart',
 }
 
 export enum DefaultCartItem {
