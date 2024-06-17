@@ -10,13 +10,33 @@ import dior from '/dior.webp';
 
 import Benefits from './benefits/benefits';
 import Categories from './categories/categories';
-import Promocode from './promocode/promocode';
+import Promocodes from './promocode/promocode';
 import data from './categories/categoryMain/categoryMainData';
+import { DiscountCodeResponse } from '@/types/types';
+import { getDiscountCodeApi } from '@/utils/kickflip-api';
+import { responsesErrorsHandler } from '@/utils/utils';
 
 export default function HomePage(): JSX.Element {
     const dispatch = useDispatch();
     const { registrationMessage } = useSelector(getUserSelector);
     const [showMessage, setShowMessage] = useState(false);
+    const [discountCodes, setDiscountCodes] = useState<DiscountCodeResponse | null>(null);
+    const [discountError, setDiscountErrorError] = useState('');
+
+    useEffect(() => {
+        const fetchDiscounts = async () => {
+            try {
+                const discountsData = await getDiscountCodeApi();
+                setDiscountCodes(discountsData);
+            } catch (error) {
+                if (error) {
+                    responsesErrorsHandler(error, setDiscountErrorError);
+                }
+            }
+        };
+
+        fetchDiscounts();
+    }, []);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -45,7 +65,7 @@ export default function HomePage(): JSX.Element {
                             Europe’s finest streetwear outlet. With exclusive kicks from the world’s top brands.
                         </p>
                         <div className="hero_link-container">
-                            <Link to="/products" className="hero_link">
+                            <Link to="/catalog/products" className="hero_link">
                                 Shop now
                             </Link>
                             <Link to="/about-us" className="hero_link hero_link-light">
@@ -58,7 +78,7 @@ export default function HomePage(): JSX.Element {
             </section>
             <Benefits />
             <Categories categories={data} />
-            <Promocode />
+            {discountCodes ? <Promocodes discounts={discountCodes.results} /> : <div>{discountError}</div>}
         </div>
     );
 }

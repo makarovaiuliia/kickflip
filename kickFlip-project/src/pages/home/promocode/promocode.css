@@ -1,7 +1,7 @@
 .promocode {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.6rem;
     text-align: center;
     align-items: center;
 }
@@ -19,9 +19,25 @@
     color: var(--electric-orange);
 }
 
+.promocodes-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    inline-size: 100%;
+    font-size: 2rem;
+    gap: 2.4rem;
+}
+
+.promocode-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 .promocode_button {
     padding: 1.6rem 3.2rem;
     color: #fff;
     background-color: var(--electric-orange);
-    max-width: 300px;
+    min-width: 250px;
+    font-size: 2rem;
 }

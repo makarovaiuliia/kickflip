@@ -70,11 +70,11 @@ export default function ProductPage() {
         },
         {
             label: section!,
-            url: `/${section}`,
+            url: `/catalog/${section}`,
         },
         {
             label: category!,
-            url: `/${section}/${category}`,
+            url: `/catalog/${section}/${category}`,
         },
         {
             label: slug!,

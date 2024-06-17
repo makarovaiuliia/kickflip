@@ -10,22 +10,22 @@ import men from '/genome.webp';
 const data: ICategoryMainData[] = [
     {
         image: men,
-        link: '/products/men',
+        link: '/catalog/products/men',
         title: 'Men',
     },
     {
         image: women,
-        link: '/products/women',
+        link: '/catalog/products/women',
         title: 'Women',
     },
     {
         image: kids,
-        link: '/products/kids',
+        link: '/catalog/products/kids',
         title: 'Kids',
     },
     {
         image: outlet,
-        link: '/products/outlet',
+        link: '/catalog/products/outlet',
         title: 'Outlet',
     },
 ];

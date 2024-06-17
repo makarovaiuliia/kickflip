@@ -16,7 +16,7 @@ import {
     clearErrorMessage,
     getSuccessMessage,
 } from '@/services/cartSlice';
-import { ChangeLineItem, UpdateActions } from '@/types/types';
+import { UpdateCart, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
     infoProps,
@@ -41,7 +41,7 @@ export default function DetailsContainer({
 
     const successRemovedMessage = useSelector(getSuccessMessage);
     const [showSuccessRemoveMessage, setSuccessRemoveMessage] = useState(false);
-
+  
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (cartErrMessage) {
@@ -75,7 +75,7 @@ export default function DetailsContainer({
     }, [successRemovedMessage, dispatch]);
 
     const handleDeleteFromCart = async () => {
-        const changedData: ChangeLineItem = {
+        const changedData: UpdateCart = {
             version: cartVersion,
             actions: [
                 {

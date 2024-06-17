@@ -4,7 +4,7 @@ export interface LinkData {
 }
 
 export const catalog: LinkData[] = [
-    { title: 'Mens', link: '/catalog/products/men' },
+    { title: 'Men', link: '/catalog/products/men' },
     { title: 'Women', link: '/catalog/products/women' },
     { title: 'Kids', link: '/catalog/products/kids' },
 ];
