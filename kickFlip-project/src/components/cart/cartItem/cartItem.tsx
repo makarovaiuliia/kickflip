@@ -115,8 +115,11 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                 <div className="item-info">
                     <div className="item-description">
                         <h3 className="item-name">{itemData.name['en-US']}</h3>
-                        <p>{itemDescription ? itemDescription.value : DefaultCartItem.ItemDescription}</p>
-                        <p>{size ? `Size: ${size.value}` : ''}</p>
+                        <p>
+                            {itemDescription ? itemDescription.value : DefaultCartItem.ItemDescription}
+                            {' - '}
+                            {size ? `size ${size.value}` : ''}
+                        </p>
                     </div>
                     <span className="item-price">
                         <ProductPrices priceData={itemVariant.prices[0]} />
