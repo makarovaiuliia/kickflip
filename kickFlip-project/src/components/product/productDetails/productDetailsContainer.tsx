@@ -8,7 +8,14 @@ import VariantsImages from './productVariantsImages';
 import MainImage from '../productImages/mainImage';
 import { useDispatch } from '@/services/store';
 
-import { getCartId, getCartVersion, removeFromCart, getCartError, clearErrorMessage } from '@/services/cartSlice';
+import {
+    getCartId,
+    getCartVersion,
+    removeFromCart,
+    getCartError,
+    clearErrorMessage,
+    getSuccessMessage,
+} from '@/services/cartSlice';
 import { ChangeLineItem, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
@@ -32,6 +39,9 @@ export default function DetailsContainer({
     const cartErrMessage = cartErr === 'Failed to fetch' ? 'Internet is disconected' : cartErr;
     const [showMessage, setShowMessage] = useState(false);
 
+    const successRemovedMessage = useSelector(getSuccessMessage);
+    const [showSuccessRemoveMessage, setSuccessRemoveMessage] = useState(false);
+
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (cartErrMessage) {
@@ -47,6 +57,22 @@ export default function DetailsContainer({
             if (timer) clearTimeout(timer);
         };
     }, [cartErrMessage, dispatch]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (successRemovedMessage) {
+            setSuccessRemoveMessage(true);
+            timer = setTimeout(() => {
+                setSuccessRemoveMessage(false);
+                setTimeout(() => {
+                    dispatch(clearErrorMessage());
+                }, 1000);
+            }, 5000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [successRemovedMessage, dispatch]);
 
     const handleDeleteFromCart = async () => {
         const changedData: ChangeLineItem = {
@@ -102,6 +128,9 @@ export default function DetailsContainer({
             </button>
             <ProductDescription description={descrProps.description} />
             <p className={`successful-update-message ${showMessage ? 'show' : 'hide'}`}>{cartErrMessage}</p>
+            <p className={`successful-update-message ${showSuccessRemoveMessage ? 'show' : 'hide'}`}>
+                {successRemovedMessage}
+            </p>
         </div>
     );
 }

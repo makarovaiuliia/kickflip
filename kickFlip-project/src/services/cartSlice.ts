@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addToCartApi, createCartApi, getActiveCartApi, updateCart } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import { AddItemToCartAction, CartResponse, LineItem, RemoveItemFromCartBody } from '@/types/types';
+import { AddItemToCartAction, CartResponse, LineItem, RemoveItemFromCartBody, StateMessage } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -41,6 +41,7 @@ interface InitialState {
     cartVersion: number;
     items: LineItem[];
     error: string | undefined;
+    successMessage: string | undefined;
 }
 
 const initialState: InitialState = {
@@ -48,6 +49,7 @@ const initialState: InitialState = {
     cartVersion: 0,
     items: [],
     error: undefined,
+    successMessage: undefined,
 };
 
 const cartSlice = createSlice({
@@ -63,6 +65,9 @@ const cartSlice = createSlice({
             state.cartId = '';
             state.cartVersion = 0;
             state.items = [];
+        },
+        clearSuccessMessage: (state) => {
+            state.error = undefined;
         },
         clearErrorMessage: (state) => {
             state.error = undefined;
@@ -90,6 +95,7 @@ const cartSlice = createSlice({
             .addCase(removeFromCart.fulfilled, (state, action) => {
                 state.cartVersion = action.payload!.version;
                 state.items = action.payload!.lineItems;
+                state.successMessage = StateMessage.ProductRemovedFromTheCart;
             })
             .addCase(removeFromCart.rejected, (state, action) => {
                 state.error = action.error.message;
@@ -99,10 +105,11 @@ const cartSlice = createSlice({
 
 export const getCartId = (state: RootState) => state.cart.cartId;
 export const getCartVersion = (state: RootState) => state.cart.cartVersion;
+export const getSuccessMessage = (state: RootState) => state.cart.successMessage;
 export const getCartItems = (state: RootState) => state.cart.items;
 export const getCartError = (state: RootState) => state.cart.error;
 
-export const { setCart, removeCart, clearErrorMessage } = cartSlice.actions;
+export const { setCart, removeCart, clearErrorMessage, clearSuccessMessage } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
