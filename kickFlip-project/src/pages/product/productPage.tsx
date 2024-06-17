@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '@/utils/kickflip-api';
@@ -6,6 +7,8 @@ import { ProductResponse } from '@/types/types';
 import Product from '@/components/product/product';
 import Loader from '@/components/loader/loader';
 import BreadCrumbs, { CrumbType } from '@/components/breadCrumbs/breadCrumbs';
+import { getCartItems } from '@/services/cartSlice';
+
 import './productPage.css';
 
 export default function ProductPage() {
@@ -18,6 +21,8 @@ export default function ProductPage() {
 
     const [productData, setProductData] = useState<ProductResponse | null>(null);
     const [productError, setProductErrorError] = useState('');
+
+    const itemsInCart = useSelector(getCartItems);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -60,7 +65,7 @@ export default function ProductPage() {
             {productData ? (
                 <>
                     <BreadCrumbs crumbs={breadCrumbs} />
-                    <Product productData={productData} />
+                    <Product productData={productData} itemsInCart={itemsInCart} />
                 </>
             ) : productError ? (
                 <div>{productError}</div>

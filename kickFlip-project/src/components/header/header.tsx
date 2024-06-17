@@ -46,116 +46,117 @@ export default function Header() {
                         <img src={logo} alt="Kickflip" />
                     </Link>
                 </div>
-                <div className={`navigation ${isOpen && 'open'}`}>
-                    <nav className="categories-nav">
-                        <div className="categories-nav-list">
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
-                                }
-                                to="/catalog/products"
-                                onClick={closeMenu}
-                            >
-                                Catalog
-                            </NavLink>
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
-                                }
-                                to="/catalog/outlet"
-                                onClick={closeMenu}
-                            >
-                                Outlet
-                            </NavLink>
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
-                                }
-                                to="/about-us"
-                                onClick={closeMenu}
-                            >
-                                About Us
-                            </NavLink>
-                        </div>
-                    </nav>
-                    <nav className="services-nav">
-                        <div className="services-nav-list">
-                            {!isAuth && (
-                                <>
-                                    <NavLink
-                                        className={({ isActive }) =>
-                                            isActive
-                                                ? 'services-nav-link services-nav-link-active'
-                                                : 'services-nav-link'
-                                        }
-                                        to="/login"
-                                        onClick={closeMenu}
-                                    >
-                                        <svg className="services-nav-link-icon">
-                                            <use xlinkHref={`${user}#user-icon`} />
-                                        </svg>
-                                        <span className="services-nav-link-text">Log in</span>
-                                    </NavLink>
-                                    <NavLink
-                                        className={({ isActive }) =>
-                                            isActive
-                                                ? 'services-nav-link services-nav-link-active'
-                                                : 'services-nav-link'
-                                        }
-                                        to="/registration"
-                                        onClick={closeMenu}
-                                    >
-                                        <svg className="services-nav-link-icon">
-                                            <use xlinkHref={`${user}#user-icon`} />
-                                        </svg>
-                                        <span className="services-nav-link-text">Sign up</span>
-                                    </NavLink>
-                                </>
+                <nav className={`categories-nav ${isOpen && 'open'}`}>
+                    <div className="categories-nav-list">
+                        <NavLink
+                            className={({ isActive }) =>
+                                isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                            }
+                            to="/"
+                            onClick={closeMenu}
+                        >
+                            Main
+                        </NavLink>
+                        <NavLink
+                            className={({ isActive }) =>
+                                isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                            }
+                            to="/catalog/products"
+                            onClick={closeMenu}
+                        >
+                            Catalog
+                        </NavLink>
+                        <NavLink
+                            className={({ isActive }) =>
+                                isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                            }
+                            to="/catalog/outlet"
+                            onClick={closeMenu}
+                        >
+                            Outlet
+                        </NavLink>
+                        <NavLink
+                            className={({ isActive }) =>
+                                isActive ? 'categories-nav-link categories-nav-link-active' : 'categories-nav-link'
+                            }
+                            to="/about-us"
+                            onClick={closeMenu}
+                        >
+                            About Us
+                        </NavLink>
+                    </div>
+                </nav>
+                <nav className={`services-nav ${isOpen && 'open'}`}>
+                    <div className="services-nav-list">
+                        {!isAuth && (
+                            <>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/login"
+                                    onClick={closeMenu}
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Log in</span>
+                                </NavLink>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/registration"
+                                    onClick={closeMenu}
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Sign up</span>
+                                </NavLink>
+                            </>
+                        )}
+                        {isAuth && (
+                            <>
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? 'services-nav-link services-nav-link-active' : 'services-nav-link'
+                                    }
+                                    to="/profile"
+                                    onClick={closeMenu}
+                                >
+                                    <svg className="services-nav-link-icon">
+                                        <use xlinkHref={`${user}#user-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Profile</span>
+                                </NavLink>
+                                <button className="services-nav-link" onClick={handleLogout} type="button">
+                                    <svg className="services-nav-link-icon services-nav-link-icon-logout">
+                                        <use xlinkHref={`${logout}#logout-icon`} />
+                                    </svg>
+                                    <span className="services-nav-link-text">Logout</span>
+                                </button>
+                            </>
+                        )}
+                        <NavLink
+                            className={({ isActive }) =>
+                                isActive
+                                    ? 'services-nav-link services-nav-link-active cart-icon'
+                                    : 'services-nav-link cart-icon'
+                            }
+                            to="/cart"
+                            onClick={closeMenu}
+                        >
+                            <svg className="services-nav-link-icon">
+                                <use xlinkHref={`${cart}#cart-icon`} />
+                            </svg>
+                            {cartItems.length > 0 && (
+                                <span className="services-cart-items-length">{cartItems.length}</span>
                             )}
-                            {isAuth && (
-                                <>
-                                    <NavLink
-                                        className={({ isActive }) =>
-                                            isActive
-                                                ? 'services-nav-link services-nav-link-active'
-                                                : 'services-nav-link'
-                                        }
-                                        to="/profile"
-                                        onClick={closeMenu}
-                                    >
-                                        <svg className="services-nav-link-icon">
-                                            <use xlinkHref={`${user}#user-icon`} />
-                                        </svg>
-                                        <span className="services-nav-link-text">Profile</span>
-                                    </NavLink>
-                                    <button className="services-nav-link" onClick={handleLogout} type="button">
-                                        <svg className="services-nav-link-icon services-nav-link-icon-logout">
-                                            <use xlinkHref={`${logout}#logout-icon`} />
-                                        </svg>
-                                        <span className="services-nav-link-text">Logout</span>
-                                    </button>
-                                </>
-                            )}
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? 'services-nav-link services-nav-link-active cart-icon'
-                                        : 'services-nav-link cart-icon'
-                                }
-                                to="/cart"
-                                onClick={closeMenu}
-                            >
-                                <svg className="services-nav-link-icon">
-                                    <use xlinkHref={`${cart}#cart-icon`} />
-                                </svg>
-                                {cartItems.length > 0 && (
-                                    <span className="services-cart-items-length">{cartItems.length}</span>
-                                )}
-                                <span className="services-nav-link-text">Cart</span>
-                            </NavLink>
-                        </div>
-                    </nav>
-                </div>
+                            <span className="services-nav-link-text">Cart</span>
+                        </NavLink>
+                    </div>
+                </nav>
                 <div className="navigation-toggle">
                     <button
                         type="button"

@@ -1,6 +1,11 @@
 import { VariantImagesProps } from '@/types/componentsInterfaces';
 
-export default function VariantsImages({ images, setImages, currentImages }: VariantImagesProps) {
+export default function VariantsImages({
+    images,
+    setImages,
+    currentImages,
+    handleActiveColorImage,
+}: VariantImagesProps) {
     return (
         <div className="variants">
             {Object.values(images).map((imgs, i) => (
@@ -12,6 +17,7 @@ export default function VariantsImages({ images, setImages, currentImages }: Var
                     }}
                     onClick={() => {
                         setImages(imgs);
+                        handleActiveColorImage(i);
                     }}
                     className={`variant-img ${currentImages[0] === imgs[0] ? 'active' : ''}`}
                     type="button"
