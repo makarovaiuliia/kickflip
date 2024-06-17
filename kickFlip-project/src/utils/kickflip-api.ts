@@ -631,7 +631,6 @@ export const getProductImg = async (id: string, color: string) => {
         const img = product?.images[0];
         return img;
     } catch (error) {
-        console.error(error);
         if (error instanceof Error) throw new Error(error.message);
         return undefined;
     }

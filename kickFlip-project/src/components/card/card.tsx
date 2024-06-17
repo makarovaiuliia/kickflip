@@ -14,6 +14,7 @@ interface CardProps {
 }
 
 function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
+    // console.log(productInfo);
     const dispatch = useDispatch();
 
     const itemsInCart = useSelector(getCartItems);
@@ -76,6 +77,7 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
         const selectedColor = Object.keys(colorMap)[activeImage];
 
         const variantId = findVariantId(masterVariant, productInfo.variants, selectedSize, selectedColor);
+
         const data = {
             cartId,
             item: {
@@ -86,7 +88,13 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
             cartVersion,
         };
 
-        await dispatch(addToCart(data));
+        try {
+            await dispatch(addToCart(data));
+        } catch {
+            await dispatch(createCart());
+            await dispatch(addToCart(data));
+        }
+
         setIsLoading(false);
     };
 
@@ -107,7 +115,9 @@ function Card({ productInfo, selectedColors }: CardProps): JSX.Element {
                 {images.map((image, index) => (
                     <button
                         type="button"
-                        onClick={() => setActiveImage(index)}
+                        onClick={() => {
+                            setActiveImage(index);
+                        }}
                         key={`image url: ${image[0]}`}
                         className={`card_image-mini ${index === activeImage ? 'active' : ''}`}
                         style={{

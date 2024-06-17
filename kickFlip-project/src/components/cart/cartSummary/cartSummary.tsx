@@ -6,6 +6,9 @@ import './cartSummary.css';
 import { getCartId, getCartVersion, setCart } from '@/services/cartSlice';
 import { getDiscountByIdApi, updateDiscountApi } from '@/utils/kickflip-api';
 import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
+import ModalWindow from '@/components/modalWindow/modalWindow';
+import PlaceOrder from '../placeOrder/placeOrder';
+
 
 interface CartSummaryProps {
     summaryData: CartResponse;
@@ -54,6 +57,8 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
             setInputValue('');
         }
     };
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -105,9 +110,10 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
                 <span>Total</span>
                 <span>${+getFormatPrice(summaryData.totalPrice) + +DefaultCartItem.ShippingCost}</span>
             </div>
-            <button className="send-order-btn" type="submit">
-                Checkout
+            <button className="send-order-btn" type="submit" onClick={() => setIsOpen(true)}>
+                Place your Order
             </button>
+            {isOpen && <ModalWindow content={<PlaceOrder />} closeModal={() => setIsOpen(false)} open={isOpen} />}
         </div>
     );
 }

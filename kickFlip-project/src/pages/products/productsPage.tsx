@@ -27,7 +27,7 @@ export default function ProductsPage(): JSX.Element {
 
     const [categories, setCategories] = useState<TransformParams>(transformParams);
     const [filterIsActive, setFilterIsActive] = useState<boolean>(true);
-    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 900);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1050);
 
     const productCategories = useSelector(getAllCategories);
 
@@ -41,7 +41,7 @@ export default function ProductsPage(): JSX.Element {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 900);
+            setIsMobile(window.innerWidth < 1050);
         };
 
         window.addEventListener('resize', handleResize);
@@ -49,7 +49,7 @@ export default function ProductsPage(): JSX.Element {
     }, []);
 
     useEffect(() => {
-        if (window.innerWidth < 900) {
+        if (window.innerWidth < 1050) {
             setFilterIsActive(false);
         }
     }, []);

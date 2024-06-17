@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addToCartApi, createCartApi, getActiveCartApi } from '@/utils/kickflip-api';
+import { addToCartApi, createCartApi, getActiveCartApi, updateCart } from '@/utils/kickflip-api';
 import type { RootState } from './store';
-import { AddItemToCartAction, CartResponse, LineItem } from '@/types/types';
+import { AddItemToCartAction, CartResponse, LineItem, RemoveItemFromCartBody } from '@/types/types';
 
 /* eslint-disable no-param-reassign */
 
@@ -23,6 +23,16 @@ interface AddToCartData {
 
 export const addToCart = createAsyncThunk('cart/addItem', async (data: AddToCartData) => {
     const response = await addToCartApi(data.cartId, data.item, data.cartVersion);
+    return response;
+});
+
+interface RemoveFromCartData {
+    cartId: string;
+    dataRequest: RemoveItemFromCartBody;
+}
+
+export const removeFromCart = createAsyncThunk('cart/removeItem', async (data: RemoveFromCartData) => {
+    const response = await updateCart(data.cartId, data.dataRequest);
     return response;
 });
 
@@ -68,6 +78,10 @@ const cartSlice = createSlice({
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;
                 state.cartId = action.payload.id;
+            })
+            .addCase(removeFromCart.fulfilled, (state, action) => {
+                state.cartVersion = action.payload.version;
+                state.items = action.payload.lineItems;
             });
     },
 });

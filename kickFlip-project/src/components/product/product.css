@@ -162,6 +162,10 @@
     transition: all 0.3s;
 }
 
+.size-btn.active {
+    border: 1px solid var(--electric-orange);
+}
+
 .size-btn:hover {
     border: 1px solid var(--electric-orange);
 }
