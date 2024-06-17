@@ -9,7 +9,7 @@ import MainImage from '../productImages/mainImage';
 import { useDispatch } from '@/services/store';
 
 import { getCartId, getCartVersion, removeFromCart, getCartError, clearErrorMessage } from '@/services/cartSlice';
-import { ChangeLineItem, UpdateActions } from '@/types/types';
+import { UpdateCart, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
     infoProps,
@@ -49,7 +49,7 @@ export default function DetailsContainer({
     }, [cartErrMessage, dispatch]);
 
     const handleDeleteFromCart = async () => {
-        const changedData: ChangeLineItem = {
+        const changedData: UpdateCart = {
             version: cartVersion,
             actions: [
                 {

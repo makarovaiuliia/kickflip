@@ -35,6 +35,8 @@ export enum UpdateActions {
     ChangeQty = 'changeLineItemQuantity',
     RemoveItem = 'removeLineItem',
     AddItem = 'addLineItem',
+    ApplayDiscount = 'addDiscountCode',
+    DeleteDiscount = 'removeDiscountCode',
 }
 
 export type TUser = {
@@ -338,6 +340,7 @@ export interface LineItem {
     productId: string;
     productKey?: string;
     name: Text;
+    productSlug: Text;
     variant: Product;
     price: Price;
     quantity: number;
@@ -349,6 +352,16 @@ export interface DiscountCodeInfo {
     state: string;
 }
 
+type Discount = {
+    typeId: string;
+    id: string;
+};
+
+type Discounts = {
+    discount: Discount;
+    discountedAmount: PriceValue;
+};
+
 export interface CartResponse {
     id: string;
     version: number;
@@ -358,6 +371,10 @@ export interface CartResponse {
     lineItems: LineItem[];
     totalLineItemQuantity?: number;
     totalPrice: PriceValue;
+    discountOnTotalPrice?: {
+        discountedAmount: PriceValue;
+        includedDiscounts: Discounts[];
+    };
     cartState: string;
     discountCodes: DiscountCodeInfo[];
 }
@@ -389,7 +406,44 @@ export type UpdateAction = {
     lineItemId: string;
     quantity: number;
 };
-export type ChangeLineItem = {
-    version: number;
-    actions: UpdateAction[];
+
+export type UpdateDiscounts = {
+    action: string;
+    code: string;
 };
+export type DeleteDiscounts = {
+    action: string;
+    discountCode: Discount;
+};
+
+export type UpdateCart = {
+    version: number;
+    actions: UpdateAction[] | UpdateDiscounts[] | DeleteDiscounts[] | RemoveItemFromCartAction[];
+};
+
+export type CartDiscount = {
+    typeId: string;
+    id: string;
+};
+
+export interface DiscountCode {
+    id: string;
+    version: number;
+    code: string;
+    name: Text;
+    cartDiscounts: CartDiscount[];
+    isActive: boolean;
+}
+
+export interface DiscountCodeResponse {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: DiscountCode[];
+}
+
+export interface ProductDetails {
+    image: Image;
+    category: string;
+}
