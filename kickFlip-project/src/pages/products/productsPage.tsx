@@ -88,7 +88,7 @@ export default function ProductsPage(): JSX.Element {
               },
               {
                   label: section!,
-                  url: `/${section}`,
+                  url: `/catalog/${section}`,
               },
               {
                   label: category!,
