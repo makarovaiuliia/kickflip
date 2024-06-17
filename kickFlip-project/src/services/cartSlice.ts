@@ -40,12 +40,14 @@ interface InitialState {
     cartId: string;
     cartVersion: number;
     items: LineItem[];
+    error: string | undefined;
 }
 
 const initialState: InitialState = {
     cartId: '',
     cartVersion: 0,
     items: [],
+    error: undefined,
 };
 
 const cartSlice = createSlice({
@@ -62,6 +64,9 @@ const cartSlice = createSlice({
             state.cartVersion = 0;
             state.items = [];
         },
+        clearErrorMessage: (state) => {
+            state.error = undefined;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -74,14 +79,20 @@ const cartSlice = createSlice({
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;
             })
+            .addCase(addToCart.rejected, (state, action) => {
+                state.error = action.error.message;
+            })
             .addCase(getActiveCart.fulfilled, (state, action) => {
                 state.cartVersion = action.payload.version;
                 state.items = action.payload.lineItems;
                 state.cartId = action.payload.id;
             })
             .addCase(removeFromCart.fulfilled, (state, action) => {
-                state.cartVersion = action.payload.version;
-                state.items = action.payload.lineItems;
+                state.cartVersion = action.payload!.version;
+                state.items = action.payload!.lineItems;
+            })
+            .addCase(removeFromCart.rejected, (state, action) => {
+                state.error = action.error.message;
             });
     },
 });
@@ -89,8 +100,9 @@ const cartSlice = createSlice({
 export const getCartId = (state: RootState) => state.cart.cartId;
 export const getCartVersion = (state: RootState) => state.cart.cartVersion;
 export const getCartItems = (state: RootState) => state.cart.items;
+export const getCartError = (state: RootState) => state.cart.error;
 
-export const { setCart, removeCart } = cartSlice.actions;
+export const { setCart, removeCart, clearErrorMessage } = cartSlice.actions;
 
 export default cartSlice.reducer;
 

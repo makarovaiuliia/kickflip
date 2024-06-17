@@ -390,6 +390,11 @@ export interface AddItemToCartAction {
     variantId: number;
 }
 
+export interface RemoveItemFromCartBody {
+    version: number;
+    actions: RemoveItemFromCartAction[];
+}
+
 export interface RemoveItemFromCartAction {
     action: string;
     lineItemId: string;
