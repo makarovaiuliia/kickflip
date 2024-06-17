@@ -20,7 +20,9 @@ import {
     AddItemToCartAction,
     AddItemToCartBody,
     TUser,
-    ChangeLineItem,
+    UpdateCart,
+    DiscountCodeResponse,
+    DiscountCode,
 } from '@/types/types';
 import { getCookie } from './cookie';
 import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
@@ -634,7 +636,7 @@ export const getProductImg = async (id: string, color: string) => {
     }
 };
 
-export const updateCart = async (cartId: string, updateLineItemQuantity: ChangeLineItem) => {
+export const updateCart = async (cartId: string, updateLineItemQuantity: UpdateCart) => {
     const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
         method: 'POST',
         headers: {
@@ -656,5 +658,37 @@ export const deleteCartApi = async (cartId: string, cartVersion: number) => {
         },
     });
     const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountCodeApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<DiscountCodeResponse>(response);
+    return data;
+};
+
+export const updateDiscountApi = async (cartId: string, appliedDiscounts: UpdateCart) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(appliedDiscounts),
+    });
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountByIdApi = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<DiscountCode>(response);
     return data;
 };

@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { CartResponse, ChangeLineItem, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
+import { CartResponse, UpdateCart, DefaultCartItem, LineItem, UpdateActions } from '@/types/types';
 import './cartItem.css';
-import { findAttr, getFormatPrice, responsesErrorsHandler } from '@/utils/utils';
+import { findAttr, getFormatPrice, getOldProductTotalPrice, responsesErrorsHandler } from '@/utils/utils';
 import ProductPrices from '@/components/product/productDetails/productPrice';
-import { getProductImg, updateCart } from '@/utils/kickflip-api';
+import { getProductImg, updateCart, updateDiscountApi } from '@/utils/kickflip-api';
 import QuantityCounter from '@/components/quantityCounter/quantityCounter';
 import { getCartId, setCart } from '@/services/cartSlice';
 import RemoveItemBtn from '../removeIBtn/removeItemBtn';
+import OldNewPrise from '@/components/oldNewPrice/oldNewPrice';
 
 interface CartItemProps {
     itemData: LineItem;
@@ -43,7 +44,7 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
     }, []);
 
     const handleChange = async (quantity: number, updateAction: string) => {
-        const changedData: ChangeLineItem = {
+        const changedData: UpdateCart = {
             version: cartVersion,
             actions: [
                 {
@@ -54,7 +55,23 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
             ],
         };
         try {
-            const newCart = await updateCart(`${cartId}`, changedData);
+            let newCart = await updateCart(cartId, changedData);
+            if (newCart.lineItems.length === 0 && newCart.discountCodes.length > 0) {
+                const removeDiscountsActions = newCart.discountCodes.map((discountCode) => ({
+                    action: UpdateActions.DeleteDiscount,
+                    discountCode: {
+                        typeId: discountCode.discountCode.typeId,
+                        id: discountCode.discountCode.id,
+                    },
+                }));
+
+                const removeDiscountsRequest = {
+                    version: newCart.version,
+                    actions: removeDiscountsActions,
+                };
+
+                newCart = await updateDiscountApi(cartId, removeDiscountsRequest);
+            }
             setCartData(newCart);
             dispatch(setCart(newCart));
         } catch (error) {
@@ -89,7 +106,16 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
                     </div>
                     <div className="item-total">
                         Total
-                        <div className="total-price">$ {getFormatPrice(itemData.totalPrice)}</div>
+                        <div className="total-price">
+                            {itemData.totalPrice.centAmount !== itemData.price.value.centAmount * itemData.quantity ? (
+                                <OldNewPrise
+                                    oldPrice={getOldProductTotalPrice(itemData.price.value, itemData.quantity)}
+                                    newPrice={itemData.totalPrice}
+                                />
+                            ) : (
+                                <span> $ {getFormatPrice(itemData.totalPrice)}</span>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <RemoveItemBtn onclick={() => handleChange(itemData.quantity, UpdateActions.RemoveItem)} />

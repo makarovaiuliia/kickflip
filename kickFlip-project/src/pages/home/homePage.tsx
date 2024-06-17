@@ -10,13 +10,33 @@ import dior from '/dior.webp';
 
 import Benefits from './benefits/benefits';
 import Categories from './categories/categories';
-import Promocode from './promocode/promocode';
+import Promocodes from './promocode/promocode';
 import data from './categories/categoryMain/categoryMainData';
+import { DiscountCodeResponse } from '@/types/types';
+import { getDiscountCodeApi } from '@/utils/kickflip-api';
+import { responsesErrorsHandler } from '@/utils/utils';
 
 export default function HomePage(): JSX.Element {
     const dispatch = useDispatch();
     const { registrationMessage } = useSelector(getUserSelector);
     const [showMessage, setShowMessage] = useState(false);
+    const [discountCodes, setDiscountCodes] = useState<DiscountCodeResponse | null>(null);
+    const [discountError, setDiscountErrorError] = useState('');
+
+    useEffect(() => {
+        const fetchDiscounts = async () => {
+            try {
+                const discountsData = await getDiscountCodeApi();
+                setDiscountCodes(discountsData);
+            } catch (error) {
+                if (error) {
+                    responsesErrorsHandler(error, setDiscountErrorError);
+                }
+            }
+        };
+
+        fetchDiscounts();
+    }, []);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -58,7 +78,7 @@ export default function HomePage(): JSX.Element {
             </section>
             <Benefits />
             <Categories categories={data} />
-            <Promocode />
+            {discountCodes ? <Promocodes discounts={discountCodes.results} /> : <div>{discountError}</div>}
         </div>
     );
 }

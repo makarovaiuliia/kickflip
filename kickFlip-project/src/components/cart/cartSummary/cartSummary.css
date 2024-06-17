@@ -15,6 +15,9 @@
 
 .promo {
     margin-bottom: 3.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .promo-title {
@@ -85,4 +88,10 @@
 
 .send-order-btn:hover {
     background: var(--deep-blue);
+}
+
+@media (width < 450px) {
+    .summary-wrapper {
+        padding: 1.5rem;
+    }
 }
