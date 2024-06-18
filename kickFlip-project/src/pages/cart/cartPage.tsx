@@ -45,7 +45,7 @@ export default function CartPage(): JSX.Element {
                 isCartEmpty ? (
                     <EmptyCart />
                 ) : (
-                    <Cart cartData={cartData} setCartData={setCartData} />
+                    <Cart cartData={cartData} setCartData={setCartData} setIsEmpty={setCartIsEmpty} />
                 )
             ) : (
                 <Loader />

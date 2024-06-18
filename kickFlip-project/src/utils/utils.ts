@@ -10,6 +10,8 @@ import {
     PriceValue,
     Attributes,
     LineItem,
+    StateMessage,
+    ResponseErrorMessage,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -70,7 +72,13 @@ export const saveTokens = (accessToken: string, refreshToken: string): void => {
 export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<React.SetStateAction<string>>) => {
     if (error) {
         if (typeof error === 'object' && 'message' in error) {
-            if (typeof error.message === 'string') handler(error.message);
+            if (typeof error.message === 'string') {
+                let { message } = error;
+                if (error.message === ResponseErrorMessage.FaildFetch) {
+                    message = StateMessage.NotConnectionMessage;
+                }
+                handler(message);
+            }
         }
     }
 };
