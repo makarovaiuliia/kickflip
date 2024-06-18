@@ -14,6 +14,7 @@ import {
     removeFromCart,
     getCartError,
     clearErrorMessage,
+    clearSuccessMessage,
     getSuccessMessage,
 } from '@/services/cartSlice';
 import { UpdateCart, UpdateActions } from '@/types/types';
@@ -41,7 +42,7 @@ export default function DetailsContainer({
 
     const successRemovedMessage = useSelector(getSuccessMessage);
     const [showSuccessRemoveMessage, setSuccessRemoveMessage] = useState(false);
-  
+
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (cartErrMessage) {
@@ -59,18 +60,18 @@ export default function DetailsContainer({
     }, [cartErrMessage, dispatch]);
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timerN: NodeJS.Timeout;
         if (successRemovedMessage) {
             setSuccessRemoveMessage(true);
-            timer = setTimeout(() => {
+            timerN = setTimeout(() => {
                 setSuccessRemoveMessage(false);
                 setTimeout(() => {
-                    dispatch(clearErrorMessage());
+                    dispatch(clearSuccessMessage());
                 }, 1000);
             }, 5000);
         }
         return () => {
-            if (timer) clearTimeout(timer);
+            if (timerN) clearTimeout(timerN);
         };
     }, [successRemovedMessage, dispatch]);
 
