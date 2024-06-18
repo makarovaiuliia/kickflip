@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { DetailsContainerProps } from '@/types/componentsInterfaces';
 import ProductDescription from './productDescr';
 import ProductInfo from './productInfo';
@@ -7,7 +8,14 @@ import VariantsImages from './productVariantsImages';
 import MainImage from '../productImages/mainImage';
 import { useDispatch } from '@/services/store';
 
-import { getCartId, getCartVersion, removeFromCart } from '@/services/cartSlice';
+import {
+    getCartId,
+    getCartVersion,
+    removeFromCart,
+    getCartError,
+    clearErrorMessage,
+    getSuccessMessage,
+} from '@/services/cartSlice';
 import { UpdateCart, UpdateActions } from '@/types/types';
 
 export default function DetailsContainer({
@@ -26,6 +34,45 @@ export default function DetailsContainer({
     const cartId = useSelector(getCartId);
     const cartVersion = useSelector(getCartVersion);
     const dispatch = useDispatch();
+
+    const cartErr = useSelector(getCartError);
+    const cartErrMessage = cartErr === 'Failed to fetch' ? 'Internet is disconected' : cartErr;
+    const [showMessage, setShowMessage] = useState(false);
+
+    const successRemovedMessage = useSelector(getSuccessMessage);
+    const [showSuccessRemoveMessage, setSuccessRemoveMessage] = useState(false);
+  
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (cartErrMessage) {
+            setShowMessage(true);
+            timer = setTimeout(() => {
+                setShowMessage(false);
+                setTimeout(() => {
+                    dispatch(clearErrorMessage());
+                }, 1000);
+            }, 5000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [cartErrMessage, dispatch]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (successRemovedMessage) {
+            setSuccessRemoveMessage(true);
+            timer = setTimeout(() => {
+                setSuccessRemoveMessage(false);
+                setTimeout(() => {
+                    dispatch(clearErrorMessage());
+                }, 1000);
+            }, 5000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [successRemovedMessage, dispatch]);
 
     const handleDeleteFromCart = async () => {
         const changedData: UpdateCart = {
@@ -80,6 +127,10 @@ export default function DetailsContainer({
                 {ifProductInCart === true ? 'Remove from cart' : 'Add to cart'}
             </button>
             <ProductDescription description={descrProps.description} />
+            <p className={`successful-update-message ${showMessage ? 'show' : 'hide'}`}>{cartErrMessage}</p>
+            <p className={`successful-update-message ${showSuccessRemoveMessage ? 'show' : 'hide'}`}>
+                {successRemovedMessage}
+            </p>
         </div>
     );
 }
