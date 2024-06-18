@@ -24,6 +24,11 @@ export enum StateMessage {
     UpdatedProfileAddress = 'Your address have been successfully updated',
     DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
+    NotConnectionMessage = 'Something went wrong, try again later',
+}
+
+export enum ResponseErrorMessage {
+    FaildFetch = 'Failed to fetch',
 }
 
 export enum DefaultCartItem {

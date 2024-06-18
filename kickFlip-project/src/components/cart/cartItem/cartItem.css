@@ -65,6 +65,7 @@
 .cart-error {
     position: absolute;
     right: 0;
+    bottom: 5px;
 }
 
 @media (width < 680px) {
