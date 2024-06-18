@@ -14,9 +14,10 @@ import { responsesErrorsHandler } from '@/utils/utils';
 interface CartProps {
     cartData: CartResponse;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
+    setIsEmpty: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Cart({ cartData, setCartData }: CartProps) {
+export default function Cart({ cartData, setCartData, setIsEmpty }: CartProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [deletingError, setDeletingError] = useState('');
     const cartId = useSelector(getCartId);
@@ -54,6 +55,7 @@ export default function Cart({ cartData, setCartData }: CartProps) {
                             itemData={item}
                             setCartData={setCartData}
                             cartVersion={cartData.version}
+                            cartIsEmpty={setIsEmpty}
                         />
                     ))}
                 </div>

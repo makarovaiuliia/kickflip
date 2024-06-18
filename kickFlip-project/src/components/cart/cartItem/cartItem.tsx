@@ -16,9 +16,10 @@ interface CartItemProps {
     itemData: LineItem;
     cartVersion: number;
     setCartData: React.Dispatch<React.SetStateAction<CartResponse | null | undefined>>;
+    cartIsEmpty: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CartItem({ itemData, setCartData, cartVersion }: CartItemProps) {
+export default function CartItem({ itemData, setCartData, cartVersion, cartIsEmpty }: CartItemProps) {
     const [cartError, setCartError] = useState('');
     const itemVariant = itemData.variant;
     const isDiscounted = itemVariant.prices[0].discounted;
@@ -86,6 +87,9 @@ export default function CartItem({ itemData, setCartData, cartVersion }: CartIte
 
                 newCart = await updateDiscountApi(cartId, removeDiscountsRequest);
             }
+
+            cartIsEmpty(newCart.lineItems.length === 0);
+
             setCartData(newCart);
             dispatch(setCart(newCart));
         } catch (error) {
