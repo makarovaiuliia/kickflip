@@ -68,7 +68,7 @@ const cartSlice = createSlice({
         },
 
         clearSuccessMessage: (state) => {
-            state.error = undefined;
+            state.successMessage = undefined;
         },
 
         clearErrorMessage: (state) => {
