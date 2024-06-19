@@ -24,6 +24,7 @@ export enum StateMessage {
     UpdatedProfileAddress = 'Your address have been successfully updated',
     DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
+    ProductRemovedFromTheCart = 'Product have been successfully removed from the cart',
     NotConnectionMessage = 'Something went wrong, try again later',
 }
 
@@ -393,6 +394,11 @@ export interface AddItemToCartAction {
     action: string;
     productId: string;
     variantId: number;
+}
+
+export interface RemoveItemFromCartBody {
+    version: number;
+    actions: RemoveItemFromCartAction[];
 }
 
 export interface RemoveItemFromCartAction {

@@ -657,7 +657,6 @@ export const updateCart = async (cartId: string, updateLineItemQuantity: UpdateC
         },
         body: JSON.stringify(updateLineItemQuantity),
     });
-
     const data = checkResponse<CartResponse>(response);
     return data;
 };
