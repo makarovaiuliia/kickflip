@@ -49,10 +49,10 @@ export default function CartSummary({ summaryData, setCartData }: CartSummaryPro
             const newCart = await updateDiscountApi(cartId, request);
             setCartData(newCart);
             dispatch(setCart(newCart));
+            setDiscountError('');
         } catch (error) {
             if (error) responsesErrorsHandler(error, setDiscountError);
         } finally {
-            setDiscountError('');
             setInputValue('');
         }
     };
