@@ -28,7 +28,7 @@ export default function ChangeUserAddressForm(props: Props) {
     const isBilling = addressBillingShipping === 'billingAddress';
 
     const defaultCheckedBilling = user?.billingAddressIds?.includes(address.id!);
-    const defaultcheckedBillingDefault = address.id === user?.defaultBillingAddressId;
+    const defaultCheckedBillingDefault = address.id === user?.defaultBillingAddressId;
     const defaultCheckedShipping = user?.shippingAddressIds?.includes(address.id!);
     const defaultCheckedShippingDefault = address.id === user?.defaultShippingAddressId;
 
@@ -36,7 +36,7 @@ export default function ChangeUserAddressForm(props: Props) {
     const [deleteUserAddressError, setDeleteError] = useState('');
     const [abilityChangeForm, setAbilityChangeForm] = useState(true);
     const [checkedBilling, setCheckedBilling] = useState(defaultCheckedBilling);
-    const [checkedBillingDefault, setCheckedBillingDefault] = useState(defaultcheckedBillingDefault);
+    const [checkedBillingDefault, setCheckedBillingDefault] = useState(defaultCheckedBillingDefault);
     const [checkedShipping, setCheckedShipping] = useState(defaultCheckedShipping);
     const [checkedShippingDefault, setCheckedShippingDefault] = useState(defaultCheckedShippingDefault);
 
@@ -44,7 +44,7 @@ export default function ChangeUserAddressForm(props: Props) {
         setAbilityChangeForm(abilityChange);
     };
 
-    const checkAddresHeading = () => {
+    const checkAddressHeading = () => {
         if (user?.billingAddressIds?.includes(address.id!) && user?.shippingAddressIds?.includes(address.id!)) {
             return 'Billing and shipping address';
         }
@@ -87,7 +87,7 @@ export default function ChangeUserAddressForm(props: Props) {
             version: user?.version,
             addressId: address.id,
             defaultCheckedBilling,
-            defaultcheckedBillingDefault,
+            defaultCheckedBillingDefault,
             defaultCheckedShipping,
             defaultCheckedShippingDefault,
             data,
@@ -165,7 +165,7 @@ export default function ChangeUserAddressForm(props: Props) {
             pattern: { value: ONLY_LETTER_REGEX, message: ErrorMessage.ERROR_REGEX },
             minLength: { value: 1, message: ErrorMessage.ERROR_LENGTH },
         },
-        сountry: {
+        country: {
             required: true,
         },
         postalCode: {
@@ -190,7 +190,7 @@ export default function ChangeUserAddressForm(props: Props) {
             {!isBilling && (
                 <>
                     <h3 className="form-heading change-address-form-heading">
-                        <span className="form-heading-colored">{checkAddresHeading()}</span>
+                        <span className="form-heading-colored">{checkAddressHeading()}</span>
                         <span>{checkDefaultHeading()}</span>
                     </h3>
                     <FormField
@@ -243,7 +243,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         name="shippingAddress.country"
                         register={register}
                         errors={errors.shippingAddress?.country}
-                        validationRules={validationRules.сountry}
+                        validationRules={validationRules.country}
                         defaultValue={addressCountryDefault}
                     />
                     <FormField
@@ -263,7 +263,7 @@ export default function ChangeUserAddressForm(props: Props) {
             {isBilling && (
                 <>
                     <h3 className="form-heading change-address-form-heading">
-                        <span className="form-heading-colored">{checkAddresHeading()}</span>
+                        <span className="form-heading-colored">{checkAddressHeading()}</span>
                         <span>{checkDefaultHeading()}</span>
                     </h3>
                     <FormField
@@ -316,7 +316,7 @@ export default function ChangeUserAddressForm(props: Props) {
                         name="billingAddress.country"
                         register={register}
                         errors={errors.billingAddress?.country}
-                        validationRules={validationRules.сountry}
+                        validationRules={validationRules.country}
                         defaultValue={addressCountryDefault}
                     />
                     <FormField

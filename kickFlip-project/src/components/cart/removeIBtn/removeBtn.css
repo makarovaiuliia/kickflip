@@ -1,0 +1,26 @@
+.remove-btn {
+    text-align: start;
+}
+
+.remove-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--deep-blue);
+    font-family: var(--second-family);
+    font-size: 2rem;
+    text-transform: none;
+}
+
+.remove-all-btn,
+.remove-btn {
+    text-transform: none;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: 0.3s;
+}
+
+.remove-btn:hover,
+.remove-all-btn:hover {
+    text-decoration-color: var(--deep-blue);
+}

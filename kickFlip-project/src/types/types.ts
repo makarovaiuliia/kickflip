@@ -24,6 +24,25 @@ export enum StateMessage {
     UpdatedProfileAddress = 'Your address have been successfully updated',
     DeletedProfileAddress = 'Your address have been successfully deleted',
     AddedProfileAddress = 'Your address have been successfully added',
+    ProductRemovedFromTheCart = 'Product have been successfully removed from the cart',
+    NotConnectionMessage = 'Something went wrong, try again later',
+}
+
+export enum ResponseErrorMessage {
+    FaildFetch = 'Failed to fetch',
+}
+
+export enum DefaultCartItem {
+    ShippingCost = '30',
+    ItemDescription = 'Awesome sneakers',
+}
+
+export enum UpdateActions {
+    ChangeQty = 'changeLineItemQuantity',
+    RemoveItem = 'removeLineItem',
+    AddItem = 'addLineItem',
+    ApplayDiscount = 'addDiscountCode',
+    DeleteDiscount = 'removeDiscountCode',
 }
 
 export type TUser = {
@@ -112,7 +131,7 @@ export interface AddNewAddressForm {
 export interface AddNewAddressFormRequest {
     id?: string;
     version?: number;
-    adresses?: TAddress[];
+    addresses?: TAddress[];
     addressId?: string;
     data?: AddNewAddressForm;
 }
@@ -132,7 +151,7 @@ export interface UpdateUserAddressFormRequest {
     addressId?: string;
     data?: UpdateUserAddressForm;
     defaultCheckedBilling?: boolean;
-    defaultcheckedBillingDefault?: boolean;
+    defaultCheckedBillingDefault?: boolean;
     defaultCheckedShipping?: boolean;
     defaultCheckedShippingDefault?: boolean;
 }
@@ -304,12 +323,133 @@ export interface TransformParams {
     filter: Record<FilterOptions, string[]>;
     sort: string;
     search: string;
+    category: string;
 }
 
-export enum SearchQuery {
+export enum SearchQueryVariants {
     color = 'variants.attributes.color:',
     size = 'variants.attributes.size:',
     price = 'variants.price.centAmount:range ',
     search = 'text.en-US',
     discount = 'variants.prices.discounted:',
+    category = 'filter=categories.id:',
+}
+
+export type ProductTypeReference = {
+    id: string;
+    typeId: string;
+};
+
+export interface LineItem {
+    id: string;
+    key?: string;
+    productId: string;
+    productKey?: string;
+    name: Text;
+    productSlug: Text;
+    variant: Product;
+    price: Price;
+    quantity: number;
+    totalPrice: PriceValue;
+}
+
+export interface DiscountCodeInfo {
+    discountCode: ProductTypeReference;
+    state: string;
+}
+
+type Discount = {
+    typeId: string;
+    id: string;
+};
+
+type Discounts = {
+    discount: Discount;
+    discountedAmount: PriceValue;
+};
+
+export interface CartResponse {
+    id: string;
+    version: number;
+    key?: string;
+    customerId?: string;
+    anonymousId?: string;
+    lineItems: LineItem[];
+    totalLineItemQuantity?: number;
+    totalPrice: PriceValue;
+    discountOnTotalPrice?: {
+        discountedAmount: PriceValue;
+        includedDiscounts: Discounts[];
+    };
+    cartState: string;
+    discountCodes: DiscountCodeInfo[];
+}
+
+export interface AddItemToCartBody {
+    version: number;
+    actions: AddItemToCartAction[];
+}
+
+export interface AddItemToCartAction {
+    action: string;
+    productId: string;
+    variantId: number;
+}
+
+export interface RemoveItemFromCartBody {
+    version: number;
+    actions: RemoveItemFromCartAction[];
+}
+
+export interface RemoveItemFromCartAction {
+    action: string;
+    lineItemId: string;
+    quantity: number;
+}
+
+export type UpdateAction = {
+    action: string;
+    lineItemId: string;
+    quantity: number;
+};
+
+export type UpdateDiscounts = {
+    action: string;
+    code: string;
+};
+export type DeleteDiscounts = {
+    action: string;
+    discountCode: Discount;
+};
+
+export type UpdateCart = {
+    version: number;
+    actions: UpdateAction[] | UpdateDiscounts[] | DeleteDiscounts[] | RemoveItemFromCartAction[];
+};
+
+export type CartDiscount = {
+    typeId: string;
+    id: string;
+};
+
+export interface DiscountCode {
+    id: string;
+    version: number;
+    code: string;
+    name: Text;
+    cartDiscounts: CartDiscount[];
+    isActive: boolean;
+}
+
+export interface DiscountCodeResponse {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    results: DiscountCode[];
+}
+
+export interface ProductDetails {
+    image: Image;
+    category: string;
 }
