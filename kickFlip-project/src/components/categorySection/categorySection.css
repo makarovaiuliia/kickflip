@@ -1,0 +1,17 @@
+.category_link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-transform: none;
+    color: inherit;
+}
+
+.category_image {
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.category_title {
+    font-size: 1.5rem;
+}

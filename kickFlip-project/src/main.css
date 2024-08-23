@@ -1,0 +1,87 @@
+:root {
+    --deep-blue: #18313f;
+    --beige: #ece7e3;
+    --electric-orange: #ff6546;
+    --turquoise: #20768c;
+    --white: #fff;
+    --ink-light: #4c626f;
+    --egg-yolk: #fff8b7;
+    --smoke-grey: #f8f8f8;
+    --border-gray: #d8d8d8;
+    --font-family: 'Satoshi', sans-serif;
+    --second-family: 'Clash Display', sans-serif;
+}
+
+@font-face {
+    font-family: 'Clash Display';
+    src: url('@/assets/fonts/ClashDisplaySemibold.otf') format('opentype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Clash Display';
+    src: url('@/assets/fonts/ClashDisplayMedium.otf') format('opentype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src:
+        url('@/assets/fonts/Satoshi-Medium.otf') format('opentype'),
+        url('@/assets/fonts/Satoshi-Medium.ttf') format('truetype'),
+        url('@/assets/fonts/Satoshi-Medium.woff') format('woff'),
+        url('@/assets/fonts/Satoshi-Medium.woff2') format('woff2');
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+    /* Две строчки нужны для того, чтобы при пофвленнии вертикального скролла контент не двишался в сторону на несколько пикселей */
+    overflow-x: hidden;
+    margin-right: calc(-1 * (100vw - 100%));
+    height: 100vh;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    text-transform: uppercase;
+    border: none;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--deep-blue);
+    height: 100%;
+    width: 100%;
+}
+
+#root {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+}
