@@ -1,5 +1,6 @@
 # Kickflip
 [deploy](https://kickflip.netlify.app/about-us)
+The part with catalog and card doesn't work right now. This is because of CommerceTools trial version is over. We're now trying to solve this problem.
 
 ## Project Overview
 
