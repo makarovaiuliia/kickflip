@@ -12,7 +12,7 @@ import '../form.css';
 
 export default function ChangePasswordForm() {
     const { user } = useSelector(getUserSelector);
-    const [updatePaswordError, setUpdatePaswordError] = useState('');
+    const [updatePasswordError, setUpdatePasswordError] = useState('');
 
     const {
         register,
@@ -34,14 +34,14 @@ export default function ChangePasswordForm() {
             email: user!.email!,
             password: data.newPassword,
         };
-        setUpdatePaswordError('');
+        setUpdatePasswordError('');
         try {
             await dispatch(updateUserPassword(requestData)).unwrap();
             reset();
             await dispatch(loginUser(requestLogInData)).unwrap();
             await dispatch(getUser());
         } catch (error) {
-            responsesErrorsHandler(error, setUpdatePaswordError);
+            responsesErrorsHandler(error, setUpdatePasswordError);
         }
     };
 
@@ -77,7 +77,7 @@ export default function ChangePasswordForm() {
                     Update
                 </button>
             </div>
-            <span className="error-message stretched">{updatePaswordError}</span>
+            <span className="error-message stretched">{updatePasswordError}</span>
         </form>
     );
 }

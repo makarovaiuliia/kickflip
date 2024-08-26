@@ -39,7 +39,7 @@ export default function ModalWindow({ content, closeModal, open }: ModalWindowPr
             tabIndex={0}
         >
             <div
-                className="content-wrapper"
+                className={`content-wrapper ${typeof content === 'string' ? 'string-content' : ''}`}
                 onClick={handleContentClick}
                 onKeyDown={handleContentClick}
                 role="button"

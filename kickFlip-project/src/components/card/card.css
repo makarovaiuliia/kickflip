@@ -82,6 +82,43 @@
     opacity: 0.5;
 }
 
+.card_button {
+    height: 4rem;
+    padding: 0.8rem 1.6rem;
+    background: var(--electric-orange);
+    font-family: var(--second-family);
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: var(--white);
+    transition: all 0.3s;
+    width: 70%;
+}
+
+.card_button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.card_button:disabled:hover {
+    background-color: var(--electric-orange);
+}
+.card_button:hover {
+    background: var(--deep-blue);
+}
+
+.card_cart-form {
+    display: flex;
+    gap: 2%;
+}
+
+.card_size-select {
+    width: 28%;
+    padding: 1rem 0.8rem;
+    border: 1px solid var(--border-gray);
+    color: var(--deep-blue);
+    font-family: var(--font-family);
+}
+
 @media (width < 800px) {
     .card_image {
         grid-template-columns: repeat(2, 1fr);

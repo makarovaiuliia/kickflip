@@ -11,9 +11,9 @@
     height: 600px;
 }
 
-@media (width < 900px) {
+@media (width < 1050px) {
     .filter-wrapper {
-        padding: 2rem;
+        padding: 4rem;
     }
 
     .filter {

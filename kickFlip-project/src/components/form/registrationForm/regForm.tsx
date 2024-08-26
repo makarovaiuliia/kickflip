@@ -4,10 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ErrorMessage, Country, SignUpDataForm, LogInData } from '@/types/types';
 import '../form.css';
-import { useDispatch } from '@/services/store';
+import { useDispatch, useSelector } from '@/services/store';
 import { loginUser, signUpUser } from '@/services/userSlice';
 import FormField from '@/components/formFields/formField';
 import { responsesErrorsHandler } from '@/utils/utils';
+import { getCartId, removeCart, setCart } from '@/services/cartSlice';
 
 export default function RegistrationForm() {
     const [registrationError, setRegistrationError] = useState('');
@@ -27,6 +28,8 @@ export default function RegistrationForm() {
     const useShippingAsBilling = watch('useShippingAsBilling');
     const useBillingAsShipping = watch('useBillingAsShipping');
 
+    const cartId = useSelector(getCartId);
+
     const submit: SubmitHandler<SignUpDataForm> = async (data: SignUpDataForm) => {
         setRegistrationError('');
         const loginData: LogInData = {
@@ -34,8 +37,22 @@ export default function RegistrationForm() {
             password: data.password,
         };
 
+        const signUpDataObject = {
+            data,
+            cartId,
+        };
+
         try {
-            await dispatch(signUpUser(data)).unwrap();
+            await dispatch(signUpUser(signUpDataObject))
+                .unwrap()
+                .then((result) => {
+                    const { cart } = result;
+                    if (cart) {
+                        dispatch(setCart(cart));
+                    } else {
+                        dispatch(removeCart());
+                    }
+                });
             await dispatch(loginUser(loginData));
             navigate('/');
             reset();

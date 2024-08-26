@@ -4,7 +4,7 @@ import {
     LogInData,
     ProductProjected,
     ProductResponse,
-    SearchQuery,
+    SearchQueryVariants,
     ServerResponse,
     SignUpDataForm,
     SignUpDataRequest,
@@ -16,9 +16,17 @@ import {
     AddNewAddressFormRequest,
     NewAddressAction,
     UpdateAddressAction,
+    CartResponse,
+    AddItemToCartAction,
+    AddItemToCartBody,
+    TUser,
+    UpdateCart,
+    DiscountCodeResponse,
+    DiscountCode,
+    ProductDetails,
 } from '@/types/types';
 import { getCookie } from './cookie';
-import { createBasicAuthToken, saveTokens, transformData, transformPriceRange } from './utils';
+import { createBasicAuthToken, findAttr, saveTokens, transformData, transformPriceRange } from './utils';
 
 const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
 const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
@@ -76,6 +84,37 @@ type TAuthResponse = {
     refresh_token: string;
 };
 
+interface LoginResponse {
+    customer: TUser;
+    cart?: CartResponse;
+}
+
+export const signInUserApi = (data: LogInData, cartId: string): Promise<LoginResponse> => {
+    const loginBody = {
+        email: data.email,
+        password: data.password,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
+
+    return fetch(`${URL}/${projectKey}/me/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(loginBody),
+    })
+        .then((res) => checkResponse<LoginResponse>(res))
+        .then((result) => {
+            if (result) return result;
+            return Promise.reject(result);
+        });
+};
+
 export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
     const loginBody = {
         username: data.email,
@@ -98,9 +137,10 @@ export const loginUserApi = (data: LogInData): Promise<TAuthResponse> => {
         });
 };
 
-export const getAnonymousTokenApi = (): Promise<TAuthResponse> => {
+export const getAnonymousTokenApi = (id: string): Promise<TAuthResponse> => {
     const body = {
         grant_type: 'client_credentials',
+        anonymous_id: id,
     };
 
     return fetch(`${authUrl}/oauth/${projectKey}/anonymous/token`, {
@@ -173,8 +213,17 @@ export type TCustomerResponse = {
     authenticationMode: string;
 };
 
-export const signUpUserApi = (data: SignUpDataForm) => {
+export const signUpUserApi = (data: SignUpDataForm, cartId: string) => {
     const signUpData: SignUpDataRequest = transformData(data);
+
+    const body = {
+        ...signUpData,
+        anonymousCart: {
+            id: cartId,
+            typeId: 'cart',
+        },
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
 
     return fetch(`${URL}/${projectKey}/me/signup`, {
         method: 'POST',
@@ -182,9 +231,9 @@ export const signUpUserApi = (data: SignUpDataForm) => {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: `Bearer ${getCookie('accessToken')}`,
         },
-        body: JSON.stringify(signUpData),
+        body: JSON.stringify(body),
     })
-        .then((res) => checkResponse<TUserResponse>(res))
+        .then((res) => checkResponse<LoginResponse>(res))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
@@ -275,7 +324,7 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
             });
         }
     }
-    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
+    if (data.defaultCheckedBillingDefault !== data.data?.isDefaultBillingAddress) {
         if (data.data?.isDefaultBillingAddress === true) {
             dataRequest.actions.push({
                 action: 'setDefaultBillingAddress',
@@ -296,7 +345,7 @@ export const updateUserAddressApi = (data: UpdateUserAddressFormRequest) => {
             });
         }
     }
-    if (data.defaultcheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
+    if (data.defaultCheckedBillingDefault !== data.data?.isDefaultShippingAddress) {
         if (data.data?.isDefaultShippingAddress === true) {
             dataRequest.actions.push({
                 action: 'setDefaultShippingAddress',
@@ -364,7 +413,7 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
     })
         .then((res) => checkResponse<TUserResponse>(res))
         .then((res) => {
-            const targetAdress = res.addresses[res.addresses.length - 1];
+            const targetAddress = res.addresses[res.addresses.length - 1];
             const dataRequestN: NewAddressAction = {
                 version: data.version! + 1,
                 actions: [],
@@ -372,31 +421,31 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
             if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === false) {
                 dataRequestN.actions.push({
                     action: 'addShippingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             } else if (data.data?.addToShipping === true && data.data.isDefaultShippingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultShippingAddress',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
                 dataRequestN.actions.push({
                     action: 'addShippingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             }
             if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === false) {
                 dataRequestN.actions.push({
                     action: 'addBillingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             } else if (data.data?.addToBilling === true && data.data.isDefaultBillingAddress === true) {
                 dataRequestN.actions.push({
                     action: 'setDefaultBillingAddress',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
                 dataRequestN.actions.push({
                     action: 'addBillingAddressId',
-                    addressId: targetAdress.id!,
+                    addressId: targetAddress.id!,
                 });
             }
             return fetch(`${URL}/${projectKey}/customers/${data.id}`, {
@@ -408,7 +457,7 @@ export const addNewUserAddressApi = (data: AddNewAddressFormRequest) => {
                 body: JSON.stringify(dataRequestN),
             });
         })
-        .then((resul) => checkResponse<TUserResponse>(resul))
+        .then((result) => checkResponse<TUserResponse>(result))
         .then((result) => {
             if (result) return result;
             return Promise.reject(result);
@@ -422,7 +471,7 @@ export const getUserApi = () =>
         } as HeadersInit,
     });
 
-export const getProductsFilteredApi = (options?: TransformParams) => {
+export const getProductsFilteredApi = (options: TransformParams, offset: number) => {
     let query = '';
 
     if (options) {
@@ -446,7 +495,7 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
                             return `"${value.toLowerCase()}"`;
                         })
                         .join(',');
-                    return `${SearchQuery[filterKey]}${values}`;
+                    return `${SearchQueryVariants[filterKey]}${values}`;
                 })
                 .join('&filter=');
 
@@ -461,12 +510,18 @@ export const getProductsFilteredApi = (options?: TransformParams) => {
 
         if (options.search) {
             query += query
-                ? `&${SearchQuery.search}=${options.search}&fuzzy=true`
-                : `${SearchQuery.search}=${options.search}&fuzzy=true`;
+                ? `&${SearchQueryVariants.search}=${options.search}&fuzzy=true`
+                : `${SearchQueryVariants.search}=${options.search}&fuzzy=true`;
+        }
+
+        if (options.category) {
+            query += query
+                ? `&${SearchQueryVariants.category}"${options.category}"`
+                : `${SearchQueryVariants.category}"${options.category}"`;
         }
     }
 
-    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=500`;
+    const fetchUrl = `${URL}/${projectKey}/product-projections/search?${query}&limit=6&offset=${offset}`;
 
     return fetch(fetchUrl, {
         method: 'GET',
@@ -504,5 +559,147 @@ export const getProductById = async (id: string) => {
     });
 
     const data = checkResponse<ProductResponse>(response);
+    return data;
+};
+
+export const createCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            currency: 'USD',
+        }),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const addToCartApi = async (cartId: string, item: AddItemToCartAction, version: number) => {
+    const body: AddItemToCartBody = {
+        version,
+        actions: [item],
+    };
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getActiveCartApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/me/active-cart`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getCartById = async (cartId: string) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getProductCategory = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/categories/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = (await checkResponse<CategoriesResponse>(response)).key;
+    return data;
+};
+
+export const getProductDetailsApi = async (id: string, color: string): Promise<ProductDetails | undefined> => {
+    try {
+        const response = await getProductById(id);
+        const categoryId = response.masterData.current.categories[0].id;
+        const products = response.masterData.current;
+        const variants = [...products.variants, products.masterVariant];
+        const product = variants.find((variant) => {
+            return findAttr('color', variant.attributes)?.value === color && variant.images.length !== 0;
+        });
+        const category = await getProductCategory(categoryId);
+        if (!product) return undefined;
+        const image = product.images[0];
+        return { image, category };
+    } catch (error) {
+        if (error instanceof Error) throw new Error(error.message);
+        return undefined;
+    }
+};
+
+export const updateCart = async (cartId: string, updateLineItemQuantity: UpdateCart) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(updateLineItemQuantity),
+    });
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const deleteCartApi = async (cartId: string, cartVersion: number) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}?version=${cartVersion}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountCodeApi = async () => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<DiscountCodeResponse>(response);
+    return data;
+};
+
+export const updateDiscountApi = async (cartId: string, appliedDiscounts: UpdateCart) => {
+    const response = await fetch(`${URL}/${projectKey}/me/carts/${cartId}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+        body: JSON.stringify(appliedDiscounts),
+    });
+    const data = checkResponse<CartResponse>(response);
+    return data;
+};
+
+export const getDiscountByIdApi = async (id: string) => {
+    const response = await fetch(`${URL}/${projectKey}/discount-codes/${id}`, {
+        headers: {
+            authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+    });
+    const data = checkResponse<DiscountCode>(response);
     return data;
 };

@@ -1,0 +1,13 @@
+.quantity-counter {
+    border: 1px solid var(--beige);
+    padding: 8px 16px;
+    width: 95px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quantity-btn {
+    font-size: 2rem;
+}

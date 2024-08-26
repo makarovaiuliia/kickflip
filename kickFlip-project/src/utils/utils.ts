@@ -7,6 +7,11 @@ import {
     SignUpDataRequest,
     Variants,
     ErrorMessage,
+    PriceValue,
+    Attributes,
+    LineItem,
+    StateMessage,
+    ResponseErrorMessage,
 } from '@/types/types';
 
 import { setCookie } from './cookie';
@@ -67,7 +72,13 @@ export const saveTokens = (accessToken: string, refreshToken: string): void => {
 export const responsesErrorsHandler = (error: unknown, handler: React.Dispatch<React.SetStateAction<string>>) => {
     if (error) {
         if (typeof error === 'object' && 'message' in error) {
-            if (typeof error.message === 'string') handler(error.message);
+            if (typeof error.message === 'string') {
+                let { message } = error;
+                if (error.message === ResponseErrorMessage.FaildFetch) {
+                    message = StateMessage.NotConnectionMessage;
+                }
+                handler(message);
+            }
         }
     }
 };
@@ -171,9 +182,9 @@ export const transformCategoryData = (responseData: ServerResponse<CategoriesRes
     return categoryData;
 };
 
-export const setBodyoverflowStyle = (shoulBeHide: boolean) => {
+export const setBodyOverflowStyle = (shouldBeHide: boolean) => {
     let overflowStyle: string;
-    if (shoulBeHide) {
+    if (shouldBeHide) {
         overflowStyle = 'hidden';
     } else {
         overflowStyle = '';
@@ -189,4 +200,57 @@ export const transformPriceRange = (priceRange: string): string => {
         .map((value) => parseInt(value, 10) * 100);
 
     return `(${min} to ${max})`;
+};
+
+export const findVariantId = (
+    masterVariant: Product,
+    variants: Product[],
+    selectedSize: string,
+    SelectedColor: string
+): number => {
+    const sizeAttribute = masterVariant.attributes.find((attr) => attr.name === 'size')?.value;
+    const colorAttribute = masterVariant.attributes.find((attr) => attr.name === 'color')?.value;
+    if (sizeAttribute === parseInt(selectedSize, 10) && colorAttribute === SelectedColor) {
+        return masterVariant.id;
+    }
+
+    const variant = variants.filter((product) => {
+        const sizeAttributeVariant = product.attributes.find((attr) => attr.name === 'size')?.value;
+        const colorAttributeVariant = product.attributes.find((attr) => attr.name === 'color')?.value;
+        if (sizeAttributeVariant && colorAttributeVariant) {
+            return sizeAttributeVariant === parseInt(selectedSize, 10) && colorAttributeVariant === SelectedColor;
+        }
+        return false;
+    });
+
+    return variant[0].id;
+};
+
+export const getFormatPrice = (price: PriceValue): number => {
+    return price.centAmount / 10 ** price.fractionDigits;
+};
+
+export const findAttr = (attr: string, array: Attributes[]) => {
+    return array.find((item) => item.name === attr);
+};
+
+export const getPriceWithoutDiscount = (products: LineItem[]): number => {
+    return products.reduce((acc, item) => {
+        return item.price.value.centAmount * item.quantity + acc;
+    }, 0);
+};
+
+export const getOldPrice = (products: LineItem[]): PriceValue => {
+    return {
+        type: 'centPrecision',
+        currencyCode: 'USD',
+        centAmount: getPriceWithoutDiscount(products),
+        fractionDigits: 2,
+    };
+};
+
+export const getOldProductTotalPrice = (priceValue: PriceValue, quantity: number): PriceValue => {
+    const oldPrice = { ...priceValue };
+    oldPrice.centAmount = priceValue.centAmount * quantity;
+    return oldPrice;
 };

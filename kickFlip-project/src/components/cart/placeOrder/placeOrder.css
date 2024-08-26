@@ -1,0 +1,19 @@
+.place-order_wrapper {
+    background-color: var(--smoke-grey);
+    width: 100%;
+    font-family: var(--second-family);
+    font-size: 1.6rem;
+    padding: 30px;
+    font-weight: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: center;
+    max-inline-size: 750px;
+    text-align: center;
+}
+
+.place-order_checkmark {
+    inline-size: 4rem;
+    block-size: 4rem;
+}

@@ -7,11 +7,11 @@ describe('LoginForm component', () => {
         const { getByLabelText, getByText } = render(<LoginForm />);
         const emailInput = getByLabelText('E-mail:');
 
-        fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
-        fireEvent.change(emailInput, { target: { value: 'invalidemail@' } });
-        fireEvent.change(emailInput, { target: { value: 'invalidemail@example' } });
-        fireEvent.change(emailInput, { target: { value: 'invalidemail@example.com ' } });
-        fireEvent.change(emailInput, { target: { value: ' invalidemail@example.com' } });
+        fireEvent.change(emailInput, { target: { value: 'invalidEmail' } });
+        fireEvent.change(emailInput, { target: { value: 'invalidEmail@' } });
+        fireEvent.change(emailInput, { target: { value: 'invalidEmail@example' } });
+        fireEvent.change(emailInput, { target: { value: 'invalidEmail@example.com ' } });
+        fireEvent.change(emailInput, { target: { value: ' invalidEmail@example.com' } });
 
         expect(getByText('Please enter valid e-mail address')).toBeInTheDocument();
     });
@@ -29,8 +29,8 @@ describe('LoginForm component', () => {
         const { getByLabelText, getByText } = render(<LoginForm />);
         const passwordInput = getByLabelText('Password:');
 
-        fireEvent.change(passwordInput, { target: { value: 'notshort' } });
-        fireEvent.change(passwordInput, { target: { value: 'withoutuppercase' } });
+        fireEvent.change(passwordInput, { target: { value: 'notShort' } });
+        fireEvent.change(passwordInput, { target: { value: 'withoutUppercase' } });
         fireEvent.change(passwordInput, { target: { value: 'withOutnumber' } });
         fireEvent.change(passwordInput, { target: { value: '4444444!' } });
 
@@ -56,7 +56,7 @@ describe('LoginForm component', () => {
         const passwordInput = getByLabelText('Password:');
         const loginButton = getByText('Log In');
 
-        fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
+        fireEvent.change(emailInput, { target: { value: 'invalidEmail' } });
         fireEvent.change(passwordInput, { target: { value: 'short' } });
 
         expect(loginButton).toHaveClass('disable');

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
     getAnonymousTokenApi,
     getUserApi,
@@ -9,6 +9,7 @@ import {
     updateUserAddressApi,
     deleteUserAddressApi,
     addNewUserAddressApi,
+    signInUserApi,
 } from '@/utils/kickflip-api';
 import type { RootState } from './store';
 import { saveTokens } from '@/utils/utils';
@@ -31,8 +32,13 @@ export const loginUser = createAsyncThunk('user/login', async (data: LogInData) 
     return response;
 });
 
-export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async () => {
-    const response = await getAnonymousTokenApi();
+export const signInUser = createAsyncThunk('user/signIn', async (data: { login: LogInData; cartId: string }) => {
+    const response = await signInUserApi(data.login, data.cartId);
+    return response;
+});
+
+export const getAnonymousToken = createAsyncThunk('user/anonymousToken', async (id: string) => {
+    const response = await getAnonymousTokenApi(id);
     saveTokens(response.access_token, response.refresh_token);
     return response;
 });
@@ -42,12 +48,12 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
     return response;
 });
 
-export const signUpUser = createAsyncThunk('user/register', async (data: SignUpDataForm) => {
-    const response = await signUpUserApi(data);
+export const signUpUser = createAsyncThunk('user/register', async (data: { data: SignUpDataForm; cartId: string }) => {
+    const response = await signUpUserApi(data.data, data.cartId);
     return response;
 });
 
-export const updateUserPassword = createAsyncThunk('user/updatePasword', async (data: UpdatePasswordForm) => {
+export const updateUserPassword = createAsyncThunk('user/updatePassword', async (data: UpdatePasswordForm) => {
     const response = await updateUserPasswordApi(data);
     return response;
 });
@@ -91,6 +97,7 @@ interface InitialState {
     isAuthChecked: boolean;
     registrationMessage: string | undefined;
     updateUserMessage: string | undefined;
+    customerId: string;
 }
 
 const initialState: InitialState = {
@@ -100,6 +107,7 @@ const initialState: InitialState = {
     isAuthChecked: false,
     registrationMessage: undefined,
     updateUserMessage: undefined,
+    customerId: '',
 };
 
 const userSlice = createSlice({
@@ -119,12 +127,23 @@ const userSlice = createSlice({
         clearUpdateUserMessage: (state) => {
             state.updateUserMessage = undefined;
         },
+        setCustomerId: (
+            state,
+            action: PayloadAction<{
+                id: string;
+            }>
+        ) => {
+            state.customerId = action.payload.id;
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state) => {
                 state.isAuth = true;
                 state.isAuthChecked = true;
+            })
+            .addCase(signInUser.fulfilled, (state, action) => {
+                state.user = action.payload.customer;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.error = action.error.message;
@@ -200,10 +219,9 @@ const userSlice = createSlice({
 
 export const getUserSelector = (state: RootState) => state.user;
 export const getIsAuth = (state: RootState) => state.user.isAuth;
+export const getCustomerId = (state: RootState) => state.user.customerId;
 
-export const { logoutUser } = userSlice.actions;
-export const { clearRegistrationMessage } = userSlice.actions;
-export const { clearUpdateUserMessage } = userSlice.actions;
+export const { logoutUser, clearRegistrationMessage, clearUpdateUserMessage, setCustomerId } = userSlice.actions;
 
 export default userSlice.reducer;
 

@@ -53,7 +53,7 @@ export default function ModalSlider({ sliderImages }: ModalSliderProps) {
                     <img src={img} alt="slide_image" />
                 </SwiperSlide>
             ))}
-            <div className="slider-controler">
+            <div className="slider-controller">
                 <button className="swiper-button-prev slider-arrow" type="button">
                     &lt;
                 </button>

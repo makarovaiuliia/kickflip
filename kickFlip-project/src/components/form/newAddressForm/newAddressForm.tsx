@@ -14,7 +14,7 @@ export default function NewAddressForm() {
     const [registrationError, setRegistrationError] = useState('');
     const [abilityCreateNewAddress, setAbilityCreateNewAddress] = useState(true);
 
-    const handletCreateNewAddress = (abilityChange: boolean) => {
+    const handleCreateNewAddress = (abilityChange: boolean) => {
         setAbilityCreateNewAddress(abilityChange);
     };
 
@@ -32,7 +32,7 @@ export default function NewAddressForm() {
     const submit: SubmitHandler<AddNewAddressForm> = async (data: AddNewAddressForm) => {
         const requestData = {
             id: user?.id,
-            adresses: user?.addresses,
+            addresses: user?.addresses,
             version: user?.version,
             data,
         };
@@ -177,12 +177,12 @@ export default function NewAddressForm() {
                 <span className="error-message stretched">{registrationError}</span>
             </form>
             {abilityCreateNewAddress && (
-                <button className="change-user-btn" type="button" onClick={() => handletCreateNewAddress(false)}>
+                <button className="change-user-btn" type="button" onClick={() => handleCreateNewAddress(false)}>
                     Add Address
                 </button>
             )}
             {!abilityCreateNewAddress && (
-                <button className="change-user-btn" type="button" onClick={() => handletCreateNewAddress(true)}>
+                <button className="change-user-btn" type="button" onClick={() => handleCreateNewAddress(true)}>
                     Cancel
                 </button>
             )}
